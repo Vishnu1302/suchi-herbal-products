@@ -1,0 +1,157 @@
+.dashboard {
+  max-width: 1200px;
+}
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.page-subtitle {
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Summary row */
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.summary-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(116, 18, 191, 0.08);
+  border-top: 3px solid var(--color-primary);
+}
+
+.summary-card__title {
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  color: var(--color-primary-dark);
+}
+
+.status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+
+  strong {
+    margin-left: auto;
+  }
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &--green {
+    background: var(--color-accent);
+  }
+  &--yellow {
+    background: var(--color-secondary);
+  }
+  &--blue {
+    background: var(--color-sky);
+  }
+  &--purple {
+    background: var(--color-primary-alt);
+  }
+  &--red {
+    background: #ef4444;
+  }
+}
+
+.summary-card__link {
+  display: block;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--color-primary-dark);
+  }
+}
+
+/* Quick actions */
+.quick-actions {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(116, 18, 191, 0.08);
+  border-top: 3px solid var(--color-secondary);
+}
+
+.quick-actions__title {
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.quick-actions__list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.qa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #f5eeff;
+  color: var(--color-primary);
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+}
+
+@media (max-width: 1024px) {
+  .summary-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 1.4rem;
+  }
+
+  .summary-card {
+    padding: 18px;
+  }
+
+  .quick-actions__list {
+    flex-direction: column;
+  }
+
+  .qa-btn {
+    justify-content: center;
+  }
+}

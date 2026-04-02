@@ -1,0 +1,182 @@
+.success {
+  padding: 60px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Loading ───────────────────────────────────────────────────────────────── */
+.success__loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--color-text-muted);
+
+  p {
+    margin-top: 16px;
+    font-size: 1rem;
+  }
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #ede9fe;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Error ─────────────────────────────────────────────────────────────────── */
+.success__error {
+  max-width: 480px;
+  width: 100%;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.error__icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+/* ── Success card ───────────────────────────────────────────────────────────── */
+.success__card {
+  max-width: 560px;
+  width: 100%;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.success__icon {
+  font-size: 5rem;
+  margin-bottom: 16px;
+}
+
+.success__msg {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* ── Order meta table ───────────────────────────────────────────────────────── */
+.success__meta {
+  background: var(--color-bg);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.92rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  span {
+    color: #888;
+  }
+  strong {
+    color: var(--color-text);
+    font-weight: 700;
+  }
+}
+
+.paid-badge {
+  color: #16a34a !important;
+  font-weight: 700;
+}
+
+/* ── Items list ─────────────────────────────────────────────────────────────── */
+.success__items {
+  text-align: left;
+  margin-bottom: 28px;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: var(--color-text);
+  }
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f5f5f5;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  img {
+    width: 54px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+
+    .name {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .meta {
+      font-size: 0.78rem;
+      color: #888;
+      margin-top: 2px;
+    }
+  }
+
+  .price {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Actions ────────────────────────────────────────────────────────────────── */
+.success__actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  .btn {
+    min-width: 220px;
+    justify-content: center;
+  }
+}
+
+.success__notice {
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.5;
+
+  strong {
+    color: var(--color-text);
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .success__card,
+  .success__error {
+    padding: 32px 20px;
+  }
+}

@@ -1,0 +1,212 @@
+.order-list {
+  max-width: 100%;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.page-subtitle {
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Status tabs */
+.status-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 2px solid #ede9fe;
+  border-radius: 999px;
+  background: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  &--active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+  }
+}
+
+.tab-count {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 0.75rem;
+}
+
+.tab-btn--active .tab-count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Table wrapper */
+.table-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  overflow-x: auto; /* horizontal scroll on mobile */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px; /* prevent squishing */
+}
+
+th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.78rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #f5f5f5;
+  white-space: nowrap;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.customer-name {
+  font-weight: 700;
+}
+
+.customer-email {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.date-cell {
+  color: #888;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Payment badges */
+.pay-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pay--paid {
+  background: #e8f8ea;
+  color: #2e7d32;
+}
+
+.pay--pending {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.pay--failed {
+  background: #fde8e8;
+  color: #c62828;
+}
+
+.pay--refunded {
+  background: #f0f0f0;
+  color: #555;
+}
+
+/* Status select */
+.status-select {
+  padding: 6px 10px;
+  border: 1.5px solid #ede9fe;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-primary);
+  }
+}
+
+.view-btn {
+  padding: 6px 14px;
+  background: #f5f3ff;
+  color: var(--color-primary);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+}
+
+.empty-state {
+  padding: 48px;
+  text-align: center;
+  color: #aaa;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.4rem;
+  }
+
+  .status-tabs {
+    gap: 6px;
+  }
+
+  .tab-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  td,
+  th {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.2rem;
+  }
+
+  .tab-btn {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+}

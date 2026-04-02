@@ -1,0 +1,147 @@
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__content">
+    <span class="hero__tag">
+      <i class="fa-solid fa-seedling"></i>&nbsp; Pure Ayurveda · Ancient Wisdom
+    </span>
+    <h1 class="hero__title">
+      Nature's Finest<br /><span class="hero__accent">Herbal Remedies</span>
+    </h1>
+    <p class="hero__desc">
+      Rooted in centuries of Ayurvedic tradition, Veda brings you pure,
+      chemical-free herbal products — crafted for your complete wellbeing.
+    </p>
+    <div class="hero__actions">
+      <a routerLink="/products" class="btn btn--primary"
+        >Explore Products &rarr;</a
+      >
+    </div>
+    <div class="hero__pills">
+      <span class="hero__pill"
+        ><i class="fa-solid fa-leaf"></i> 100% Natural</span
+      >
+      <span class="hero__pill"
+        ><i class="fa-solid fa-mortar-pestle"></i> Ayurvedic</span
+      >
+      <span class="hero__pill"
+        ><i class="fa-solid fa-flask"></i> No Chemicals</span
+      >
+    </div>
+  </div>
+  <div class="hero__visual">
+    <div class="hero__emblem">
+      <div class="emblem__ring emblem__ring--outer"></div>
+      <div class="emblem__ring emblem__ring--inner"></div>
+      <div class="emblem__core">
+        <i class="fa-solid fa-mortar-pestle"></i>
+        <span>Veda</span>
+      </div>
+      <div class="emblem__leaf emblem__leaf--1">
+        <i class="fa-solid fa-leaf"></i>
+      </div>
+      <div class="emblem__leaf emblem__leaf--2">
+        <i class="fa-solid fa-seedling"></i>
+      </div>
+      <div class="emblem__leaf emblem__leaf--3">
+        <i class="fa-solid fa-spa"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Our Herbal Range</h2>
+    <p class="section-subtitle">Explore our collections by form</p>
+    <div class="categories-grid">
+      <a
+        *ngFor="let cat of categories"
+        [routerLink]="['/products']"
+        [queryParams]="{ category: cat.slug }"
+        class="cat-card"
+      >
+        <i [class]="cat.icon + ' cat-icon'"></i>
+        <span class="cat-name">{{ cat.name }}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- New Arrivals -->
+<section class="section" *ngIf="newArrivals.length > 0">
+  <div class="container">
+    <h2 class="section-title">New Arrivals</h2>
+    <p class="section-subtitle">Freshly sourced, traditionally prepared</p>
+    <div class="products-grid">
+      <a
+        *ngFor="let p of newArrivals"
+        [routerLink]="['/products', p.id]"
+        class="product-card"
+        [class.product-card--oos]="!p.inStock || p.stockCount === 0"
+      >
+        <div class="product-card__img-wrap">
+          <img
+            [src]="p.images[0]"
+            [alt]="p.name"
+            class="product-card__img"
+            loading="lazy"
+          />
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__name">{{ p.name }}</div>
+          <div class="product-card__price">
+            <span class="price-main">&#8377;{{ p.price }}</span>
+            <span class="price-orig" *ngIf="p.originalPrice"
+              >&#8377;{{ p.originalPrice }}</span
+            >
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="section-cta">
+      <a routerLink="/products" class="btn btn--outline"
+        >View All Products &rarr;</a
+      >
+    </div>
+  </div>
+</section>
+
+<!-- Most Loved / Best Sellers -->
+<section class="section section--parchment" *ngIf="bestSellers.length > 0">
+  <div class="container">
+    <h2 class="section-title">Most Loved</h2>
+    <p class="section-subtitle">Our community's top herbal picks</p>
+    <div class="products-grid">
+      <a
+        *ngFor="let p of bestSellers"
+        [routerLink]="['/products', p.id]"
+        class="product-card"
+        [class.product-card--oos]="!p.inStock || p.stockCount === 0"
+      >
+        <div class="product-card__img-wrap">
+          <img
+            [src]="p.images[0]"
+            [alt]="p.name"
+            class="product-card__img"
+            loading="lazy"
+          />
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__name">{{ p.name }}</div>
+          <div class="product-card__price">
+            <span class="price-main">&#8377;{{ p.price }}</span>
+            <span class="price-orig" *ngIf="p.originalPrice"
+              >&#8377;{{ p.originalPrice }}</span
+            >
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="section-cta">
+      <a routerLink="/products" class="btn btn--outline"
+        >View All Products &rarr;</a
+      >
+    </div>
+  </div>
+</section>

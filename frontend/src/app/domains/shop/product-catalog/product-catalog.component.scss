@@ -1,0 +1,430 @@
+.catalog {
+  padding: 40px 0;
+}
+
+.catalog__layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+}
+
+.catalog__sidebar {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(116, 18, 191, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 90px;
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--color-secondary);
+      border-radius: 2px;
+    }
+  }
+}
+
+.filter-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--color-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+}
+
+/* Custom-styled select dropdowns */
+.filter-group select {
+  width: 100%;
+  padding: 10px 38px 10px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background-color: #fdf8ff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237412bf' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  color: var(--color-text);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+  outline: none;
+
+  &:hover {
+    border-color: var(--color-secondary);
+    background-color: #fffdf5;
+  }
+
+  &:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+    background-color: #fffdf5;
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: #fdf8ff;
+  outline: none;
+  color: var(--color-text);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &:hover {
+    border-color: var(--color-secondary);
+  }
+
+  &:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+  }
+}
+
+.catalog__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.search-input {
+  width: 260px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.product-card__img-wrap {
+  display: block;
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+}
+
+.product-card:hover .product-card__img-wrap img {
+  transform: scale(1.05);
+}
+
+/* Out-of-stock card state */
+.product-card--oos {
+  .product-card__img-wrap img {
+    filter: grayscale(70%);
+    opacity: 0.65;
+  }
+  .product-card__body {
+    opacity: 0.6;
+  }
+  &::after {
+    content: "Out of Stock";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(30, 30, 46, 0.72);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 6px 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  position: relative;
+  pointer-events: auto;
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.product-card__body {
+  padding: 16px;
+
+  h4 a {
+    font-weight: 700;
+    color: #2d2d2d;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+}
+
+.product-card__category {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.product-card__price {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin: 8px 0;
+}
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-primary, #ff6b6b);
+}
+
+.price--original {
+  font-size: 0.85rem;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.price--discount {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  background: rgba(34, 197, 94, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.btn--sm {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.no-results {
+  text-align: center;
+  padding: 80px 0;
+
+  span {
+    font-size: 3rem;
+  }
+
+  p {
+    color: #888;
+    margin: 12px 0 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .catalog__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog__sidebar {
+    position: static;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .catalog {
+    padding: 24px 0;
+  }
+
+  .catalog__header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    h2 {
+      font-size: 1.1rem;
+    }
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .catalog__sidebar {
+    padding: 16px;
+
+    h3 {
+      font-size: 1rem;
+    }
+  }
+
+  .filter-group select,
+  .search-input {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+}
+
+/* ── Size pills on product cards ───────────────────────────────────────────── */
+.product-card__size {
+  margin-bottom: 10px;
+}
+
+.size-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  &--error .size-pill:not(.size-pill--soldout) {
+    border-color: #ef4444;
+  }
+}
+
+.size-pill {
+  position: relative;
+  min-width: 38px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  background: #fdf8ff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    background: #f5e9ff;
+  }
+
+  /* Currently selected */
+  &--active {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: #fff;
+
+    .size-pill__badge {
+      background: #fff;
+      color: var(--color-primary);
+    }
+  }
+
+  /* Available AND already in cart (but not active) */
+  &--incart:not(.size-pill--active) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: #f0fdf4;
+  }
+
+  /* Sold-out */
+  &--soldout {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: line-through;
+    border-style: dashed;
+  }
+
+  /* Cart quantity badge floating top-right of pill */
+  &__badge {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    border-radius: 8px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    pointer-events: none;
+  }
+}
+
+.size-error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.size-stock-hint {
+  font-size: 0.75rem;
+  margin: 4px 0 6px;
+
+  .hint--available {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  .hint--maxed {
+    color: #ef4444;
+    font-weight: 500;
+  }
+}
+
+/* ── Catalog Toast ─────────────────────────────────────────────────────────── */
+.catalog-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 6px 24px rgba(116, 18, 191, 0.3);
+  z-index: 1100;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

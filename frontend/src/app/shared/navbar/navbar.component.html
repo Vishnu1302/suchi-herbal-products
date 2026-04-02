@@ -1,0 +1,34 @@
+<nav class="navbar">
+  <div class="container navbar__inner">
+    <!-- Brand -->
+    <a routerLink="/" class="navbar__brand">
+      <span class="navbar__logo">🌿</span>
+      <span class="navbar__name">Veda</span>
+    </a>
+
+    <!-- Shop Nav Links -->
+    <ul class="navbar__links">
+      <li>
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Home
+        </a>
+      </li>
+      <li><a routerLink="/products" routerLinkActive="active">Shop</a></li>
+      <li>
+        <a routerLink="/cart" routerLinkActive="active">
+          Cart
+          <span class="cart-badge" *ngIf="cartCount() > 0">
+            {{ cartCount() }}
+          </span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Admin Link -->
+    <a routerLink="/admin" class="navbar__admin-btn">Admin Panel</a>
+  </div>
+</nav>

@@ -1,0 +1,136 @@
+import { Product } from "../models/product.model";
+
+export const MOCK_PRODUCTS: Product[] = [
+  {
+    id: "prod-001",
+    name: "Ashwagandha Root Powder",
+    slug: "ashwagandha-root-powder",
+    description:
+      "Pure Ashwagandha root powder from certified organic farms. Boosts energy, reduces stress and improves overall vitality.",
+    ingredients: "100% Withania somnifera (Ashwagandha) root",
+    usage: "Mix 1 tsp in warm milk or water daily",
+    benefits: "Reduces stress, boosts immunity, improves stamina",
+    price: 349,
+    images: ["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600"],
+    category: "powder",
+    inStock: true,
+    stockCount: 120,
+  },
+  {
+    id: "prod-002",
+    name: "Brahmi Hair Oil",
+    slug: "brahmi-hair-oil",
+    description:
+      "Cold-pressed Brahmi oil infused with neem and amla extracts. Promotes hair growth and nourishes the scalp.",
+    ingredients: "Brahmi extract, Neem, Amla, Coconut oil base",
+    usage: "Apply to scalp, massage gently, leave 30 mins before washing",
+    benefits: "Hair growth, dandruff control, scalp nourishment",
+    price: 249,
+    images: [
+      "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600",
+    ],
+    category: "oil",
+    inStock: true,
+    stockCount: 85,
+  },
+  {
+    id: "prod-003",
+    name: "Triphala Capsules",
+    slug: "triphala-capsules",
+    description:
+      "Traditional Ayurvedic formulation of three fruits for digestive health and detoxification.",
+    ingredients: "Amalaki, Bibhitaki, Haritaki (equal parts)",
+    usage: "Take 2 capsules with warm water before bedtime",
+    benefits: "Improved digestion, gentle detox, antioxidant support",
+    price: 199,
+    images: [
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600",
+    ],
+    category: "capsule",
+    inStock: true,
+    stockCount: 200,
+  },
+  {
+    id: "prod-004",
+    name: "Tulsi Green Tea",
+    slug: "tulsi-green-tea",
+    description:
+      "Aromatic blend of holy basil and green tea. Calming, immunity-boosting and rich in antioxidants.",
+    ingredients: "Tulsi leaves, Green tea leaves, Ginger",
+    usage: "Steep 1 tea bag in hot water for 3-5 minutes",
+    benefits: "Stress relief, immunity boost, antioxidant-rich",
+    price: 149,
+    images: [
+      "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600",
+    ],
+    category: "tea",
+    inStock: true,
+    stockCount: 300,
+  },
+  {
+    id: "prod-005",
+    name: "Neem Leaf Extract",
+    slug: "neem-leaf-extract",
+    description:
+      "Concentrated neem leaf extract in liquid form. Powerful antibacterial and antifungal herbal supplement.",
+    ingredients: "Azadirachta indica (Neem) leaf standardised extract",
+    usage: "Add 10-15 drops to water or juice, twice daily",
+    benefits: "Skin care, blood purification, antibacterial",
+    price: 299,
+    images: [
+      "https://images.unsplash.com/photo-1611482686597-b9ca8df18ed5?w=600",
+    ],
+    category: "extract",
+    inStock: true,
+    stockCount: 60,
+  },
+  {
+    id: "prod-006",
+    name: "Moringa Powder",
+    slug: "moringa-powder",
+    description:
+      "Organic Moringa leaf powder packed with vitamins, minerals and amino acids.",
+    ingredients: "100% Moringa oleifera leaf",
+    usage: "Add 1 tsp to smoothies, juices or meals daily",
+    benefits: "Energy boost, high nutrition, anti-inflammatory",
+    price: 279,
+    images: [
+      "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600",
+    ],
+    category: "powder",
+    inStock: false,
+    stockCount: 0,
+  },
+  {
+    id: "prod-007",
+    name: "Eucalyptus Essential Oil",
+    slug: "eucalyptus-essential-oil",
+    description:
+      "Pure steam-distilled Eucalyptus oil. Ideal for aromatherapy and cold relief.",
+    ingredients: "100% Eucalyptus globulus essential oil",
+    usage: "Diffuse 5-7 drops or dilute in carrier oil for topical use",
+    benefits: "Respiratory support, mental clarity, antimicrobial",
+    price: 399,
+    images: [
+      "https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=600",
+    ],
+    category: "oil",
+    inStock: true,
+    stockCount: 45,
+  },
+  {
+    id: "prod-008",
+    name: "Chamomile Relax Tea",
+    slug: "chamomile-relax-tea",
+    description:
+      "Soothing blend of chamomile flowers and lavender. Perfect for promoting restful sleep.",
+    ingredients: "Chamomile flowers, Lavender, Lemon balm",
+    usage: "Steep 1 bag in hot water for 5 minutes, drink before bed",
+    benefits: "Better sleep, relaxation, anxiety relief",
+    price: 179,
+    images: ["https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=600"],
+    category: "tea",
+    inStock: true,
+    stockCount: 150,
+  },
+];

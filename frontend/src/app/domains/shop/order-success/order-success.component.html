@@ -1,0 +1,78 @@
+<div class="success container">
+  <!-- Loading -->
+  <div class="success__loading" *ngIf="loading()">
+    <div class="spinner"></div>
+    <p>Loading your order…</p>
+  </div>
+
+  <!-- Error -->
+  <div class="success__error card" *ngIf="!loading() && error()">
+    <div class="error__icon">⚠️</div>
+    <h2>Could Not Load Order</h2>
+    <p>{{ error() }}</p>
+    <a routerLink="/products" class="btn btn--primary">Continue Shopping 🛍️</a>
+  </div>
+
+  <!-- Success -->
+  <div class="success__card card" *ngIf="!loading() && !error() && order()">
+    <div class="success__icon">🎉</div>
+    <h1>Order Placed!</h1>
+    <p class="success__msg">
+      Yay! Your little one's new outfits are on their way.<br />
+      You'll receive a confirmation email shortly.
+    </p>
+
+    <!-- Order meta -->
+    <div class="success__meta">
+      <div class="meta-row">
+        <span>Order ID</span>
+        <strong>#{{ order()!["orderNumber"] }}</strong>
+      </div>
+      <div class="meta-row">
+        <span>Payment</span>
+        <strong class="paid-badge">✅ Paid</strong>
+      </div>
+      <div class="meta-row">
+        <span>Total Paid</span>
+        <strong>₹{{ order()!["total"] }}</strong>
+      </div>
+      <div class="meta-row">
+        <span>Ship to</span>
+        <strong>
+          {{ order()!["shippingAddress"]?.["city"] }},
+          {{ order()!["shippingAddress"]?.["pinCode"] }}
+        </strong>
+      </div>
+    </div>
+
+    <!-- Items ordered -->
+    <div class="success__items" *ngIf="order()!['items']?.length">
+      <h3>Items Ordered</h3>
+      <div class="order-item" *ngFor="let item of order()!['items']">
+        <img
+          [src]="item['image'] || 'assets/placeholder.png'"
+          [alt]="item['productName']"
+        />
+        <div class="order-item__info">
+          <p class="name">{{ item["productName"] }}</p>
+          <p class="meta">
+            Size: {{ item["size"] }} · Qty: {{ item["quantity"] }}
+          </p>
+        </div>
+        <span class="price">₹{{ item["totalPrice"] }}</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="success__actions">
+      <a routerLink="/products" class="btn btn--primary">
+        Continue Shopping 🛍️
+      </a>
+    </div>
+
+    <p class="success__notice">
+      📧 Order confirmation and shipping updates will be sent to
+      <strong>{{ order()!["customerEmail"] }}</strong>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,121 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <!-- Email verification sent screen -->
+    <ng-container *ngIf="emailSent()">
+      <div class="auth-logo">📧</div>
+      <h1 class="auth-title">Check your inbox!</h1>
+      <p class="auth-subtitle">
+        We sent a verification link to <strong>{{ sentEmail() }}</strong
+        >. Please verify your email before shopping.
+      </p>
+      <button
+        class="btn-primary"
+        style="margin-top: 16px; width: 100%"
+        (click)="resend()"
+        [disabled]="loading()"
+      >
+        {{ loading() ? "Sending..." : "🔄 Resend verification email" }}
+      </button>
+      <p class="auth-error" *ngIf="error()">{{ error() }}</p>
+      <p class="auth-footer" style="margin-top: 12px">
+        <a routerLink="/">Continue to shop →</a>
+      </p>
+    </ng-container>
+
+    <!-- Registration form -->
+    <ng-container *ngIf="!emailSent()">
+      <div class="auth-logo">🌿</div>
+      <h1 class="auth-title">Create account</h1>
+      <p class="auth-subtitle">Join Veda</p>
+
+      <!-- Google Sign-up -->
+      <button class="btn-google" (click)="loginGoogle()" [disabled]="loading()">
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          width="20"
+          height="20"
+          alt="Google"
+        />
+        <span>Continue with Google</span>
+      </button>
+
+      <div class="divider"><span>or register with email</span></div>
+
+      <form [formGroup]="form" (ngSubmit)="register()">
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              id="reg-name"
+              class="form-input"
+              formControlName="name"
+              placeholder="Your Full Name"
+            />
+          </div>
+          <span
+            class="auth-error"
+            *ngIf="f['name'].invalid && f['name'].touched"
+          >
+            Name is required
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope input-icon"></i>
+            <input
+              id="reg-email"
+              class="form-input"
+              type="email"
+              formControlName="email"
+              placeholder="you@email.com"
+            />
+          </div>
+          <span
+            class="auth-error"
+            *ngIf="f['email'].invalid && f['email'].touched"
+          >
+            Valid email required
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input
+              id="reg-password"
+              class="form-input"
+              type="password"
+              formControlName="password"
+              placeholder="Min. 6 characters"
+            />
+          </div>
+          <span
+            class="auth-error"
+            *ngIf="f['password'].invalid && f['password'].touched"
+          >
+            Min 6 characters
+          </span>
+        </div>
+
+        <p class="auth-error" *ngIf="error()">{{ error() }}</p>
+
+        <button
+          class="btn-primary"
+          type="submit"
+          [disabled]="form.invalid || loading()"
+        >
+          {{ loading() ? "Creating account..." : "Create Account" }}
+        </button>
+      </form>
+
+      <p class="auth-footer">
+        Already have an account? <a routerLink="/auth/login">Sign in</a>
+      </p>
+      <p class="auth-footer">
+        <a routerLink="/">← Back to Shop</a>
+      </p>
+    </ng-container>
+  </div>
+</div>

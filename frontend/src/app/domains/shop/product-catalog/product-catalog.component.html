@@ -1,0 +1,113 @@
+<div class="catalog">
+  <div class="container">
+    <div class="catalog__layout" [formGroup]="filterForm">
+      <!-- Sidebar Filters -->
+      <aside class="catalog__sidebar">
+        <h3>Filters</h3>
+
+        <div class="filter-group">
+          <label for="category-select">Category</label>
+          <select id="category-select" formControlName="category">
+            <option value="">All Categories</option>
+            <option *ngFor="let cat of categories" [value]="cat.slug">
+              {{ cat.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="sortby-select">Sort By</label>
+          <select id="sortby-select" formControlName="sortBy">
+            <option value="newest">Newest</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="rating">Top Rated</option>
+            <option value="popular">Popular</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn btn--outline" (click)="resetFilter()">
+          Clear Filters
+        </button>
+      </aside>
+
+      <!-- Product Grid -->
+      <section class="catalog__main">
+        <div class="catalog__header">
+          <h2>{{ filteredProducts.length }} Products</h2>
+          <input
+            class="search-input"
+            type="search"
+            placeholder="Search products..."
+            formControlName="search"
+          />
+        </div>
+
+        <div
+          class="product-grid"
+          *ngIf="filteredProducts.length > 0; else noResults"
+        >
+          <div
+            class="product-card card"
+            [class.product-card--oos]="!p.inStock || p.stockCount === 0"
+            *ngFor="let p of filteredProducts"
+          >
+            <a
+              [routerLink]="['/products', p.id]"
+              class="product-card__img-wrap"
+            >
+              <img [src]="p.images[0]" [alt]="p.name" />
+            </a>
+            <div class="product-card__body">
+              <p class="product-card__category">
+                {{ p.category | titlecase }}
+              </p>
+              <h4>
+                <a [routerLink]="['/products', p.id]">{{ p.name }}</a>
+              </h4>
+              <div class="product-card__price">
+                <span class="price">₹{{ p.price }}</span>
+              </div>
+              <div class="product-card__stock">
+                <span *ngIf="p.inStock && p.stockCount > 0">
+                  {{ getRemainingStock(p) }} unit{{
+                    getRemainingStock(p) === 1 ? "" : "s"
+                  }}
+                  available
+                </span>
+                <span
+                  *ngIf="!p.inStock || p.stockCount === 0"
+                  class="out-of-stock"
+                >
+                  Out of Stock
+                </span>
+              </div>
+              <button
+                class="btn btn--primary btn--sm"
+                (click)="addToCart(p)"
+                [disabled]="!p.inStock || getRemainingStock(p) <= 0"
+              >
+                <i class="fas fa-cart-plus"></i> Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noResults>
+          <div class="no-results">
+            <span>🫙</span>
+            <p>No products match your filters.</p>
+            <button class="btn btn--outline" (click)="resetFilter()">
+              Clear Filters
+            </button>
+          </div>
+        </ng-template>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="catalog-toast" *ngIf="toastMessage()">
+  <i class="fas fa-check-circle"></i> {{ toastMessage() }}
+</div>

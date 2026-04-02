@@ -1,0 +1,21 @@
+import { ApplicationConfig, isDevMode } from "@angular/core";
+import { provideRouter, withViewTransitions } from "@angular/router";
+import { provideHttpClient } from "@angular/common/http";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { provideStore } from "@ngrx/store";
+import { provideEffects } from "@ngrx/effects";
+import { provideStoreDevtools } from "@ngrx/store-devtools";
+import { routes } from "./app.routes";
+import { cartReducer } from "./store/cart/cart.reducer";
+import { CartEffects } from "./store/cart/cart.effects";
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, withViewTransitions()),
+    provideHttpClient(),
+    provideAnimations(),
+    provideStore({ cart: cartReducer }),
+    provideEffects(CartEffects),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+  ],
+};

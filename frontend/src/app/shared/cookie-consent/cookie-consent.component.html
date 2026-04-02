@@ -1,0 +1,23 @@
+<div class="cookie-bar" *ngIf="visible()">
+  <div class="cookie-bar__inner">
+    <div class="cookie-bar__content">
+      <i class="fa-solid fa-cookie-bite cookie-bar__icon"></i>
+      <div>
+        <strong>We use cookies</strong>
+        <p>
+          We use essential cookies to keep our site running and optional
+          analytics cookies to improve your experience. Read our
+          <a routerLink="/privacy">Privacy Policy</a> to learn more.
+        </p>
+      </div>
+    </div>
+    <div class="cookie-bar__actions">
+      <button class="cookie-btn cookie-btn--secondary" (click)="decline()">
+        Essential only
+      </button>
+      <button class="cookie-btn cookie-btn--primary" (click)="accept()">
+        Accept all
+      </button>
+    </div>
+  </div>
+</div>

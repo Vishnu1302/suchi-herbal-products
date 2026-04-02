@@ -1,0 +1,53 @@
+<div class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar__brand">
+      <span class="brand-icon"
+        ><i class="fa-solid fa-wand-magic-sparkles"></i
+      ></span>
+      <span class="brand-text" *ngIf="!sidebarCollapsed">Suchi Admin</span>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a
+        *ngFor="let item of navItems"
+        class="nav-item"
+        [routerLink]="item.path"
+        routerLinkActive="nav-item--active"
+        [routerLinkActiveOptions]="{
+          exact: item.path.endsWith('dashboard'),
+        }"
+      >
+        <span class="nav-item__icon"><i [class]="item.icon"></i></span>
+        <span class="nav-item__label" *ngIf="!sidebarCollapsed">
+          {{ item.label }}
+        </span>
+      </a>
+    </nav>
+
+    <button
+      class="sidebar__toggle"
+      (click)="sidebarCollapsed = !sidebarCollapsed"
+    >
+      {{ sidebarCollapsed ? "▶" : "◀" }}
+    </button>
+  </aside>
+
+  <!-- Main content -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="admin-header__left">
+        <a routerLink="/" class="back-to-store"> ← Back to Store </a>
+      </div>
+      <div class="admin-header__right">
+        <span class="admin-badge"
+          ><i class="fa-solid fa-shield-halved"></i> Admin</span
+        >
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

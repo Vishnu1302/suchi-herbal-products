@@ -1,0 +1,56 @@
+import { Router, type Request, type Response } from "express";
+import multer from "multer";
+import cloudinary from "../config/cloudinary";
+
+const router = Router();
+
+// Use memory storage – file lands in req.file.buffer, never touches disk
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed"));
+    }
+  },
+});
+
+// POST /api/uploads/image
+router.post(
+  "/image",
+  upload.single("image"),
+  (req: Request & { file?: Express.Multer.File }, res: Response) => {
+    if (!req.file) {
+      return res.status(400).json({ message: "No image file received" });
+    }
+
+    // Wrap upload_stream in a Promise so we respond exactly once
+    const uploadToCloudinary = (): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "suchi-kids-products", resource_type: "image" },
+          (error, result) => {
+            if (error || !result) {
+              reject(error ?? new Error("Cloudinary upload failed"));
+            } else {
+              resolve(result.secure_url);
+            }
+          },
+        );
+        stream.end(req.file!.buffer);
+      });
+
+    uploadToCloudinary()
+      .then((url) => res.json({ url }))
+      .catch((err) => {
+        console.error("Cloudinary upload error:", err?.message ?? err);
+        res
+          .status(500)
+          .json({ message: "Failed to upload image to Cloudinary" });
+      });
+  },
+);
+
+export default router;

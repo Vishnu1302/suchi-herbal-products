@@ -1,0 +1,149 @@
+<div class="shop-layout">
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a routerLink="/" class="navbar__brand">Veda</a>
+
+      <nav class="navbar__links" aria-label="Main navigation">
+        <a routerLink="/" class="nav-link">Home</a>
+        <a routerLink="/products" class="nav-link">Shop</a>
+        <a
+          routerLink="/admin"
+          class="nav-link admin-link"
+          *ngIf="authSvc.isAdmin"
+          ><i class="fa-solid fa-screwdriver-wrench"></i> Admin</a
+        >
+      </nav>
+
+      <div class="navbar__actions">
+        <!-- Hamburger (mobile only) -->
+        <button
+          class="hamburger"
+          (click)="menuOpen = !menuOpen"
+          aria-label="Menu"
+        >
+          <i [class]="menuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+        </button>
+
+        <!-- Cart -->
+        <a routerLink="/cart" class="cart-btn">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-count" *ngIf="cartSvc.cartCount() > 0">
+            {{ cartSvc.cartCount() }}
+          </span>
+        </a>
+
+        <!-- User menu -->
+        <ng-container *ngIf="authSvc.isLoggedIn; else loginBtn">
+          <div class="user-menu">
+            <img
+              *ngIf="authSvc.photoURL"
+              [src]="authSvc.photoURL"
+              class="user-avatar"
+              alt="avatar"
+            />
+            <span *ngIf="!authSvc.photoURL" class="user-initial">
+              {{ authSvc.displayName.charAt(0).toUpperCase() }}
+            </span>
+            <span class="user-name">{{ authSvc.displayName }}</span>
+            <button class="logout-btn" (click)="authSvc.logout()">
+              Sign out
+            </button>
+          </div>
+        </ng-container>
+        <ng-template #loginBtn>
+          <a routerLink="/auth/login" class="login-btn">Sign In</a>
+        </ng-template>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav drawer -->
+  <nav
+    class="mobile-nav"
+    [class.open]="menuOpen"
+    aria-label="Mobile navigation"
+  >
+    <a routerLink="/" class="mobile-nav__link" (click)="menuOpen = false">
+      <i class="fa-solid fa-house"></i> Home
+    </a>
+    <a
+      routerLink="/products"
+      class="mobile-nav__link"
+      (click)="menuOpen = false"
+    >
+      <i class="fa-solid fa-leaf"></i> Shop
+    </a>
+    <a
+      routerLink="/admin"
+      class="mobile-nav__link admin-link"
+      (click)="menuOpen = false"
+      *ngIf="authSvc.isAdmin"
+    >
+      <i class="fa-solid fa-screwdriver-wrench"></i> Admin
+    </a>
+  </nav>
+
+  <!-- Email verification banner -->
+  <div
+    class="verify-banner"
+    *ngIf="authSvc.isLoggedIn && !authSvc.isEmailVerified"
+  >
+    <span>📧 Please verify your email address to place orders.</span>
+    <button
+      class="verify-banner__resend"
+      (click)="resendVerification()"
+      [disabled]="resendSent"
+    >
+      {{ resendSent ? "✅ Email sent!" : "Resend verification email" }}
+    </button>
+  </div>
+
+  <!-- Page content -->
+  <main class="shop-main">
+    <router-outlet />
+  </main>
+
+  <!-- Footer -->
+  <footer class="shop-footer">
+    <!-- Trust strip -->
+    <div class="footer__trust">
+      <div class="footer__trust-item">
+        <i class="fa-solid fa-truck"></i>
+        <div>
+          <strong>Free Delivery</strong>
+          <span>On orders above &#8377;499</span>
+        </div>
+      </div>
+      <div class="footer__trust-item">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <strong>Secure Payment</strong>
+          <span>Powered by Razorpay</span>
+        </div>
+      </div>
+      <div class="footer__trust-item">
+        <i class="fa-solid fa-envelope"></i>
+        <div>
+          <strong>Contact Us</strong>
+          <span
+            ><a href="mailto:shankarsuchitra@gmail.com"
+              >shankarsuchitra&#64;gmail.com</a
+            ></span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span class="footer__copy">&copy; 2026 Veda. All rights reserved.</span>
+      <ul class="footer__legal">
+        <li><a routerLink="/terms">Terms &amp; Conditions</a></li>
+        <li><a routerLink="/privacy">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Cookie consent -->
+  <app-cookie-consent />
+</div>

@@ -1,0 +1,316 @@
+/* ──────────────────────────────────────────────
+   Veda — Global Styles
+────────────────────────────────────────────── */
+
+/* Design Tokens */
+:root {
+  /* Brand palette */
+  --color-primary: #d4af37; /* Gold */
+  --color-primary-alt: #fff8e1; /* Light gold/white */
+  --color-primary-dark: #bfa233; /* Deeper gold */
+  --color-secondary: #ffffff; /* White */
+  --color-accent: #a3c585; /* Herbal green accent */
+  --color-bg: #fffdf6; /* Herbal off-white */
+  --color-surface: #ffffff;
+  --color-text: #3e3e1c; /* Herbal dark */
+  --color-text-muted: #b3a369;
+  --color-border: #e5d9b6;
+
+  --font-main: "Lato", sans-serif;
+  --font-brand: "Cinzel", serif;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.15);
+
+  --transition: all 0.25s ease;
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* Herbal background pattern subtle */
+  background-image: linear-gradient(
+    135deg,
+    rgba(212, 175, 55, 0.03) 0%,
+    rgba(163, 197, 133, 0.03) 100%
+  );
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-main);
+  border: none;
+  outline: none;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 40px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  font-weight: 700;
+  transition: var(--transition);
+  border: 2px solid transparent;
+
+  &--primary {
+    background: var(--color-primary);
+    color: #fff;
+
+    &:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+  }
+
+  &--secondary {
+    background: var(--color-secondary);
+    color: var(--color-text);
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+
+    &:hover {
+      background: var(--color-primary);
+      color: #fff;
+    }
+  }
+
+  &--ghost {
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--color-primary);
+
+    &:hover {
+      background: var(--color-primary);
+      color: #fff;
+    }
+  }
+
+  &--sm {
+    padding: 7px 16px;
+    font-size: 0.85rem;
+  }
+
+  &--disabled,
+  &:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  &--sale {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  &--new {
+    background: var(--color-secondary);
+    color: #fff;
+  }
+
+  &--bestseller {
+    background: var(--color-primary-dark);
+    color: #fff;
+  }
+}
+
+/* Card base */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: var(--transition);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+  }
+}
+
+/* Grid helpers */
+.grid {
+  display: grid;
+  gap: 24px;
+
+  &--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  &--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  &--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid--4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .container {
+    padding: 0 16px;
+  }
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* Scrollbar — Chrome / Safari / Edge */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px; /* horizontal scrollbars (e.g. tables) */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Scrollbar — Firefox */
+* {
+  scrollbar-color: var(--color-primary) var(--color-bg);
+  scrollbar-width: thin;
+}
