@@ -1,46 +1,41 @@
 /**
  * Shared inventory helpers.
  *
- * Suchi Kids uses a single pooled inventory variant per product (variants[0]).
- * Stock is NOT split per clothing size — stockCount is a total pool.
- * The selected size is stored on the order for fulfilment only.
+ * Aurea uses a single pooled inventory per product.
+ * Stock is NOT split per size — all size variants draw from the same pool.
  *
  * Field meanings:
  *   stock     — physical units owned (decremented only when payment is captured)
- *   reserved  — units held by pending/confirmed-but-not-yet-shipped orders
- *   available — stock - reserved  → what the storefront actually sells against
+ *   reserved  — units held by pending orders (payment not yet received)
+ *   available — stock - reserved → what the storefront actually sells against
+ *
+ * Lifecycle:
+ *   NEW ORDER (payment pending)      → reserveInventory  : available ↓, reserved ↑
+ *   PAYMENT CAPTURED                 → commitInventory   : stock ↓, reserved ↓
+ *   PAYMENT FAILED / UNPAID CANCEL   → releaseInventory  : available ↑, reserved ↓
+ *   PAID ORDER CANCELLED             → restockInventory  : stock ↑, available ↑
  */
 import InventoryModel from "../models/inventory.model";
 
 export interface InventoryLineItem {
   productId: string;
-  size: string; // kept for order reference, not used for inventory lookup
   quantity: number;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RESERVE  — called when a new order is created (payment pending)
 //
-// Moves qty from available → reserved for the matching size variant.
-// $elemMatch ensures we only reserve when that size has available >= qty,
-// preventing overselling under concurrent requests.
+// Atomically moves qty from available → reserved.
+// Condition `available >= qty` prevents overselling under concurrent load.
 // ─────────────────────────────────────────────────────────────────────────────
 export async function reserveInventory(
   items: InventoryLineItem[],
 ): Promise<void> {
   const ops = items.map((item) =>
     InventoryModel.updateOne(
+      { productId: item.productId, available: { $gte: item.quantity } },
       {
-        productId: item.productId,
-        variants: {
-          $elemMatch: { size: item.size, available: { $gte: item.quantity } },
-        },
-      },
-      {
-        $inc: {
-          "variants.$.reserved": item.quantity,
-          "variants.$.available": -item.quantity,
-        },
+        $inc: { reserved: item.quantity, available: -item.quantity },
         $set: { lastUpdated: new Date() },
       },
     ),
@@ -51,24 +46,17 @@ export async function reserveInventory(
 // ─────────────────────────────────────────────────────────────────────────────
 // COMMIT  — called when payment is captured / order confirmed
 //
-// Permanently deducts from physical stock and clears the reservation for
-// the matching size variant. available stays the same (already decremented).
+// Permanently deducts from physical stock and clears the reservation.
+// available is unchanged (already decremented at reserve time).
 // ─────────────────────────────────────────────────────────────────────────────
 export async function commitInventory(
   items: InventoryLineItem[],
 ): Promise<void> {
   const ops = items.map((item) =>
     InventoryModel.updateOne(
+      { productId: item.productId },
       {
-        productId: item.productId,
-        "variants.size": item.size,
-      },
-      {
-        $inc: {
-          "variants.$.stock": -item.quantity,
-          "variants.$.reserved": -item.quantity,
-          totalStock: -item.quantity,
-        },
+        $inc: { stock: -item.quantity, reserved: -item.quantity },
         $set: { lastUpdated: new Date() },
       },
     ),
@@ -77,9 +65,9 @@ export async function commitInventory(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// RELEASE  — called when payment fails OR unpaid order is cancelled
+// RELEASE  — called when payment fails OR an unpaid order is cancelled
 //
-// Undoes the reservation for the matching size: reserved → available.
+// Undoes the reservation: reserved → available again.
 // Physical stock is never touched because payment never happened.
 // ─────────────────────────────────────────────────────────────────────────────
 export async function releaseInventory(
@@ -87,15 +75,9 @@ export async function releaseInventory(
 ): Promise<void> {
   const ops = items.map((item) =>
     InventoryModel.updateOne(
+      { productId: item.productId },
       {
-        productId: item.productId,
-        "variants.size": item.size,
-      },
-      {
-        $inc: {
-          "variants.$.reserved": -item.quantity,
-          "variants.$.available": item.quantity,
-        },
+        $inc: { reserved: -item.quantity, available: item.quantity },
         $set: { lastUpdated: new Date() },
       },
     ),
@@ -106,24 +88,17 @@ export async function releaseInventory(
 // ─────────────────────────────────────────────────────────────────────────────
 // RESTOCK  — called when a paid order is cancelled after payment
 //
-// Restores both physical stock and available for the matching size.
-// reserved was already cleared at commit time.
+// Restores both physical stock and available.
+// reserved was already cleared at commit time so we don't touch it.
 // ─────────────────────────────────────────────────────────────────────────────
 export async function restockInventory(
   items: InventoryLineItem[],
 ): Promise<void> {
   const ops = items.map((item) =>
     InventoryModel.updateOne(
+      { productId: item.productId },
       {
-        productId: item.productId,
-        "variants.size": item.size,
-      },
-      {
-        $inc: {
-          "variants.$.stock": item.quantity,
-          "variants.$.available": item.quantity,
-          totalStock: item.quantity,
-        },
+        $inc: { stock: item.quantity, available: item.quantity },
         $set: { lastUpdated: new Date() },
       },
     ),

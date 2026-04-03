@@ -123,15 +123,18 @@ router.post("/", async (req, res) => {
       image: product.images?.[0] ?? "",
       category: product.category,
       stock,
+      reserved: 0,
+      available: stock,
       lowStockThreshold: 10,
       status: stockStatus,
       lastUpdated: new Date(),
     });
 
     res.status(201).json(product);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error creating product", err);
-    if (err.code === 11000) {
+    const mongoErr = err as { code?: number };
+    if (mongoErr.code === 11000) {
       return res.status(400).json({ message: "Slug must be unique" });
     }
     res.status(500).json({ message: "Failed to create product" });

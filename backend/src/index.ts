@@ -14,7 +14,25 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI || "";
 
-app.use(cors());
+const allowedOrigins = new Set(
+  (process.env.CLIENT_URL || "http://localhost:4200")
+    .split(",")
+    .map((s) => s.trim()),
+);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow server-to-server calls (no origin) and whitelisted origins
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin ${origin} not allowed`));
+      }
+    },
+    credentials: true,
+  }),
+);
 
 // ⚠️  WEBHOOK MUST BE REGISTERED WITH RAW BODY PARSER BEFORE express.json()
 // Razorpay signature verification requires the exact raw bytes of the request body.
@@ -34,22 +52,19 @@ app.use("/api/inventory", inventoryRouter);
 app.use("/api/uploads", uploadsRouter);
 app.use("/api/orders", ordersRouter);
 
-async function start() {
-  try {
-    if (!MONGODB_URI) {
-      throw new Error("MONGODB_URI is not set in environment");
-    }
+async function connectDB() {
+  if (!MONGODB_URI) throw new Error("MONGODB_URI is not set in environment");
+  await mongoose.connect(MONGODB_URI);
+  console.log("Connected to MongoDB");
+}
 
-    await mongoose.connect(MONGODB_URI);
-    console.log("Connected to MongoDB");
-
+connectDB()
+  .then(() => {
     app.listen(PORT, () => {
       console.log(`Backend listening on port ${PORT}`);
     });
-  } catch (err) {
+  })
+  .catch((err: unknown) => {
     console.error("Failed to start server:", err);
     process.exit(1);
-  }
-}
-
-start();
+  });

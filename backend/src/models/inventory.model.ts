@@ -10,6 +10,8 @@ export interface InventoryDocument extends Document {
   image: string;
   category: ProductCategory;
   stock: number;
+  reserved: number;
+  available: number;
   lowStockThreshold: number;
   status: StockStatus;
   lastUpdated: Date;
@@ -32,6 +34,8 @@ const InventorySchema = new Schema<InventoryDocument>(
       enum: ["oil", "shampoo", "cream", "gel", "soap"],
     },
     stock: { type: Number, required: true, default: 0, min: 0 },
+    reserved: { type: Number, required: true, default: 0, min: 0 },
+    available: { type: Number, required: true, default: 0, min: 0 },
     lowStockThreshold: { type: Number, required: true, min: 0, default: 10 },
     status: {
       type: String,

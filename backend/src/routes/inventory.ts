@@ -65,6 +65,7 @@ router.post("/update-stock", async (req, res) => {
     }
 
     item.stock = newStock;
+    item.available = Math.max(0, newStock - item.reserved);
     item.status =
       newStock === 0
         ? "out-of-stock"

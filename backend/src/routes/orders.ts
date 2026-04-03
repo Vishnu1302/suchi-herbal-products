@@ -47,8 +47,6 @@ router.post("/create", async (req, res) => {
       items: {
         productId: string;
         quantity: number;
-        selectedSize: string;
-        selectedColor: string;
       }[];
       customer: {
         name: string;
@@ -112,8 +110,6 @@ router.post("/create", async (req, res) => {
         productId: item.productId,
         productName: product.name,
         image: product.images?.[0] ?? "",
-        size: item.selectedSize,
-        color: item.selectedColor ?? "",
         quantity: item.quantity,
         unitPrice: product.price,
         totalPrice,
