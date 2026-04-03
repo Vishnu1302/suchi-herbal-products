@@ -55,19 +55,17 @@ app.use("/api/inventory", inventoryRouter);
 app.use("/api/uploads", uploadsRouter);
 app.use("/api/orders", ordersRouter);
 
-async function connectDB() {
-  if (!MONGODB_URI) throw new Error("MONGODB_URI is not set in environment");
-  await mongoose.connect(MONGODB_URI);
-  console.log("Connected to MongoDB");
-}
+// Start HTTP server immediately so Render health checks pass
+app.listen(PORT, () => {
+  console.log(`Backend listening on port ${PORT}`);
+});
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Backend listening on port ${PORT}`);
-    });
-  })
-  .catch((err: unknown) => {
-    console.error("Failed to start server:", err);
-    process.exit(1);
-  });
+// Connect to MongoDB after server is up — failures log but don't crash the process
+if (!MONGODB_URI) {
+  console.error("WARNING: MONGODB_URI is not set — database calls will fail");
+} else {
+  mongoose
+    .connect(MONGODB_URI)
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err: unknown) => console.error("MongoDB connection error:", err));
+}
