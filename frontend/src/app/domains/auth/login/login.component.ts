@@ -19,6 +19,30 @@ export class LoginComponent {
   loading = signal(false);
   error = signal("");
 
+  private friendlyError(e: any): string {
+    switch (e?.code) {
+      case "auth/popup-closed-by-user":
+      case "auth/cancelled-popup-request":
+        return ""; // user dismissed — not an error
+      case "auth/popup-blocked":
+        return "Pop-up was blocked by your browser. Please allow pop-ups for this site and try again.";
+      case "auth/invalid-credential":
+      case "auth/wrong-password":
+      case "auth/user-not-found":
+        return "Invalid email or password. Please try again.";
+      case "auth/too-many-requests":
+        return "Too many failed attempts. Please wait a moment before trying again.";
+      case "auth/network-request-failed":
+        return "Network error. Please check your connection and try again.";
+      case "auth/user-disabled":
+        return "This account has been disabled. Please contact support.";
+      default:
+        return e?.message?.includes("Firebase")
+          ? "Sign-in failed. Please try again."
+          : (e?.message ?? "Sign-in failed.");
+    }
+  }
+
   form = this.fb.group({
     email: ["", [Validators.required, Validators.email]],
     password: ["", [Validators.required, Validators.minLength(6)]],
@@ -31,7 +55,7 @@ export class LoginComponent {
       await this.authSvc.loginWithGoogle();
       this.router.navigate(["/"]);
     } catch (e: any) {
-      this.error.set(e.message ?? "Google sign-in failed");
+      this.error.set(this.friendlyError(e));
       this.loading.set(false);
     }
   }
@@ -47,11 +71,7 @@ export class LoginComponent {
       );
       this.router.navigate(["/"]);
     } catch (e: any) {
-      this.error.set(
-        e.code === "auth/invalid-credential"
-          ? "Invalid email or password"
-          : (e.message ?? "Sign-in failed"),
-      );
+      this.error.set(this.friendlyError(e));
       this.loading.set(false);
     }
   }

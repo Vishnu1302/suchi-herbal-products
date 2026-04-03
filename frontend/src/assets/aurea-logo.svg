@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 110" role="img" aria-label="Aurea — The Glow Within">
+  <defs>
+    <!-- Rose-gold vertical gradient matching the reference image -->
+    <linearGradient id="aureaGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#f2dfc0"/>
+      <stop offset="40%"  stop-color="#d4a96a"/>
+      <stop offset="100%" stop-color="#8a5e2a"/>
+    </linearGradient>
+    <linearGradient id="taglineColor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#c8a070"/>
+      <stop offset="100%" stop-color="#9a7040"/>
+    </linearGradient>
+  </defs>
+
+  <!--
+    AUREA — thin geometric uppercase letters, rose-gold gradient.
+    Using Raleway 200 weight for closest match to the reference.
+    Letter-spacing 0.18em matches the wide-tracked feel in the image.
+  -->
+  <text
+    x="170"
+    y="68"
+    text-anchor="middle"
+    font-family="'Raleway', 'Cormorant Garamond', serif"
+    font-size="62"
+    font-weight="200"
+    letter-spacing="14"
+    fill="url(#aureaGold)"
+  >AUREA</text>
+
+  <!-- Thin gold hairline rule under the name -->
+  <line x1="80" y1="76" x2="260" y2="76"
+    stroke="rgba(180,130,60,0.40)" stroke-width="0.6"/>
+
+  <!-- Tagline — very spaced, featherweight -->
+  <text
+    x="170"
+    y="96"
+    text-anchor="middle"
+    font-family="'Raleway', 'Lato', sans-serif"
+    font-size="9.5"
+    font-weight="300"
+    letter-spacing="5"
+    fill="url(#taglineColor)"
+  >THE GLOW WITHIN.</text>
+</svg>

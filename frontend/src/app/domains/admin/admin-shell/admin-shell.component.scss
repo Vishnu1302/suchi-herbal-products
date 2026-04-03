@@ -1,13 +1,13 @@
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: #f8f9fc;
+  background: #0a0f0d;
 }
 
 /* ── Sidebar ── */
 .sidebar {
   width: 240px;
-  background: #1e1e2e;
+  background: #0d1510;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@
   align-items: center;
   gap: 12px;
   padding: 20px 16px;
-  border-bottom: 1px solid rgba(245, 148, 227, 0.18);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   font-weight: 800;
   font-size: 1.1rem;
   white-space: nowrap;
@@ -37,7 +37,7 @@
 
 .brand-icon {
   font-size: 1.1rem;
-  color: #f594e3;
+  color: #d4af37;
   flex-shrink: 0;
 }
 
@@ -72,9 +72,9 @@
   }
 
   &--active {
-    background: linear-gradient(135deg, var(--color-primary) 0%, #f594e3 100%);
+    background: linear-gradient(to right, #b8860b, #d4af37);
     color: #fff;
-    box-shadow: 0 4px 14px rgba(245, 148, 227, 0.28);
+    box-shadow: 0 4px 14px rgba(184, 134, 11, 0.35);
   }
 }
 
@@ -115,8 +115,8 @@
   justify-content: space-between;
   padding: 0 24px;
   height: 64px;
-  background: #fff;
-  border-bottom: 1px solid #ede9fe;
+  background: #0d1510;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   flex-shrink: 0;
 }
@@ -133,8 +133,8 @@
 }
 
 .admin-badge {
-  background: rgba(245, 148, 227, 0.12);
-  color: #f594e3;
+  background: rgba(212, 175, 55, 0.12);
+  color: #d4af37;
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 0.85rem;

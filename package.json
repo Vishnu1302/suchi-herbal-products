@@ -1,7 +1,7 @@
 {
-  "name": "suchi-ecommerce",
+  "name": "aurea-ecommerce",
   "version": "1.0.0",
-  "description": "Suchi Kids Fashion - Monorepo (FE + BE + Infrastructure)",
+  "description": "Aurea — Premium Herbal Skincare Monorepo (FE + BE + Infrastructure)",
   "private": true,
   "workspaces": [
     "frontend",

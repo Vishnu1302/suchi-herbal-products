@@ -24,74 +24,72 @@
 
     <!-- Info Panel -->
     <div class="detail__info">
-      <!-- Herbal products: no badge -->
       <h1>{{ p.name }}</h1>
-      <p class="detail__meta">
-        {{ p.category | titlecase }}
-      </p>
 
       <div class="detail__price">
         <span class="price">₹{{ p.price }}</span>
-        <!-- No originalPrice/discount for herbal products -->
       </div>
 
       <p class="detail__description">{{ p.description }}</p>
 
-      <!-- Size + Qty: only when in stock AND sizes are configured -->
+      <!-- In-stock: quantity selector + action buttons -->
+      <ng-container *ngIf="p.inStock && p.stockCount > 0; else outOfStockTpl">
+        <form [formGroup]="form">
+          <div class="detail__qty">
+            <label class="qty-label">Quantity</label>
+            <div class="qty-controls">
+              <button
+                type="button"
+                class="qty-btn"
+                (click)="decQty()"
+                [disabled]="form.controls['qty'].value <= 1"
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <span class="qty-value">{{ form.controls["qty"].value }}</span>
+              <button
+                type="button"
+                class="qty-btn"
+                (click)="incQty()"
+                [disabled]="form.controls['qty'].value >= remainingStock"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          </div>
 
-      <!-- Herbal products: only quantity selection -->
-      <form [formGroup]="form" *ngIf="p.inStock && p.stockCount > 0">
-        <div class="detail__qty">
-          <label for="qty-input">Qty</label>
-          <div class="qty-controls">
+          <p class="size-error" *ngIf="sizeError()">{{ sizeError() }}</p>
+
+          <div class="detail__actions">
             <button
               type="button"
-              (click)="decQty()"
-              [disabled]="form.controls['qty'].value <= 1"
+              class="btn btn--primary"
+              (click)="addToCart(p)"
+              [disabled]="!form.valid || remainingStock === 0"
             >
-              -
+              Add to Cart
             </button>
-            <input
-              id="qty-input"
-              type="number"
-              formControlName="qty"
-              min="1"
-              [max]="remainingStock"
-            />
             <button
               type="button"
-              (click)="incQty()"
-              [disabled]="form.controls['qty'].value >= remainingStock"
+              class="btn btn--secondary"
+              (click)="buyNow(p)"
+              [disabled]="!form.valid || remainingStock === 0"
             >
-              +
+              Buy Now
             </button>
           </div>
+        </form>
+      </ng-container>
+
+      <ng-template #outOfStockTpl>
+        <div class="detail__actions">
+          <button type="button" class="btn btn--primary" disabled>
+            Out of Stock
+          </button>
         </div>
-        <div class="stock-info">
-          <span
-            >{{ remainingStock }} unit{{
-              remainingStock === 1 ? "" : "s"
-            }}
-            available</span
-          >
-        </div>
-        <button
-          type="button"
-          class="btn btn--primary"
-          (click)="addToCart(p)"
-          [disabled]="!form.valid || !p.inStock || remainingStock === 0"
-        >
-          <i class="fas fa-cart-plus"></i> Add to Cart
-        </button>
-        <button
-          type="button"
-          class="btn btn--secondary"
-          (click)="buyNow(p)"
-          [disabled]="!form.valid || !p.inStock || remainingStock === 0"
-        >
-          <i class="fas fa-bolt"></i> Buy Now
-        </button>
-      </form>
+      </ng-template>
 
       <!-- Toast notification -->
       <div class="detail__toast" *ngIf="toast()">

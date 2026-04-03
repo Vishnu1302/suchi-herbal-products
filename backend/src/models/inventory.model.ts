@@ -29,7 +29,7 @@ const InventorySchema = new Schema<InventoryDocument>(
     category: {
       type: String,
       required: true,
-      enum: ["powder", "oil", "capsule", "tea", "extract", "herb", "other"],
+      enum: ["oil", "shampoo", "cream", "gel", "soap"],
     },
     stock: { type: Number, required: true, default: 0, min: 0 },
     lowStockThreshold: { type: Number, required: true, min: 0, default: 10 },

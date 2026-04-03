@@ -31,6 +31,6 @@ export const routes: Routes = [
       import("./shared/not-found/not-found.component").then(
         (m) => m.NotFoundComponent,
       ),
-    title: "404 | Veda",
+    title: "404 | Aurea",
   },
 ];

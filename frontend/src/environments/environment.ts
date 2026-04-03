@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   apiUrl: "http://localhost:4000/api",
   useMockData: false,
-  appName: "Veda",
+  appName: "Aurea",
 
   // ── Razorpay ──────────────────────────────────────────────────────────────
   // Get your test key from: https://dashboard.razorpay.com → Settings → API Keys
@@ -12,13 +12,20 @@ export const environment = {
   // ── Firebase ─────────────────────────────────────────────────────────────
   // Fill these in from your Firebase project console (Project settings → Your apps → Web app)
   firebase: {
-    apiKey: "AIzaSyBRbbJG2gH66P6SSqxa5qkgyPyDrppYjIo",
-    authDomain: "sichi-kids-ecommerce.firebaseapp.com",
-    projectId: "sichi-kids-ecommerce",
-    storageBucket: "sichi-kids-ecommerce.firebasestorage.app",
-    messagingSenderId: "301213554201",
-    appId: "1:301213554201:web:131b24ac6252ba3029fc88",
-    measurementId: "G-4EEGV21HJW",
+    // apiKey: "AIzaSyBRbbJG2gH66P6SSqxa5qkgyPyDrppYjIo",           // old: sichi-kids-ecommerce
+    // authDomain: "sichi-kids-ecommerce.firebaseapp.com",           // old
+    // projectId: "sichi-kids-ecommerce",                            // old
+    // storageBucket: "sichi-kids-ecommerce.firebasestorage.app",    // old
+    // messagingSenderId: "301213554201",                            // old
+    // appId: "1:301213554201:web:131b24ac6252ba3029fc88",           // old
+    // measurementId: "G-4EEGV21HJW",                               // old
+    apiKey: "AIzaSyDwOXQXH5EyBTr0YERFRVsEsLyY3C9fy_Q",
+    authDomain: "aurea-c47f9.firebaseapp.com",
+    projectId: "aurea-c47f9",
+    storageBucket: "aurea-c47f9.firebasestorage.app",
+    messagingSenderId: "476876809170",
+    appId: "1:476876809170:web:2c960a678db882c3f09e0b",
+    measurementId: "G-Y8SR6XKMLG",
   },
 
   // Emails that are allowed to access /admin

@@ -14,14 +14,7 @@ export interface Product {
   stockCount: number;
 }
 
-export type ProductCategory =
-  | "powder"
-  | "oil"
-  | "capsule"
-  | "tea"
-  | "extract"
-  | "herb"
-  | "other";
+export type ProductCategory = "oil" | "shampoo" | "cream" | "gel" | "soap";
 
 export interface ProductFilter {
   category?: ProductCategory | "";

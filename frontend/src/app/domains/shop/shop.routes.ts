@@ -12,7 +12,7 @@ export const SHOP_ROUTES: Routes = [
         path: "",
         loadComponent: () =>
           import("./home/home.component").then((m) => m.HomeComponent),
-        title: "Home | Veda",
+        title: "Home | Aurea",
       },
       {
         path: "products",
@@ -20,7 +20,7 @@ export const SHOP_ROUTES: Routes = [
           import("./product-catalog/product-catalog.component").then(
             (m) => m.ProductCatalogComponent,
           ),
-        title: "Shop | Veda",
+        title: "Shop | Aurea",
       },
       {
         path: "products/:id",
@@ -28,13 +28,13 @@ export const SHOP_ROUTES: Routes = [
           import("./product-detail/product-detail.component").then(
             (m) => m.ProductDetailComponent,
           ),
-        title: "Product | Veda",
+        title: "Product | Aurea",
       },
       {
         path: "cart",
         loadComponent: () =>
           import("./cart/cart.component").then((m) => m.CartComponent),
-        title: "Cart | Veda",
+        title: "Cart | Aurea",
       },
       {
         path: "checkout",
@@ -42,7 +42,7 @@ export const SHOP_ROUTES: Routes = [
           import("./checkout/checkout.component").then(
             (m) => m.CheckoutComponent,
           ),
-        title: "Checkout | Veda",
+        title: "Checkout | Aurea",
       },
       {
         path: "order-success/:orderId",
@@ -50,7 +50,7 @@ export const SHOP_ROUTES: Routes = [
           import("./order-success/order-success.component").then(
             (m) => m.OrderSuccessComponent,
           ),
-        title: "Order Placed! | Veda",
+        title: "Order Placed! | Aurea",
       },
       {
         path: "terms",
@@ -58,7 +58,7 @@ export const SHOP_ROUTES: Routes = [
           import("../../shared/legal/terms.component").then(
             (m) => m.TermsComponent,
           ),
-        title: "Terms & Conditions | Veda",
+        title: "Terms & Conditions | Aurea",
       },
       {
         path: "privacy",
@@ -66,7 +66,7 @@ export const SHOP_ROUTES: Routes = [
           import("../../shared/legal/privacy.component").then(
             (m) => m.PrivacyComponent,
           ),
-        title: "Privacy Policy | Veda",
+        title: "Privacy Policy | Aurea",
       },
     ],
   },

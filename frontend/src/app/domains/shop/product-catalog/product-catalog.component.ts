@@ -3,15 +3,22 @@ import { CommonModule } from "@angular/common";
 import { RouterLink, ActivatedRoute } from "@angular/router";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { toSignal } from "@angular/core/rxjs-interop";
+import { map } from "rxjs";
 import { AdminProductService } from "../../admin/products/products.service";
 import { CartService } from "../cart/cart.service";
 import { Product } from "../../../core/models/product.model";
 import { CATEGORIES } from "../../../core/models/category.model";
+import { CatalogFilterPopupComponent } from "../../../shared/catalog-filter-popup/catalog-filter-popup.component";
 
 @Component({
   selector: "app-product-catalog",
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    CatalogFilterPopupComponent,
+  ],
   styleUrl: "./product-catalog.component.scss",
   templateUrl: "./product-catalog.component.html",
 })
@@ -42,6 +49,11 @@ export class ProductCatalogComponent implements OnInit {
   private readonly allProducts = toSignal(this.productsSvc.getAll(), {
     initialValue: [] as Product[],
   });
+
+  readonly isLoading = toSignal(
+    this.productsSvc.getAll().pipe(map(() => false)),
+    { initialValue: true },
+  );
 
   private readonly filterValues = toSignal(this.filterForm.valueChanges, {
     initialValue: this.filterForm.value,
@@ -81,6 +93,20 @@ export class ProductCatalogComponent implements OnInit {
       sortBy: "newest",
       search: "",
     });
+  }
+
+  getCategoryLabel(slug: string): string {
+    return this.categories.find((c) => c.slug === slug)?.name ?? slug;
+  }
+
+  getSortLabel(value: string): string {
+    const map: Record<string, string> = {
+      "price-asc": "Price ↑",
+      "price-desc": "Price ↓",
+      popular: "Popular",
+      newest: "Newest",
+    };
+    return map[value] ?? value;
   }
 
   /** How many units of this product are already in the cart */

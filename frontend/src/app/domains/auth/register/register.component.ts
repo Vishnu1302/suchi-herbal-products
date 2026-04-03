@@ -21,6 +21,28 @@ export class RegisterComponent {
   emailSent = signal(false);
   sentEmail = signal("");
 
+  private friendlyError(e: any): string {
+    switch (e?.code) {
+      case "auth/popup-closed-by-user":
+      case "auth/cancelled-popup-request":
+        return ""; // user dismissed — not an error
+      case "auth/popup-blocked":
+        return "Pop-up was blocked by your browser. Please allow pop-ups for this site and try again.";
+      case "auth/email-already-in-use":
+        return "This email is already registered. Please sign in instead.";
+      case "auth/weak-password":
+        return "Password is too weak. Please use at least 6 characters.";
+      case "auth/too-many-requests":
+        return "Too many attempts. Please wait a moment before trying again.";
+      case "auth/network-request-failed":
+        return "Network error. Please check your connection and try again.";
+      default:
+        return e?.message?.includes("Firebase")
+          ? "Sign-up failed. Please try again."
+          : (e?.message ?? "Sign-up failed.");
+    }
+  }
+
   form = this.fb.group({
     name: ["", Validators.required],
     email: ["", [Validators.required, Validators.email]],
@@ -38,7 +60,7 @@ export class RegisterComponent {
       await this.authSvc.loginWithGoogle();
       this.router.navigate(["/"]);
     } catch (e: any) {
-      this.error.set(e.message ?? "Google sign-in failed");
+      this.error.set(this.friendlyError(e));
       this.loading.set(false);
     }
   }
@@ -57,11 +79,7 @@ export class RegisterComponent {
       this.emailSent.set(true);
       this.loading.set(false);
     } catch (e: any) {
-      this.error.set(
-        e.code === "auth/email-already-in-use"
-          ? "Email is already registered. Please sign in."
-          : (e.message ?? "Registration failed"),
-      );
+      this.error.set(this.friendlyError(e));
       this.loading.set(false);
     }
   }

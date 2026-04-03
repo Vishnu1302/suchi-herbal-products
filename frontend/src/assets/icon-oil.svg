@@ -1,0 +1,56 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <!-- Translucent amber crystal drop — radial, bright centre, dark tapered edge -->
+    <radialGradient id="d-body" cx="40%" cy="34%" r="66%">
+      <stop offset="0%"   stop-color="#FFFACC" stop-opacity="0.78"/>
+      <stop offset="18%"  stop-color="#F4CA32" stop-opacity="0.72"/>
+      <stop offset="48%"  stop-color="#C07810" stop-opacity="0.65"/>
+      <stop offset="76%"  stop-color="#7A3C00" stop-opacity="0.70"/>
+      <stop offset="100%" stop-color="#3E1400" stop-opacity="0.78"/>
+    </radialGradient>
+    <!-- Warm inner light (oil glows from within) -->
+    <radialGradient id="d-glow" cx="50%" cy="68%" r="48%">
+      <stop offset="0%"   stop-color="#FFD030" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#8A4A00" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="d-shadow" x="-20%" y="-8%" width="140%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#3A1400" flood-opacity="0.44"/>
+    </filter>
+  </defs>
+
+  <!-- Drop body: tip at top, semicircle base -->
+  <path d="M100 20 C134 56 156 100 156 144 A56 56 0 0 1 44 144 C44 100 66 56 100 20 Z"
+        fill="url(#d-body)" filter="url(#d-shadow)"/>
+  <!-- Warm inner glow (oil depth) -->
+  <path d="M100 20 C134 56 156 100 156 144 A56 56 0 0 1 44 144 C44 100 66 56 100 20 Z"
+        fill="url(#d-glow)"/>
+  <!-- Crystal edge stroke -->
+  <path d="M100 20 C134 56 156 100 156 144 A56 56 0 0 1 44 144 C44 100 66 56 100 20 Z"
+        fill="none" stroke="#C9A020" stroke-width="1.4" stroke-opacity="0.82"/>
+
+  <!-- Primary surface highlight: angled ellipse upper-left -->
+  <ellipse cx="80" cy="82" rx="20" ry="38"
+           fill="rgba(255,253,220,0.42)" transform="rotate(-26 80 82)"/>
+  <!-- Tip highlight sparkle -->
+  <ellipse cx="95" cy="36" rx="5.5" ry="10"
+           fill="rgba(255,252,210,0.48)" transform="rotate(-12 95 36)"/>
+  <!-- Secondary sheen near right edge -->
+  <path d="M140 100 Q152 128 148 155"
+        stroke="rgba(255,240,160,0.22)" stroke-width="3.5"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- Herbal leaf silhouette visible through the amber (botanical oil identity) -->
+  <path d="M100 94 Q116 114 100 136 Q84 114 100 94 Z"
+        fill="rgba(212,175,55,0.26)" stroke="rgba(212,175,55,0.62)" stroke-width="0.9"/>
+  <line x1="100" y1="94" x2="100" y2="136"
+        stroke="rgba(212,175,55,0.50)" stroke-width="0.8"/>
+  <path d="M100 103 Q108 107 106 113"
+        stroke="rgba(212,175,55,0.38)" stroke-width="0.7" stroke-linecap="round" fill="none"/>
+  <path d="M100 103 Q92 107 94 113"
+        stroke="rgba(212,175,55,0.38)" stroke-width="0.7" stroke-linecap="round" fill="none"/>
+
+  <!-- Sparkle points on surface -->
+  <circle cx="70" cy="68" r="2.2" fill="rgba(255,250,200,0.58)"/>
+  <circle cx="64" cy="88" r="1.4" fill="rgba(255,248,190,0.44)"/>
+  <circle cx="130" cy="110" r="1.6" fill="rgba(255,245,180,0.36)"/>
+</svg>

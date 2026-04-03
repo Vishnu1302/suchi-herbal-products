@@ -1,147 +1,117 @@
-<!-- Hero -->
+<!-- Hero — full viewport, emblem only -->
 <section class="hero">
-  <div class="hero__content">
-    <span class="hero__tag">
-      <i class="fa-solid fa-seedling"></i>&nbsp; Pure Ayurveda · Ancient Wisdom
-    </span>
-    <h1 class="hero__title">
-      Nature's Finest<br /><span class="hero__accent">Herbal Remedies</span>
-    </h1>
-    <p class="hero__desc">
-      Rooted in centuries of Ayurvedic tradition, Veda brings you pure,
-      chemical-free herbal products — crafted for your complete wellbeing.
+  <!-- Sanskrit / Devanagari tagline — sits below navbar, above emblem -->
+  <div class="hero__tagline" aria-label="Herbal Based Skin and Hair Care">
+    <p class="hero__tagline-devanagari">
+      Herbal Based &middot; Skin &amp; Hair Care
     </p>
-    <div class="hero__actions">
-      <a routerLink="/products" class="btn btn--primary"
-        >Explore Products &rarr;</a
-      >
-    </div>
-    <div class="hero__pills">
-      <span class="hero__pill"
-        ><i class="fa-solid fa-leaf"></i> 100% Natural</span
-      >
-      <span class="hero__pill"
-        ><i class="fa-solid fa-mortar-pestle"></i> Ayurvedic</span
-      >
-      <span class="hero__pill"
-        ><i class="fa-solid fa-flask"></i> No Chemicals</span
-      >
-    </div>
   </div>
-  <div class="hero__visual">
-    <div class="hero__emblem">
-      <div class="emblem__ring emblem__ring--outer"></div>
-      <div class="emblem__ring emblem__ring--inner"></div>
-      <div class="emblem__core">
-        <i class="fa-solid fa-mortar-pestle"></i>
-        <span>Veda</span>
-      </div>
-      <div class="emblem__leaf emblem__leaf--1">
-        <i class="fa-solid fa-leaf"></i>
-      </div>
-      <div class="emblem__leaf emblem__leaf--2">
-        <i class="fa-solid fa-seedling"></i>
-      </div>
-      <div class="emblem__leaf emblem__leaf--3">
-        <i class="fa-solid fa-spa"></i>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Categories -->
-<section class="section">
-  <div class="container">
-    <h2 class="section-title">Our Herbal Range</h2>
-    <p class="section-subtitle">Explore our collections by form</p>
-    <div class="categories-grid">
-      <a
-        *ngFor="let cat of categories"
-        [routerLink]="['/products']"
-        [queryParams]="{ category: cat.slug }"
-        class="cat-card"
-      >
-        <i [class]="cat.icon + ' cat-icon'"></i>
-        <span class="cat-name">{{ cat.name }}</span>
-      </a>
-    </div>
-  </div>
-</section>
+  <!-- Solar-system emblem: 5 orbital rings, one category planet each -->
+  <div class="hero__emblem">
+    <!-- Sun / core -->
+    <a
+      routerLink="/products"
+      class="emblem__core"
+      aria-label="View all products"
+    >
+      <i class="fa-solid fa-mortar-pestle"></i>
+      <span>Aurea</span>
+    </a>
 
-<!-- New Arrivals -->
-<section class="section" *ngIf="newArrivals.length > 0">
-  <div class="container">
-    <h2 class="section-title">New Arrivals</h2>
-    <p class="section-subtitle">Freshly sourced, traditionally prepared</p>
-    <div class="products-grid">
-      <a
-        *ngFor="let p of newArrivals"
-        [routerLink]="['/products', p.id]"
-        class="product-card"
-        [class.product-card--oos]="!p.inStock || p.stockCount === 0"
-      >
-        <div class="product-card__img-wrap">
-          <img
-            [src]="p.images[0]"
-            [alt]="p.name"
-            class="product-card__img"
-            loading="lazy"
-          />
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__name">{{ p.name }}</div>
-          <div class="product-card__price">
-            <span class="price-main">&#8377;{{ p.price }}</span>
-            <span class="price-orig" *ngIf="p.originalPrice"
-              >&#8377;{{ p.originalPrice }}</span
-            >
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="section-cta">
-      <a routerLink="/products" class="btn btn--outline"
-        >View All Products &rarr;</a
-      >
-    </div>
-  </div>
-</section>
+    <!-- Orbit 1 — Soap (innermost) -->
+    <div class="emblem__orbit emblem__orbit--1"></div>
+    <a
+      [routerLink]="['/products']"
+      [queryParams]="{ category: 'soap' }"
+      class="emblem__planet emblem__planet--1"
+      aria-label="Browse Soaps"
+    >
+      <img
+        src="assets/icon-soap.svg"
+        class="planet-icon"
+        alt=""
+        aria-hidden="true"
+      />
+      <span>Soap</span>
+    </a>
 
-<!-- Most Loved / Best Sellers -->
-<section class="section section--parchment" *ngIf="bestSellers.length > 0">
-  <div class="container">
-    <h2 class="section-title">Most Loved</h2>
-    <p class="section-subtitle">Our community's top herbal picks</p>
-    <div class="products-grid">
-      <a
-        *ngFor="let p of bestSellers"
-        [routerLink]="['/products', p.id]"
-        class="product-card"
-        [class.product-card--oos]="!p.inStock || p.stockCount === 0"
-      >
-        <div class="product-card__img-wrap">
-          <img
-            [src]="p.images[0]"
-            [alt]="p.name"
-            class="product-card__img"
-            loading="lazy"
-          />
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__name">{{ p.name }}</div>
-          <div class="product-card__price">
-            <span class="price-main">&#8377;{{ p.price }}</span>
-            <span class="price-orig" *ngIf="p.originalPrice"
-              >&#8377;{{ p.originalPrice }}</span
-            >
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="section-cta">
-      <a routerLink="/products" class="btn btn--outline"
-        >View All Products &rarr;</a
-      >
-    </div>
+    <!-- Orbit 2 — Gel -->
+    <div class="emblem__orbit emblem__orbit--2"></div>
+    <a
+      [routerLink]="['/products']"
+      [queryParams]="{ category: 'gel' }"
+      class="emblem__planet emblem__planet--2"
+      aria-label="Browse Gels"
+    >
+      <img
+        src="assets/icon-gel.svg"
+        class="planet-icon"
+        alt=""
+        aria-hidden="true"
+      />
+      <span>Gel</span>
+    </a>
+
+    <!-- Orbit 3 — Cream -->
+    <div class="emblem__orbit emblem__orbit--3"></div>
+    <a
+      [routerLink]="['/products']"
+      [queryParams]="{ category: 'cream' }"
+      class="emblem__planet emblem__planet--3"
+      aria-label="Browse Creams"
+    >
+      <img
+        src="assets/icon-cream.svg"
+        class="planet-icon"
+        alt=""
+        aria-hidden="true"
+      />
+      <span>Cream</span>
+    </a>
+
+    <!-- Orbit 4 — Shampoo -->
+    <div class="emblem__orbit emblem__orbit--4"></div>
+    <a
+      [routerLink]="['/products']"
+      [queryParams]="{ category: 'shampoo' }"
+      class="emblem__planet emblem__planet--4"
+      aria-label="Browse Shampoos"
+    >
+      <img
+        src="assets/icon-shampoo.svg"
+        class="planet-icon"
+        alt=""
+        aria-hidden="true"
+      />
+      <span>Shampoo</span>
+    </a>
+
+    <!-- Orbit 5 — decorative spacer ring -->
+    <div class="emblem__orbit emblem__orbit--5"></div>
+
+    <!-- Orbit 6 — Soap (outermost, NEW) -->
+    <div class="emblem__orbit emblem__orbit--6"></div>
+    <a
+      [routerLink]="['/products']"
+      [queryParams]="{ category: 'oil' }"
+      class="emblem__planet emblem__planet--5"
+      aria-label="Browse Oils"
+    >
+      <img
+        src="assets/icon-oil.svg"
+        class="planet-icon"
+        alt=""
+        aria-hidden="true"
+      />
+      <span>Oil</span>
+    </a>
+  </div>
+
+  <!-- Single CTA below emblem -->
+  <div class="hero__cta">
+    <a routerLink="/products" class="btn btn--primary">
+      View All Products &rarr;
+    </a>
   </div>
 </section>

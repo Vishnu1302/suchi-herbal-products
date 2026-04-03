@@ -297,7 +297,7 @@ export class CheckoutComponent implements OnInit {
         key: order.keyId,
         amount: order.amount,
         currency: order.currency,
-        name: "Veda",
+        name: "Aurea",
         description: `Order #${order.orderNumber}`,
         order_id: order.razorpayOrderId,
         prefill: {

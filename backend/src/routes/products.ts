@@ -14,26 +14,13 @@ const router = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 function mergeAvailability(
   product: Record<string, unknown>,
-  inventory: {
-    variants: { size: string; available: number }[];
-    totalStock: number;
-  } | null,
+  inventory: { stock: number } | null,
 ) {
   if (!inventory) return product;
-  const available = inventory.variants.reduce(
-    (sum, v) => sum + (v.available ?? 0),
-    0,
-  );
-  // Build a per-size available map so the frontend can cap qty per selected size
-  const sizeStockMap: Record<string, number> = {};
-  for (const v of inventory.variants) {
-    sizeStockMap[v.size] = v.available ?? 0;
-  }
   return {
     ...product,
-    stockCount: available,
-    inStock: available > 0,
-    sizeStockMap,
+    stockCount: inventory.stock,
+    inStock: inventory.stock > 0,
   };
 }
 
@@ -74,6 +61,8 @@ router.post("/", async (req, res) => {
       "name",
       "slug",
       "description",
+      "ingredients",
+      "usage",
       "price",
       "category",
     ] as const;
@@ -99,71 +88,33 @@ router.post("/", async (req, res) => {
         .json({ message: 'Field "price" must be a non-negative number' });
     }
 
-    const allowedCategories = ["frocks", "sets"];
+    const allowedCategories = ["oil", "shampoo", "cream", "gel", "soap"];
     if (!allowedCategories.includes(body.category)) {
       return res.status(400).json({ message: "Invalid category" });
-    }
-
-    if (!Array.isArray(body.sizes) || body.sizes.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "At least one size must be selected" });
-    }
-
-    if (
-      typeof body.stockCount !== "number" ||
-      Number.isNaN(body.stockCount) ||
-      body.stockCount < 1
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Total units in stock must be at least 1" });
     }
 
     const product = await ProductModel.create({
       name: body.name,
       slug: body.slug,
       description: body.description,
+      ingredients: body.ingredients,
+      usage: body.usage,
+      benefits: body.benefits ?? "",
       price: body.price,
       originalPrice: body.originalPrice,
       images: body.images ?? [],
       category: body.category,
-      ageGroup: body.ageGroup,
-      sizes: body.sizes ?? [],
-      colors: body.colors ?? [],
-      tags: body.tags ?? [],
-      badge: body.badge,
-      rating: body.rating ?? 0,
-      reviewCount: body.reviewCount ?? 0,
       inStock: body.inStock ?? true,
       stockCount: body.stockCount ?? 0,
-      isFeatured: body.isFeatured ?? false,
-      isNewArrival: body.isNewArrival ?? false,
     });
 
-    // Create initial inventory entry for the product
-    const baseSkuPrefix = product.category === "frocks" ? "SKF-FRK" : "SKF-SET";
-
-    const baseSku = `${baseSkuPrefix}-${product._id.toString().slice(-6).toUpperCase()}`;
-
-    // Build one variant per selected size using the per-size stock counts sent from the form
-    const sizeStocks: Record<string, number> = body.sizeStocks ?? {};
-    const variants = (product.sizes ?? []).map((size: string) => {
-      const stock = sizeStocks[size] ?? 0;
-      const safeSizeKey = size.replace(/[\s\/]+/g, "-").toUpperCase();
-      return {
-        size,
-        sku: `${baseSku}-${safeSizeKey}`,
-        stock,
-        reserved: 0,
-        available: stock,
-      };
-    });
-
-    const totalStock = variants.reduce(
-      (sum: number, v: { stock: number }) => sum + v.stock,
-      0,
-    );
+    // Create initial inventory entry
+    const baseSku = `VED-${product.category.toUpperCase()}-${product._id.toString().slice(-6).toUpperCase()}`;
+    const stock: number = body.stockCount ?? 0;
+    let stockStatus: "in-stock" | "low-stock" | "out-of-stock";
+    if (stock === 0) stockStatus = "out-of-stock";
+    else if (stock <= 10) stockStatus = "low-stock";
+    else stockStatus = "in-stock";
 
     await InventoryModel.create({
       productId: product._id,
@@ -171,15 +122,9 @@ router.post("/", async (req, res) => {
       sku: baseSku,
       image: product.images?.[0] ?? "",
       category: product.category,
-      variants,
-      totalStock,
+      stock,
       lowStockThreshold: 10,
-      status:
-        totalStock === 0
-          ? "out-of-stock"
-          : totalStock <= 10
-            ? "low-stock"
-            : "in-stock",
+      status: stockStatus,
       lastUpdated: new Date(),
     });
 
@@ -237,22 +182,17 @@ router.put("/:id", async (req, res) => {
         productId: req.params.id,
       }).lean();
       if (inv) {
-        const reserved = inv.variants[0]?.reserved ?? 0;
-        const newAvailable = Math.max(0, updates.stockCount - reserved);
-        const newStatus =
-          newAvailable === 0
-            ? "out-of-stock"
-            : newAvailable <= inv.lowStockThreshold
-              ? "low-stock"
-              : "in-stock";
+        let newStatus: "in-stock" | "low-stock" | "out-of-stock";
+        if (updates.stockCount === 0) newStatus = "out-of-stock";
+        else if (updates.stockCount <= inv.lowStockThreshold)
+          newStatus = "low-stock";
+        else newStatus = "in-stock";
 
         await InventoryModel.updateOne(
           { productId: req.params.id },
           {
             $set: {
-              "variants.0.stock": updates.stockCount,
-              "variants.0.available": newAvailable,
-              totalStock: updates.stockCount,
+              stock: updates.stockCount,
               status: newStatus,
               lastUpdated: new Date(),
             },

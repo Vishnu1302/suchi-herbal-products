@@ -2,7 +2,16 @@
   <!-- Navbar -->
   <header class="navbar">
     <div class="navbar__inner">
-      <a routerLink="/" class="navbar__brand">Veda</a>
+      <!-- Brand: non-clickable icon + clickable Aurea wordmark -->
+      <div class="navbar__brand-group">
+        <a routerLink="/" class="navbar__brand">
+          <img
+            src="assets/aurea-normal.svg"
+            class="aurea-logo"
+            alt="Aurea — The Glow Within"
+          />
+        </a>
+      </div>
 
       <nav class="navbar__links" aria-label="Main navigation">
         <a routerLink="/" class="nav-link">Home</a>
@@ -127,8 +136,8 @@
         <div>
           <strong>Contact Us</strong>
           <span
-            ><a href="mailto:shankarsuchitra@gmail.com"
-              >shankarsuchitra&#64;gmail.com</a
+            ><a href="mailto:supportaurea&#64;gmail.com"
+              >supportaurea&#64;gmail.com</a
             ></span
           >
         </div>
@@ -136,7 +145,7 @@
     </div>
 
     <div class="footer__bottom">
-      <span class="footer__copy">&copy; 2026 Veda. All rights reserved.</span>
+      <span class="footer__copy">&copy; 2026 Aurea. All rights reserved.</span>
       <ul class="footer__legal">
         <li><a routerLink="/terms">Terms &amp; Conditions</a></li>
         <li><a routerLink="/privacy">Privacy Policy</a></li>

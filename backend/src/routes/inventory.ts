@@ -32,24 +32,17 @@ router.get("/:productId", async (req, res) => {
   }
 });
 
-// POST /api/inventory/update-stock - update stock for a single variant and sync product
+// POST /api/inventory/update-stock - update stock for a product and sync product
 router.post("/update-stock", async (req, res) => {
   try {
-    const { productId, variantSku, newStock } = req.body as {
+    const { productId, newStock } = req.body as {
       productId: string;
-      variantSku: string;
       newStock: number;
       reason?: string;
     };
 
     if (!productId || typeof productId !== "string") {
       return res.status(400).json({ message: 'Field "productId" is required' });
-    }
-
-    if (!variantSku || typeof variantSku !== "string") {
-      return res
-        .status(400)
-        .json({ message: 'Field "variantSku" is required' });
     }
 
     if (
@@ -59,7 +52,7 @@ router.post("/update-stock", async (req, res) => {
     ) {
       return res
         .status(400)
-        .json({ message: 'Field "newStock" must be a non-negative number' });
+        .json({ message: '"newStock" must be a non-negative number' });
     }
 
     if (!mongoose.isValidObjectId(productId)) {
@@ -71,35 +64,21 @@ router.post("/update-stock", async (req, res) => {
       return res.status(404).json({ message: "Inventory not found" });
     }
 
-    const variant = item.variants.find((v) => v.sku === variantSku);
-    if (!variant) {
-      return res.status(404).json({ message: "Variant not found" });
-    }
-
-    if (newStock < variant.reserved) {
-      return res.status(400).json({
-        message: "New stock cannot be less than reserved quantity",
-      });
-    }
-
-    variant.stock = newStock;
-    variant.available = Math.max(0, newStock - variant.reserved);
-
-    item.totalStock = item.variants.reduce((sum, v) => sum + v.stock, 0);
+    item.stock = newStock;
     item.status =
-      item.totalStock === 0
+      newStock === 0
         ? "out-of-stock"
-        : item.totalStock <= item.lowStockThreshold
+        : newStock <= item.lowStockThreshold
           ? "low-stock"
           : "in-stock";
     item.lastUpdated = new Date();
 
     await item.save();
 
-    // Keep product.stockCount and inStock in sync with inventory
+    // Keep product.stockCount and inStock in sync
     await ProductModel.findByIdAndUpdate(productId, {
-      stockCount: item.totalStock,
-      inStock: item.totalStock > 0,
+      stockCount: newStock,
+      inStock: newStock > 0,
     });
 
     res.json(item.toObject());

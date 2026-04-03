@@ -16,7 +16,6 @@ import { InventoryItem } from "../../../../core/models/inventory.model";
           <h1 class="page-title">Inventory</h1>
           <p class="page-subtitle">Manage stock levels for all products</p>
         </div>
-        <!-- Summary chips -->
         <div class="inv-summary">
           <span class="chip chip--green">✅ In Stock: {{ stats.inStock }}</span>
           <span class="chip chip--yellow">⚠️ Low: {{ stats.lowStock }}</span>
@@ -24,49 +23,85 @@ import { InventoryItem } from "../../../../core/models/inventory.model";
         </div>
       </div>
 
-      <!-- Inventory cards -->
       <div class="inv-grid">
         <div class="inv-card" *ngFor="let item of inventory">
-          <div class="inv-card__header">
+          <!-- Top: image + name + current stock badge -->
+          <div class="inv-card__top">
             <img [src]="item.image" [alt]="item.productName" class="inv-img" />
-            <div>
+            <div class="inv-info">
               <div class="inv-name">{{ item.productName }}</div>
-              <div class="inv-sku">{{ item.sku }}</div>
+              <div class="inv-sku">SKU: {{ item.sku }}</div>
               <span [class]="'status-dot ' + getStatusClass(item.status)">
                 {{ item.status | titlecase }}
               </span>
             </div>
-            <div class="inv-total">
-              <span class="total-num">{{ item.stock }}</span>
-              <span class="total-lbl">units</span>
+            <div class="inv-stock-badge">
+              <span class="stock-num" [class]="getStatusClass(item.status)">{{
+                item.stock
+              }}</span>
+              <span class="stock-lbl">units</span>
             </div>
           </div>
 
-          <div class="inv-card__body">
-            <div class="update-row">
-              <label>Update Stock:</label>
+          <!-- Divider -->
+          <div class="inv-divider"></div>
+
+          <!-- Update section -->
+          <div class="inv-card__update">
+            <label class="update-label">Set new stock quantity</label>
+            <div class="qty-row">
+              <button
+                class="qty-step"
+                type="button"
+                (click)="
+                  updates[item.productId] =
+                    (updates[item.productId] ?? item.stock) > 0
+                      ? (updates[item.productId] ?? item.stock) - 1
+                      : 0
+                "
+              >
+                −
+              </button>
               <input
                 type="number"
                 class="qty-input"
                 [(ngModel)]="updates[item.productId]"
                 [min]="0"
-                [placeholder]="item.stock"
+                [placeholder]="item.stock.toString()"
               />
               <button
-                class="save-btn"
-                [disabled]="saving[item.productId]"
-                (click)="updateStock(item)"
+                class="qty-step"
+                type="button"
+                (click)="
+                  updates[item.productId] =
+                    (updates[item.productId] ?? item.stock) + 1
+                "
               >
-                {{ saving[item.productId] ? "Saving..." : "Save" }}
+                +
               </button>
             </div>
             <p class="qty-hint">
-              Low stock threshold: {{ item.lowStockThreshold }} units
+              ⚠️ Low stock alert below {{ item.lowStockThreshold }} units
+            </p>
+            <button
+              class="save-btn"
+              [disabled]="
+                saving[item.productId] ||
+                updates[item.productId] == null ||
+                updates[item.productId]! < 0
+              "
+              (click)="updateStock(item)"
+            >
+              <span *ngIf="!saving[item.productId]">Update Stock</span>
+              <span *ngIf="saving[item.productId]">Saving…</span>
+            </button>
+            <p class="success-msg" *ngIf="saved[item.productId]">
+              ✅ Stock updated!
             </p>
           </div>
 
           <div class="inv-card__footer">
-            Last updated: {{ item.lastUpdated | date: "mediumDate" }}
+            Last updated: {{ item.lastUpdated | date: "d MMM yyyy" }}
           </div>
         </div>
       </div>
@@ -77,8 +112,9 @@ export class InventoryListComponent implements OnInit {
   private readonly svc = inject(AdminInventoryService);
   inventory: InventoryItem[] = [];
   stats = { total: 0, inStock: 0, lowStock: 0, outOfStock: 0 };
-  updates: Record<string, number> = {};
+  updates: Record<string, number | undefined> = {};
   saving: Record<string, boolean> = {};
+  saved: Record<string, boolean> = {};
 
   ngOnInit() {
     this.svc.getAll().subscribe((items) => {
@@ -110,10 +146,14 @@ export class InventoryListComponent implements OnInit {
           this.stats = this.svc.getStats();
           delete this.updates[item.productId];
           this.saving[item.productId] = false;
+          this.saved[item.productId] = true;
+          setTimeout(() => (this.saved[item.productId] = false), 2500);
         },
-        error: () => {
+        error: (err) => {
           this.saving[item.productId] = false;
-          alert("Failed to update inventory. Please try again.");
+          const msg =
+            err?.error?.message ?? "Failed to update stock. Please try again.";
+          alert(msg);
         },
       });
   }

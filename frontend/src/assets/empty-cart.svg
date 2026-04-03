@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b8860b"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#e6c76a"/>
+    </linearGradient>
+    <linearGradient id="goldSoft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Cart body -->
+  <path
+    d="M52 72h96l-10 54a8 8 0 0 1-7.9 6.8H69.9A8 8 0 0 1 62 126.8L52 72Z"
+    fill="url(#goldSoft)"
+    stroke="url(#gold)"
+    stroke-width="3"
+    stroke-linejoin="round"
+  />
+
+  <!-- Cart handle / pole -->
+  <path
+    d="M36 58h16l16 52"
+    stroke="url(#gold)"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Wheels -->
+  <circle cx="80" cy="144" r="6" fill="none" stroke="url(#gold)" stroke-width="2.5"/>
+  <circle cx="120" cy="144" r="6" fill="none" stroke="url(#gold)" stroke-width="2.5"/>
+
+  <!-- Inner dot centres -->
+  <circle cx="80" cy="144" r="2" fill="url(#gold)"/>
+  <circle cx="120" cy="144" r="2" fill="url(#gold)"/>
+
+  <!-- Empty cross / plus in cart body -->
+  <line x1="92" y1="96" x2="108" y2="112" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.5"/>
+  <line x1="108" y1="96" x2="92" y2="112" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.5"/>
+</svg>

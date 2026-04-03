@@ -1,34 +1,253 @@
 /* ──────────────────────────────────────────────
-   Veda — Global Styles
+   Aurea — Global Styles  |  Dark Gold Theme
 ────────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────
+   SCSS Variables (single source of truth)
+   These mirror the CSS custom properties below.
+   Use $vars in mixins/functions; use var(--) in
+   component SCSS so values are runtime-overridable.
+───────────────────────────────────────────────*/
+$gold-primary: #d4af37;
+$gold-secondary: #e6c76a;
+$gold-soft: #f5e6a8;
+$gold-dark: #b8860b;
+$gold-glow: rgba(212, 175, 55, 0.35);
+
+$bg-main: #0a0f0d;
+$bg-surface: #0f1710;
+$bg-elevated: #182018;
+$bg-input: #111810;
+
+$color-text: #f0edd8;
+$color-text-muted: #9e9470;
+$color-border: rgba(212, 175, 55, 0.22);
+
+$radius-sm: 8px;
+$radius-md: 14px;
+$radius-lg: 22px;
+$radius-full: 9999px;
+
+$shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
+$shadow-md: 0 4px 24px rgba(0, 0, 0, 0.6);
+$shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.7);
+$shadow-gold: 0 4px 20px rgba(184, 134, 11, 0.4);
+
+/* ─────────────────────────────────────────────
+   Breakpoints (mobile-first)
+───────────────────────────────────────────────*/
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+/// respond-to($bp)
+/// Usage: @include respond-to(md) { ... }  → applies at ≥ 768px (min-width = desktop-first up)
+/// For mobile-first, use max-width media queries explicitly or flip to min-width here.
+@mixin respond-to($name) {
+  @if $name == sm {
+    @media (max-width: #{$bp-sm}) {
+      @content;
+    }
+  }
+  @if $name == md {
+    @media (max-width: #{$bp-md}) {
+      @content;
+    }
+  }
+  @if $name == lg {
+    @media (max-width: #{$bp-lg}) {
+      @content;
+    }
+  }
+  @if $name == xl {
+    @media (max-width: #{$bp-xl}) {
+      @content;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Mixins — reusable style patterns
+───────────────────────────────────────────────*/
+
+/// Gold primary button (matches .btn--primary)
+@mixin btn-gold($padding: 12px 28px, $font-size: 0.92rem) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: $padding;
+  background: linear-gradient(
+    to right,
+    var(--gold-dark) 0%,
+    var(--gold-primary) 30%,
+    var(--gold-secondary) 50%,
+    var(--gold-primary) 70%,
+    var(--gold-dark) 100%
+  );
+  color: #1a1000;
+  border: 1px solid var(--gold-dark);
+  border-radius: var(--radius-sm);
+  font-size: $font-size;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  box-shadow:
+    0 2px 0 rgba(255, 245, 160, 0.15) inset,
+    0 -2px 0 rgba(0, 0, 0, 0.3) inset,
+    0 4px 18px rgba(184, 134, 11, 0.4);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 2px 0 rgba(255, 245, 160, 0.15) inset,
+      0 -2px 0 rgba(0, 0, 0, 0.3) inset,
+      0 8px 28px rgba(184, 134, 11, 0.6);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/// Gold outline / sign-in button (header pill style)
+@mixin btn-gold-pill($padding: 8px 18px) {
+  display: inline-flex;
+  align-items: center;
+  padding: $padding;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-secondary));
+  color: var(--bg-main);
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow:
+    0 4px 14px rgba(212, 175, 55, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      var(--gold-secondary),
+      var(--gold-soft)
+    );
+  }
+}
+
+/// Dark-themed form input (matches login / checkout style)
+@mixin input-dark {
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: $radius-md;
+  font-size: 0.95rem;
+  background: var(--bg-elevated);
+  color: var(--color-text);
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &::placeholder {
+    color: rgba(212, 175, 55, 0.35);
+  }
+
+  &:hover {
+    border-color: rgba(212, 175, 55, 0.5);
+  }
+  &:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  }
+}
+
+/// Dark card surface
+@mixin card-dark($hover: true) {
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: var(--transition);
+
+  @if $hover {
+    &:hover {
+      box-shadow: var(--shadow-md);
+      border-color: rgba(212, 175, 55, 0.28);
+      transform: translateY(-4px);
+    }
+  }
+}
+
+/// Section page wrapper (replaces repeated padding + max-width patterns)
+@mixin page-section($pad-y: 40px) {
+  padding: $pad-y 0;
+  max-width: var(--container-width, 1280px);
+  margin: 0 auto;
+}
 
 /* Design Tokens */
 :root {
-  /* Brand palette */
-  --color-primary: #d4af37; /* Gold */
-  --color-primary-alt: #fff8e1; /* Light gold/white */
-  --color-primary-dark: #bfa233; /* Deeper gold */
-  --color-secondary: #ffffff; /* White */
-  --color-accent: #a3c585; /* Herbal green accent */
-  --color-bg: #fffdf6; /* Herbal off-white */
-  --color-surface: #ffffff;
-  --color-text: #3e3e1c; /* Herbal dark */
-  --color-text-muted: #b3a369;
-  --color-border: #e5d9b6;
+  /* ── Dark backgrounds ── */
+  --bg-main: #{$bg-main};
+  --bg-surface: #{$bg-surface};
+  --bg-elevated: #{$bg-elevated};
+  --bg-input: #{$bg-input};
 
+  /* ── Gold palette ── */
+  --gold-primary: #{$gold-primary};
+  --gold-secondary: #{$gold-secondary};
+  --gold-soft: #{$gold-soft};
+  --gold-dark: #{$gold-dark};
+  --gold-glow: #{$gold-glow};
+
+  /* ── Semantic aliases (use these in component SCSS) ── */
+  --color-primary: #{$gold-primary};
+  --color-primary-alt: #{$gold-secondary};
+  --color-primary-dark: #{$gold-dark};
+  --color-secondary: #1a2418;
+  --color-accent: #6bae75;
+  --color-bg: #{$bg-main};
+  --color-surface: #{$bg-surface};
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+  --color-border: #{$color-border};
+
+  /* ── Header ── */
+  --header-bg: #0b0f0d;
+  --header-text: #{$color-text};
+  --header-border: rgba(212, 175, 55, 0.12);
+
+  /* ── Footer ── */
+  --footer-bg: #050807;
+
+  /* ── Typography ── */
   --font-main: "Lato", sans-serif;
-  --font-brand: "Cinzel", serif;
+  --font-brand: "Cormorant Garamond", serif;
 
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-full: 9999px;
+  /* ── Radii ── */
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-full: #{$radius-full};
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.15);
+  /* ── Shadows ── */
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
+  --shadow-gold: #{$shadow-gold};
 
   --transition: all 0.25s ease;
+  --container-width: 1280px;
 }
 
 /* Reset & Base */
@@ -42,20 +261,16 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   font-family: var(--font-main);
-  background-color: var(--color-bg);
+  background-color: var(--bg-main);
   color: var(--color-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  /* Herbal background pattern subtle */
-  background-image: linear-gradient(
-    135deg,
-    rgba(212, 175, 55, 0.03) 0%,
-    rgba(163, 197, 133, 0.03) 100%
-  );
+  overflow-x: hidden;
 }
 
 a {
@@ -104,62 +319,62 @@ button {
   align-items: center;
   gap: 8px;
   padding: 12px 28px;
-  border-radius: var(--radius-full);
-  font-size: 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
   font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   transition: var(--transition);
-  border: 2px solid transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 
   &--primary {
-    background: var(--color-primary);
-    color: #fff;
-
-    &:hover {
-      background: var(--color-primary-dark);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
+    @include btn-gold;
   }
 
   &--secondary {
-    background: var(--color-secondary);
-    color: var(--color-text);
+    background: var(--bg-elevated);
+    color: var(--gold-primary);
+    border-color: var(--color-border);
 
     &:hover {
-      opacity: 0.9;
+      border-color: var(--gold-primary);
+      background: rgba(212, 175, 55, 0.1);
       transform: translateY(-2px);
     }
   }
 
   &--outline {
     background: transparent;
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: rgba(212, 175, 55, 0.5);
+    color: var(--gold-primary);
 
     &:hover {
-      background: var(--color-primary);
-      color: #fff;
+      background: rgba(212, 175, 55, 0.1);
+      border-color: var(--gold-primary);
     }
   }
 
   &--ghost {
-    background: rgba(255, 107, 107, 0.1);
-    color: var(--color-primary);
+    background: rgba(212, 175, 55, 0.08);
+    color: var(--gold-primary);
+    border-color: transparent;
 
     &:hover {
-      background: var(--color-primary);
-      color: #fff;
+      background: rgba(212, 175, 55, 0.18);
     }
   }
 
   &--sm {
     padding: 7px 16px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
 
   &--disabled,
   &:disabled {
-    opacity: 0.42;
+    opacity: 0.38;
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -174,33 +389,30 @@ button {
   letter-spacing: 0.5px;
 
   &--sale {
-    background: var(--color-primary);
-    color: #fff;
+    background: linear-gradient(
+      to right,
+      var(--gold-dark),
+      var(--gold-primary)
+    );
+    color: #1a1000;
   }
 
   &--new {
-    background: var(--color-secondary);
-    color: #fff;
+    background: rgba(107, 174, 117, 0.2);
+    color: var(--color-accent);
+    border: 1px solid rgba(107, 174, 117, 0.4);
   }
 
   &--bestseller {
-    background: var(--color-primary-dark);
-    color: #fff;
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold-secondary);
+    border: 1px solid var(--color-border);
   }
 }
 
 /* Card base */
 .card {
-  background: var(--color-surface);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: var(--transition);
-
-  &:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-4px);
-  }
+  @include card-dark;
 }
 
 /* Grid helpers */
@@ -301,16 +513,16 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+  background: var(--gold-primary);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-dark);
+  background: var(--gold-dark);
 }
 
 /* Scrollbar — Firefox */
 * {
-  scrollbar-color: var(--color-primary) var(--color-bg);
+  scrollbar-color: var(--gold-primary) var(--bg-main);
   scrollbar-width: thin;
 }

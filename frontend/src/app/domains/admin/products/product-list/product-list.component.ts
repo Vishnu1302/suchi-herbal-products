@@ -41,13 +41,11 @@ import {
           (change)="onSearch()"
         >
           <option value="">All Categories</option>
-          <option value="powder">Powder</option>
           <option value="oil">Oil</option>
-          <option value="capsule">Capsule</option>
-          <option value="tea">Tea</option>
-          <option value="extract">Extract</option>
-          <option value="herb">Herb</option>
-          <option value="other">Other</option>
+          <option value="shampoo">Shampoo</option>
+          <option value="cream">Cream</option>
+          <option value="gel">Gel</option>
+          <option value="soap">Soap</option>
         </select>
       </div>
 
@@ -142,19 +140,17 @@ import {
         font-weight: 800;
       }
       .page-subtitle {
-        color: #888;
+        color: #9e9470;
         margin-top: 4px;
       }
       .btn-primary {
         padding: 12px 20px;
-        background: var(--color-primary);
-        color: #fff;
+        background: linear-gradient(to right, #b8860b, #d4af37);
+        color: #1a1000;
         border-radius: 10px;
         font-weight: 700;
         text-decoration: none;
-        &:hover {
-          background: var(--color-primary-dark);
-        }
+        display: inline-block;
       }
       .toolbar {
         display: flex;
@@ -164,42 +160,49 @@ import {
       .search-input,
       .filter-select {
         padding: 10px 16px;
-        border: 1.5px solid #f0e0d6;
+        border: 1.5px solid rgba(212, 175, 55, 0.25);
         border-radius: 10px;
         font-family: inherit;
         font-size: 0.9rem;
         outline: none;
+        background: #182018;
+        color: #f0edd8;
         &:focus {
-          border-color: #ff6b6b;
+          border-color: #d4af37;
         }
       }
       .search-input {
         flex: 1;
       }
       .table-card {
-        background: #fff;
+        background: #0f1710;
+        border: 1px solid rgba(212, 175, 55, 0.15);
         border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+        overflow-x: auto;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
       }
       .table {
         width: 100%;
         border-collapse: collapse;
+        min-width: 600px;
       }
       th {
         padding: 14px 16px;
         text-align: left;
         font-size: 0.8rem;
-        color: #888;
+        color: #9e9470;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        border-bottom: 1px solid #f5f5f5;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        background: #0d1510;
       }
       td {
         padding: 14px 16px;
-        border-bottom: 1px solid #f5f5f5;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.06);
         font-size: 0.9rem;
         vertical-align: middle;
+        color: #f0edd8;
       }
       .product-cell {
         display: flex;
@@ -214,22 +217,24 @@ import {
       }
       .product-name {
         font-weight: 700;
+        color: #f0edd8;
       }
       .product-id {
         font-size: 0.75rem;
-        color: #aaa;
+        color: #9e9470;
       }
       .price {
         font-weight: 700;
+        color: #d4af37;
       }
       .original-price {
         font-size: 0.75rem;
-        color: #aaa;
+        color: #9e9470;
         text-decoration: line-through;
       }
       .tag {
-        background: #f0f4ff;
-        color: #5566aa;
+        background: rgba(212, 175, 55, 0.12);
+        color: #d4af37;
         padding: 3px 10px;
         border-radius: 999px;
         font-size: 0.8rem;
@@ -243,16 +248,16 @@ import {
         font-weight: 700;
       }
       .stock--ok {
-        background: #e8f8ea;
-        color: #2e7d32;
+        background: rgba(107, 174, 117, 0.15);
+        color: #6bae75;
       }
       .stock--low {
-        background: #fff8e1;
-        color: #f57f17;
+        background: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
       }
       .stock--none {
-        background: #fde8e8;
-        color: #c62828;
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
       }
       .size-tags {
         display: flex;
@@ -261,8 +266,8 @@ import {
         margin-top: 6px;
       }
       .size-tag {
-        background: #f0e8ff;
-        color: #7412bf;
+        background: rgba(212, 175, 55, 0.12);
+        color: #d4af37;
         padding: 2px 7px;
         border-radius: 999px;
         font-size: 0.72rem;
@@ -276,12 +281,12 @@ import {
         font-weight: 700;
       }
       .status--active {
-        background: #e8f8ea;
-        color: #2e7d32;
+        background: rgba(107, 174, 117, 0.15);
+        color: #6bae75;
       }
       .status--inactive {
-        background: #fde8e8;
-        color: #c62828;
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
       }
       .actions {
         display: flex;
@@ -293,23 +298,24 @@ import {
         border: none;
         cursor: pointer;
         font-size: 1rem;
-        background: #f5f5f5;
+        background: rgba(212, 175, 55, 0.1);
         text-decoration: none;
         transition: 0.2s;
         &:hover {
-          opacity: 0.75;
+          opacity: 0.85;
+          background: rgba(212, 175, 55, 0.2);
         }
       }
       .action-btn--edit {
-        background: #e8f0fe;
+        background: rgba(212, 175, 55, 0.1);
       }
       .action-btn--delete {
-        background: #fde8e8;
+        background: rgba(239, 68, 68, 0.1);
       }
       .empty-state {
         padding: 48px;
         text-align: center;
-        color: #aaa;
+        color: #9e9470;
       }
     `,
   ],

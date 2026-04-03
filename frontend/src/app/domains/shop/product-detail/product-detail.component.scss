@@ -1,16 +1,21 @@
 .detail {
-  padding: 40px 24px; /* horizontal padding explicit — component style overrides global .container */
+  padding: 40px 24px;
   max-width: 1280px;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
-/* ensure the back-link has side breathing room on narrow screens */
 .back-link {
-  color: var(--color-primary);
+  color: var(--gold-primary);
   font-weight: 700;
   display: inline-block;
   margin-bottom: 28px;
+  text-decoration: none;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--gold-secondary);
+  }
 }
 
 .detail__layout {
@@ -35,13 +40,23 @@
 .detail__thumb {
   width: 70px;
   height: 90px;
-  object-fit: cover;
+  overflow: hidden;
   border-radius: 10px;
   border: 2px solid transparent;
   cursor: pointer;
+  background: transparent;
+  padding: 0;
+  transition: border-color 0.15s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
   &.active {
-    border-color: var(--color-primary, #ff6b6b);
+    border-color: var(--gold-primary);
   }
 }
 
@@ -51,18 +66,11 @@
   gap: 16px;
 }
 
-.detail__badge {
-  align-self: flex-start;
-}
-
 h1 {
   font-size: 2rem;
   font-weight: 800;
-}
-
-.detail__meta {
-  color: #888;
-  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.25;
 }
 
 .detail__price {
@@ -74,210 +82,124 @@ h1 {
 .price {
   font-size: 2rem;
   font-weight: 800;
-  color: var(--color-primary);
-}
-
-.price--original {
-  font-size: 1rem;
-  color: #aaa;
-  text-decoration: line-through;
-}
-
-.discount {
-  background: var(--color-primary);
-  color: #fff;
-  border-radius: 6px;
-  padding: 2px 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
+  color: var(--gold-primary);
 }
 
 .detail__description {
-  color: #555;
-  line-height: 1.7;
-}
-
-.size-options {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.size-btn {
-  position: relative;
-  min-width: 48px;
-  height: 40px;
-  padding: 0 14px;
-  border: 1.5px solid var(--color-border);
-  border-radius: 8px;
-  background: #fdf8ff;
-  font-size: 0.88rem;
-  font-weight: 600;
-  font-family: inherit;
-  color: var(--color-text);
-  cursor: pointer;
-  transition:
-    border-color 0.15s,
-    background 0.15s,
-    color 0.15s;
-
-  &:hover:not(:disabled) {
-    border-color: var(--color-primary);
-    background: #f5e9ff;
-  }
-
-  /* Selected */
-  &.active {
-    border-color: var(--color-primary);
-    background: var(--color-primary);
-    color: #fff;
-
-    .size-btn__badge {
-      background: #fff;
-      color: var(--color-primary);
-    }
-  }
-
-  /* In cart but not currently selected */
-  &--incart {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    background: #f0fdf4;
-  }
-
-  /* Sold out */
-  &--soldout,
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    text-decoration: line-through;
-    border-style: dashed;
-    background: #fdf8ff;
-  }
-
-  /* Cart qty badge — top-right corner (mirrors catalog) */
-  &__badge {
-    position: absolute;
-    top: -7px;
-    right: -7px;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 3px;
-    border-radius: 8px;
-    background: var(--color-accent);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    line-height: 16px;
-    text-align: center;
-    pointer-events: none;
-  }
-}
-
-.size-required {
-  color: #ef4444;
-  margin-left: 2px;
-}
-
-.size-avail {
-  font-size: 0.8rem;
   color: var(--color-text-muted);
-  margin-top: 6px;
-
-  .size-incart {
-    color: var(--color-accent);
-    font-weight: 500;
-  }
+  line-height: 1.75;
+  font-size: 0.95rem;
 }
 
-.size-error {
-  color: #ef4444;
-  font-size: 0.8rem;
-  margin-top: 4px;
-}
-
-.qty-control {
+/* ─── Quantity control ──────────────────────────────────────────────────── */
+.detail__qty {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-top: 8px;
-
-  button {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 2px solid var(--color-border);
-    background: #fdf8ff;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: border-color 0.15s;
-
-    &:hover:not(:disabled) {
-      border-color: var(--color-primary);
-    }
-
-    &:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
-  }
-
-  span {
-    font-size: 1.1rem;
-    font-weight: 700;
-    min-width: 24px;
-    text-align: center;
-  }
+  margin-bottom: 4px;
 }
 
-.qty-hint {
-  font-size: 0.72rem;
+.qty-label {
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--color-text-muted);
-  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  width: 60px;
 }
 
-.stock-msg {
+.qty-controls {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  font-size: 0.88rem;
-  color: var(--color-accent);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
 
-  &__icon {
-    font-size: 0.88rem;
+.qty-btn {
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: none;
+  color: var(--gold-secondary);
+  font-size: 1.3rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--gold-primary);
   }
 
-  &--low {
-    color: #f97316;
-  }
-
-  &--out {
-    color: #ef4444;
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 }
 
+.qty-value {
+  min-width: 36px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  padding: 0 4px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Action buttons ────────────────────────────────────────────────────── */
 .detail__actions {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 4px;
 
-  button {
+  .btn {
     flex: 1;
     justify-content: center;
+    min-width: 0;
   }
+}
+
+/* Disabled out-of-stock override */
+.btn.btn--primary:disabled {
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--color-text-muted);
+  border: 1.5px solid rgba(212, 175, 55, 0.2);
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* ─── Error / toast ──────────────────────────────────────────────────────── */
+.size-error {
+  color: #ef4444;
+  font-size: 0.82rem;
+  margin-top: -8px;
 }
 
 .detail__toast {
-  margin-top: 12px;
-  background: #f0fdf4;
-  border: 1.5px solid #86efac;
-  color: #15803d;
+  margin-top: 4px;
+  background: rgba(107, 174, 117, 0.12);
+  border: 1.5px solid rgba(107, 174, 117, 0.4);
+  color: var(--color-accent);
   font-weight: 700;
   font-size: 0.9rem;
   padding: 10px 16px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   text-align: center;
   animation: fadeIn 0.2s ease;
 }
@@ -297,15 +219,10 @@ h1 {
   text-align: center;
   padding: 80px 0;
   font-size: 1.2rem;
-  color: #888;
+  color: var(--color-text-muted);
 }
 
-label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #888;
-}
-
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .detail__layout {
     grid-template-columns: 1fr;
@@ -327,7 +244,7 @@ label {
 
 @media (max-width: 480px) {
   .detail {
-    padding: 16px 16px 32px; /* extra bottom room for the CTA */
+    padding: 16px 16px 36px;
   }
 
   .back-link {
@@ -348,23 +265,12 @@ label {
   }
 
   .detail__actions {
-    flex-direction: column;
     gap: 10px;
 
-    button {
-      flex: unset;
-      width: 100%;
-      justify-content: center;
+    .btn {
+      padding: 12px 10px;
+      font-size: 0.9rem;
     }
-  }
-
-  .size-options {
-    gap: 6px;
-  }
-
-  .size-btn {
-    padding: 6px 12px;
-    font-size: 0.88rem;
   }
 
   h1 {
@@ -375,7 +281,13 @@ label {
     font-size: 1.5rem;
   }
 
-  .qty-control {
-    gap: 12px;
+  .qty-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .qty-value {
+    height: 34px;
+    min-width: 32px;
   }
 }

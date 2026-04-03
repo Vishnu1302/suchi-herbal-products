@@ -7,11 +7,9 @@ export interface Category {
 }
 
 export const CATEGORIES: Category[] = [
-  { name: "Powder", slug: "powder", icon: "fa-solid fa-mortar-pestle" },
   { name: "Oil", slug: "oil", icon: "fa-solid fa-droplet" },
-  { name: "Capsule", slug: "capsule", icon: "fa-solid fa-capsules" },
-  { name: "Tea", slug: "tea", icon: "fa-solid fa-mug-hot" },
-  { name: "Extract", slug: "extract", icon: "fa-solid fa-flask" },
-  { name: "Herb", slug: "herb", icon: "fa-solid fa-leaf" },
-  { name: "Other", slug: "other", icon: "fa-solid fa-box" },
+  { name: "Shampoo", slug: "shampoo", icon: "fa-solid fa-pump-soap" },
+  { name: "Cream", slug: "cream", icon: "fa-solid fa-jar" },
+  { name: "Gel", slug: "gel", icon: "fa-solid fa-flask" },
+  { name: "Soap", slug: "soap", icon: "fa-solid fa-soap" },
 ];

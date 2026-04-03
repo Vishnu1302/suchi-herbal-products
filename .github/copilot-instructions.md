@@ -1,7 +1,7 @@
-# Suchi Kids Fashion — Global Copilot Instructions
+# SUCHIHERBALPRODUCTS — Global Copilot Instructions
 
 You are an expert Angular 17+ developer and full-stack engineer working on
-**Suchi Kids Fashion**, a kids clothing ecommerce platform.
+**SUCHIHERBALPRODUCTS**, a kids clothing ecommerce platform.
 
 Read this entire file before responding to any request.
 
@@ -88,42 +88,83 @@ SuchiECommerce/
 
 ## Design System — SCSS
 
-### CSS Custom Properties (defined in `styles.scss`)
+### Theme: Dark Gold Luxury
+
+Aurea uses a **dark herbal-ash + metallic gold** theme. All colours, spacing, and component styles derive from tokens in `styles.scss`.
+
+### CSS Custom Properties (defined in `styles.scss` `:root`)
 
 ```scss
---color-primary: #7412bf /* Main purple */ --color-primary-alt: #b66af1
-  /* Lighter purple */ --color-primary-dark: #5a0f93 /* Darker purple */
-  --color-secondary: #fbbf24 /* Amber / gold */ --color-accent: #22c55e
-  /* Green (success) */ --color-bg: #f9fafb --color-surface: #ffffff
-  --color-text: #2d2d2d --color-text-muted: #888888 --color-border: #f0e0d6;
+/* Backgrounds */
+--bg-main: #0a0f0d /* page base */ --bg-surface: #0f1710 /* cards / panels */
+  --bg-elevated: #182018 /* inputs, dropdowns */ /* Gold palette */
+  --gold-primary: #d4af37 --gold-secondary: #e6c76a --gold-soft: #f5e6a8
+  --gold-dark: #b8860b --gold-glow: rgba(212, 175, 55, 0.35)
+  /* Semantic aliases */ --color-primary: #d4af37 /* = gold-primary */
+  --color-primary-alt: #e6c76a --color-primary-dark: #b8860b
+  --color-text: #f0edd8 --color-text-muted: #9e9470
+  --color-border: rgba(212, 175, 55, 0.22) --color-accent: #6bae75
+  /* success green */ /* Header */ --header-bg: #0b0f0d
+  --header-border: rgba(212, 175, 55, 0.12) /* Radii */ --radius-sm: 8px |
+  --radius-md: 14px | --radius-lg: 22px | --radius-full: 9999px /* Shadows */
+  --shadow-sm / --shadow-md / --shadow-lg / --shadow-gold;
+```
+
+### SCSS Variables (`$var` — use in mixins/functions only)
+
+All tokens also exist as SCSS `$variables` at the top of `styles.scss`:
+`$gold-primary`, `$gold-secondary`, `$gold-soft`, `$gold-dark`, `$bg-main`, `$bg-surface`, `$bg-elevated`, `$color-text`, `$color-text-muted`, `$color-border`, `$radius-*`, `$shadow-*`, `$bp-sm/md/lg/xl`
+
+### Global Mixins (use these — do NOT re-implement)
+
+```scss
+@include btn-gold($padding, $font-size) // gold gradient CTA button
+  @include btn-gold-pill($padding) // rounded pill sign-in button
+  @include input-dark // dark form input with gold focus ring
+  @include card-dark($hover: true) // dark surface card with optional lift hover
+  @include respond-to(sm|md|lg|xl) // max-width media query shorthand
+  @include page-section($pad-y); // page wrapper with max-width + padding
+```
+
+### Breakpoints (mobile-first — default styles target mobile, override up)
+
+| Name | Value  | Use for       |
+| ---- | ------ | ------------- |
+| `sm` | 480px  | phones        |
+| `md` | 768px  | tablets       |
+| `lg` | 1024px | small desktop |
+| `xl` | 1280px | wide desktop  |
+
+```scss
+/* Mobile-first pattern */
+.my-layout {
+  grid-template-columns: 1fr; /* mobile default */
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr; /* tablet+ */
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr); /* desktop */
+  }
+}
+
+/* Or use the mixin for max-width overrides */
+@include respond-to(md) {
+  /* ≤ 768px */
+}
 ```
 
 ### SCSS Rules
 
-- Always use CSS variables (`var(--color-primary)`) — never hardcode colours
-- Exception: third-party overrides or one-off dark backgrounds
-- Component SCSS overrides global `.container` specificity — **always add horizontal padding explicitly** in component SCSS when you rely on max-width centering
-- Responsive breakpoints: `480px` (mobile), `768px` (tablet), `1024px` (desktop)
+- **Never hardcode** colour hex values — always use `var(--token-name)` in component SCSS
+- **Never hardcode** spacing / radius / shadow values that match a token — use `var()`
+- Use `@include input-dark` for every form input (login, checkout, catalog filters)
+- Use `@include card-dark` for every card surface
+- Use `@include btn-gold` for every primary CTA button
+- Use `@include btn-gold-pill` for header sign-in / pill buttons
+- Responsive: write mobile styles first, then use `@media (min-width: …)` to override up
 - Use `box-sizing: border-box` on any component that controls its own width
-
-### Responsive Pattern
-
-```scss
-/* Default: desktop */
-.my-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-@media (max-width: 768px) {
-  .my-layout {
-    grid-template-columns: 1fr;
-  }
-}
-@media (max-width: 480px) {
-  /* phone tweaks */
-}
-```
+- The `@forward 'styles'` is **not** set up — to use mixins in a component SCSS, use `@use '../../../styles' as s` and call `s.btn-gold()`, or rely on the global CSS vars
 
 ---
 

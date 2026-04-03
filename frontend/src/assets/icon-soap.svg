@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <!-- Translucent amber body — lighter in centre, dark at edges (Pears-style) -->
+    <radialGradient id="soap-body" cx="42%" cy="38%" r="62%">
+      <stop offset="0%"   stop-color="#F0C840" stop-opacity="0.68"/>
+      <stop offset="38%"  stop-color="#C88214" stop-opacity="0.60"/>
+      <stop offset="72%"  stop-color="#8A5008" stop-opacity="0.68"/>
+      <stop offset="100%" stop-color="#5A2E00" stop-opacity="0.72"/>
+    </radialGradient>
+    <!-- Top-left surface highlight (light reflection like Pears) -->
+    <linearGradient id="soap-hi" x1="15%" y1="10%" x2="65%" y2="58%">
+      <stop offset="0%"   stop-color="#FFF8DC" stop-opacity="0.60"/>
+      <stop offset="45%"  stop-color="#FFE890" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#C88214" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Bottom-right depth shadow -->
+    <linearGradient id="soap-shadow" x1="40%" y1="40%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#6A3800" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#3A1400" stop-opacity="0.45"/>
+    </linearGradient>
+    <filter id="soap-drop" x="-12%" y="-12%" width="124%" height="136%">
+      <feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#3A1400" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <!-- ── Bar body ── -->
+  <rect x="18" y="58" width="164" height="90" rx="30"
+        fill="url(#soap-body)" filter="url(#soap-drop)"/>
+  <!-- Internal translucency: shadow overlay -->
+  <rect x="18" y="58" width="164" height="90" rx="30"
+        fill="url(#soap-shadow)"/>
+  <!-- Surface highlight sweep (primary light source top-left) -->
+  <rect x="18" y="58" width="164" height="90" rx="30"
+        fill="url(#soap-hi)"/>
+
+  <!-- Crescent sheen line near top-left edge -->
+  <ellipse cx="68" cy="72" rx="32" ry="9"
+           fill="rgba(255,253,225,0.35)"
+           transform="rotate(-14 68 72)"/>
+
+  <!-- Outer border — gold stroke for the "glass" edge -->
+  <rect x="18" y="58" width="164" height="90" rx="30"
+        fill="none" stroke="#C9A020" stroke-width="1.4" stroke-opacity="0.80"/>
+
+  <!-- Thin inner bevel line (top edge) -->
+  <path d="M48 66 Q100 61 152 66"
+        stroke="rgba(255,245,180,0.38)" stroke-width="1.8"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- ── Embossed leaf (visible through translucency) ── -->
+  <path d="M100 80 Q114 94 100 114 Q86 94 100 80 Z"
+        fill="rgba(212,175,55,0.28)"
+        stroke="rgba(212,175,55,0.72)" stroke-width="1.0"/>
+  <!-- Leaf midrib -->
+  <line x1="100" y1="80" x2="100" y2="114"
+        stroke="rgba(212,175,55,0.58)" stroke-width="0.9"/>
+  <!-- Lateral veins -->
+  <path d="M100 88 Q108 92 106 97"
+        stroke="rgba(212,175,55,0.44)" stroke-width="0.8"
+        stroke-linecap="round" fill="none"/>
+  <path d="M100 88 Q92 92 94 97"
+        stroke="rgba(212,175,55,0.44)" stroke-width="0.8"
+        stroke-linecap="round" fill="none"/>
+  <path d="M100 97 Q107 100 105 105"
+        stroke="rgba(212,175,55,0.36)" stroke-width="0.7"
+        stroke-linecap="round" fill="none"/>
+  <path d="M100 97 Q93 100 95 105"
+        stroke="rgba(212,175,55,0.36)" stroke-width="0.7"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- ── Tiny floating bubbles (soap detail) ── -->
+  <circle cx="34"  cy="74"  r="4.5" fill="none" stroke="rgba(255,230,120,0.42)" stroke-width="1.1"/>
+  <circle cx="30"  cy="108" r="3.0" fill="none" stroke="rgba(255,230,120,0.32)" stroke-width="0.9"/>
+  <circle cx="168" cy="80"  r="5.5" fill="none" stroke="rgba(255,230,120,0.38)" stroke-width="1.1"/>
+  <circle cx="172" cy="118" r="3.5" fill="none" stroke="rgba(255,230,120,0.30)" stroke-width="0.9"/>
+  <circle cx="94"  cy="64"  r="2.5" fill="none" stroke="rgba(255,230,120,0.30)" stroke-width="0.8"/>
+</svg>

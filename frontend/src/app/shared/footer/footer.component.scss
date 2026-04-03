@@ -1,9 +1,9 @@
 .footer {
-  background: #0e0c07;
-  color: #b8ad8a;
+  background: var(--footer-bg, #050807);
+  color: #8a8060;
   padding: 48px 0 24px;
   margin-top: 60px;
-  border-top: 3px solid #b8860b;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .footer__inner {
@@ -25,10 +25,14 @@
 
   .footer__brand-icon {
     font-size: 2rem;
+    color: var(--gold-primary, #d4af37);
   }
 
   strong {
-    color: #d4af37;
+    background: linear-gradient(to right, #b8860b, #d4af37, #e6c76a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-family: var(--font-brand);
     font-size: 1.4rem;
     letter-spacing: 0.08em;
@@ -37,7 +41,7 @@
   p {
     font-size: 0.82rem;
     margin-top: 4px;
-    color: #7a7050;
+    color: #5a5438;
     max-width: 260px;
     line-height: 1.6;
   }
@@ -50,14 +54,14 @@
   align-items: center;
 
   a {
-    color: #b8ad8a;
+    color: #7a7258;
     text-decoration: none;
     font-size: 0.88rem;
     letter-spacing: 0.03em;
     transition: color 0.2s;
 
     &:hover {
-      color: #d4af37;
+      color: var(--gold-primary, #d4af37);
     }
   }
 }
@@ -71,27 +75,27 @@
   gap: 8px;
 
   i {
-    color: #b8860b;
+    color: var(--gold-primary, #d4af37);
   }
 
   a {
-    color: #b8ad8a;
+    color: #7a7258;
     text-decoration: none;
     transition: color 0.2s;
 
     &:hover {
-      color: #d4af37;
+      color: var(--gold-primary, #d4af37);
     }
   }
 }
 
 .footer__copy {
   font-size: 0.78rem;
-  color: #4e4830;
+  color: #3e3a28;
   text-align: center;
   grid-column: 1 / -1;
   padding-top: 20px;
-  border-top: 1px solid rgba(184, 134, 11, 0.18);
+  border-top: 1px solid rgba(212, 175, 55, 0.12);
   margin-top: 8px;
   letter-spacing: 0.04em;
 }

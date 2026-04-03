@@ -1,13 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export type ProductCategory =
-  | "powder"
-  | "oil"
-  | "capsule"
-  | "tea"
-  | "extract"
-  | "herb"
-  | "other";
+export type ProductCategory = "oil" | "shampoo" | "cream" | "gel" | "soap";
 
 export interface ProductDocument extends Document {
   name: string;
@@ -40,7 +33,7 @@ const ProductSchema = new Schema<ProductDocument>(
     category: {
       type: String,
       required: true,
-      enum: ["powder", "oil", "capsule", "tea", "extract", "herb", "other"],
+      enum: ["oil", "shampoo", "cream", "gel", "soap"],
     },
     inStock: { type: Boolean, default: true },
     stockCount: { type: Number, default: 0, min: 0 },

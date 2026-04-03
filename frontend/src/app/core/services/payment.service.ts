@@ -197,12 +197,13 @@ export class PaymentService {
 
       const rzp = new (globalThis as unknown as Window).Razorpay(rzpOptions);
 
-      rzp.on("payment.failed", (response) => {
-        reject(
-          new Error(
-            response.error?.description ?? "Payment failed. Please try again.",
-          ),
-        );
+      // Intentionally no-op: payment.failed fires when a single attempt is
+      // declined but Razorpay keeps the modal open so the user can retry with
+      // a different card/UPI/method. Rejecting here would settle the Promise
+      // early, making a subsequent successful retry impossible to handle.
+      // The modal's own UI shows the decline reason inline.
+      rzp.on("payment.failed", () => {
+        // no-op — let the user retry within the same Razorpay session
       });
 
       rzp.open();

@@ -1,144 +1,417 @@
-﻿/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+:host {
+  display: block;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* -- Hero -------------------------------------------------------- */
 .hero {
-  background: linear-gradient(160deg, #0a1f0f 0%, #1a3d2b 45%, #2c1a0e 100%);
-  min-height: 580px;
-  display: flex;
+  --hero-inline-padding: var(--page-inline-padding, clamp(16px, 3vw, 24px));
+  --hero-block-padding: clamp(12px, 2svh, 24px);
+  --hero-gap: clamp(14px, 2.2svh, 24px);
+  --hero-button-height: clamp(50px, 7svh, 64px);
+  --hero-tagline-height: clamp(44px, 7svh, 72px);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 8, 7, 0.12) 0%,
+      rgba(10, 15, 13, 0.4) 24%,
+      rgba(10, 15, 13, 0.26) 100%
+    ),
+    radial-gradient(
+      ellipse at 12% 42%,
+      rgba(245, 230, 168, 0.17) 0%,
+      rgba(212, 175, 55, 0.11) 16%,
+      rgba(10, 15, 13, 0) 48%
+    ),
+    radial-gradient(
+      ellipse at 88% 44%,
+      rgba(245, 230, 168, 0.16) 0%,
+      rgba(212, 175, 55, 0.1) 16%,
+      rgba(10, 15, 13, 0) 46%
+    ),
+    url("../../../../assets/MandalaArt.png") center 48% / cover no-repeat,
+    var(--bg-main);
+
+  min-height: calc(100vh - var(--shell-nav-height, 70px));
+  min-height: calc(100svh - var(--shell-nav-height, 70px));
+  height: calc(100vh - var(--shell-nav-height, 70px));
+  height: calc(100svh - var(--shell-nav-height, 70px));
+
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   align-items: center;
-  padding: 80px 0;
-  gap: 48px;
-  position: relative;
-  overflow: hidden;
+  justify-items: center;
+  gap: var(--hero-gap);
+  padding: var(--hero-block-padding) var(--hero-inline-padding);
 
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(
-        circle at 15% 50%,
-        rgba(212, 175, 55, 0.07) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 85% 20%,
-        rgba(107, 143, 113, 0.09) 0%,
-        transparent 45%
-      );
-    pointer-events: none;
-  }
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
-.hero__content {
-  flex: 1;
-  max-width: 560px;
-  position: relative;
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 52% 52% at 50% 42%,
+      rgba(5, 8, 7, 0.92) 0%,
+      rgba(5, 8, 7, 0.76) 18%,
+      rgba(5, 8, 7, 0.42) 38%,
+      rgba(5, 8, 7, 0.1) 58%,
+      rgba(5, 8, 7, 0) 76%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 8, 7, 0.08) 0%,
+      rgba(10, 15, 13, 0) 26%,
+      rgba(5, 8, 7, 0.22) 100%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.45),
+    transparent
+  );
   z-index: 1;
-  padding: 0 24px 0 max(24px, calc((100vw - 1280px) / 2 + 24px));
 }
 
-.hero__tag {
+/* -- CTA --------------------------------------------------------- */
+.hero__cta {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  align-self: start;
+}
+
+/* -- Buttons ----------------------------------------------------- */
+.btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #1a3d2b;
-  border: 1px solid #d4af37;
-  color: #d4af37;
-  padding: 7px 18px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 24px;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.hero__title {
-  font-family: var(--font-brand);
-  font-size: 3.6rem;
+  padding: 15px 42px;
+  border-radius: 6px;
   font-weight: 700;
-  line-height: 1.1;
-  color: #f0e8d0;
-  letter-spacing: 0.02em;
-  margin-bottom: 20px;
-}
-
-.hero__accent {
-  color: #d4af37;
-  display: block;
-}
-
-.hero__desc {
-  font-size: 1.05rem;
-  color: rgba(240, 232, 208, 0.68);
-  margin-bottom: 36px;
-  line-height: 1.8;
-  max-width: 440px;
-}
-
-.hero__actions {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 36px;
-}
-
-.hero__pills {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.hero__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
-  background: #1e4020;
-  border: 1px solid rgba(107, 143, 113, 0.5);
-  color: #a8c9a8;
-  border-radius: 999px;
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-
-/* Emblem */
-.hero__visual {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: all 0.25s;
+  border: none;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   position: relative;
-  z-index: 1;
-  min-height: 360px;
-  padding-right: max(24px, calc((100vw - 1280px) / 2 + 24px));
+  overflow: hidden;
+
+  &--primary {
+    background: linear-gradient(
+      to right,
+      var(--gold-dark) 0%,
+      var(--gold-primary) 30%,
+      var(--gold-secondary) 52%,
+      var(--gold-primary) 72%,
+      var(--gold-dark) 100%
+    );
+    color: #1a1000;
+    border: 1px solid rgba(184, 134, 11, 0.95);
+    box-shadow:
+      0 2px 0 rgba(245, 230, 168, 0.18) inset,
+      0 -2px 0 rgba(0, 0, 0, 0.35) inset,
+      0 6px 24px rgba(184, 134, 11, 0.42),
+      0 2px 8px rgba(0, 0, 0, 0.5);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        105deg,
+        transparent,
+        rgba(255, 248, 200, 0.22),
+        transparent
+      );
+      transition: left 0.55s ease;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 2px 0 rgba(245, 230, 168, 0.18) inset,
+        0 -2px 0 rgba(0, 0, 0, 0.35) inset,
+        0 10px 30px rgba(184, 134, 11, 0.56),
+        0 3px 10px rgba(0, 0, 0, 0.6);
+
+      &::before {
+        left: 130%;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    border: 1.5px solid rgba(212, 175, 55, 0.6);
+    color: #d4af37;
+
+    &:hover {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: #d4af37;
+      transform: translateY(-2px);
+    }
+  }
 }
+
+/* -- Emblem (Solar System) --------------------------------------- */
+/*
+  --total   : full container diameter = outermost orbit diameter + planet clearance
+  --core-r  : radius of the centre "sun" circle
+  Orbit radii are defined as fractions of --total / 2 (i.e. of the half-container).
+
+  5 orbits:
+    Orbit 1  innermost  r = --total * 0.17   → Soap    angle 45°
+    Orbit 2             r = --total * 0.26   → Gel     angle 200°
+    Orbit 3             r = --total * 0.34   → Cream   angle 320°
+    Orbit 4             r = --total * 0.42   → Shampoo angle 80°
+    Orbit 5  outermost  r = --total * 0.49   → Oil     angle 220°
+
+  Pre-computed cos/sin (cx, cy):
+    45°   →  0.7071  0.7071
+    200°  → -0.9397  -0.3420
+    320°  →  0.7660  -0.6428
+    80°   →  0.1736   0.9848
+    220°  → -0.7660  -0.6428
+*/
 
 .hero__emblem {
   position: relative;
-  width: 320px;
-  height: 320px;
+  z-index: 2;
+  overflow: hidden;
+  --emblem-boundary: min(
+    calc(100vw - (var(--hero-inline-padding) * 2) - 2px),
+    calc(
+      100svh - var(--shell-nav-height, 70px) -
+        (var(--hero-block-padding) * 2) - var(--hero-button-height) - var(
+          --hero-tagline-height
+        ) -
+        (var(--hero-gap) * 2)
+    )
+  );
+  --ref: clamp(160px, calc(var(--emblem-boundary) * 0.65), 356px);
+  --planet: clamp(32px, calc(var(--ref) * 0.115), 58px);
+  --orbit-stroke: clamp(1px, calc(var(--ref) * 0.0048), 1.8px);
+  --orbit-highlight-stroke: clamp(2px, calc(var(--ref) * 0.007), 3px);
+  --total: calc(var(--ref) * 1.32 + var(--planet) + 16px);
+  --emblem-size: min(var(--total), var(--emblem-boundary));
+
+  width: var(--emblem-size);
+  height: var(--emblem-size);
+  max-width: 100%;
+  aspect-ratio: 1;
 }
 
-.emblem__ring {
+/* --- Sun / Core ------------------------------------------------- */
+.emblem__core {
   position: absolute;
   top: 50%;
   left: 50%;
+
+  --core-d: calc(var(--ref) * 0.2);
+  width: var(--core-d);
+  height: var(--core-d);
   transform: translate(-50%, -50%);
+
   border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #1a1200 0%, #0a0f0d 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.72);
+  box-shadow:
+    0 0 0 6px rgba(212, 175, 55, 0.08),
+    0 0 30px rgba(212, 175, 55, 0.3),
+    0 0 70px rgba(212, 175, 55, 0.12),
+    inset 0 1px 0 rgba(212, 175, 55, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
 
-  &--outer {
-    width: 300px;
-    height: 300px;
-    border: 1px solid rgba(212, 175, 55, 0.28);
-    animation: rotateSlow 60s linear infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  z-index: 10;
+  transition:
+    transform 0.28s,
+    box-shadow 0.28s;
+
+  i {
+    font-size: calc(var(--core-d) * 0.3);
+    color: var(--gold-primary);
+    transition: transform 0.3s;
   }
 
-  &--inner {
-    width: 216px;
-    height: 216px;
-    border: 2px solid rgba(184, 134, 11, 0.42);
-    animation: rotateSlow 36s linear infinite reverse;
+  span {
+    font-family: var(--font-brand);
+    font-size: calc(var(--core-d) * 0.2);
+    font-weight: 700;
+    color: var(--gold-soft);
+    letter-spacing: 0.12em;
+    line-height: 1;
   }
+
+  small {
+    font-size: calc(var(--core-d) * 0.12);
+    color: rgba(212, 175, 55, 0.6);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow:
+      0 0 0 10px rgba(212, 175, 55, 0.12),
+      0 0 50px rgba(212, 175, 55, 0.5),
+      0 0 100px rgba(212, 175, 55, 0.18),
+      inset 0 1px 0 rgba(212, 175, 55, 0.35);
+
+    i {
+      transform: scale(1.12) rotate(-8deg);
+    }
+  }
+}
+
+/* --- Orbit rings ------------------------------------------------ */
+.emblem__orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  border: var(--orbit-stroke) solid rgba(212, 175, 55, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.04),
+    inset 0 0 18px rgba(212, 175, 55, 0.04);
+}
+
+.emblem__orbit::before,
+.emblem__orbit::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+}
+
+.emblem__orbit::before {
+  inset: calc(var(--orbit-highlight-stroke) * -0.5);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent calc(var(--arc-start) - 16deg),
+    rgba(212, 175, 55, 0.12) calc(var(--arc-start) - 8deg),
+    rgba(212, 175, 55, 0.36) calc(var(--arc-start) - 2deg),
+    rgba(245, 230, 168, 0.96) var(--arc-start),
+    rgba(212, 175, 55, 0.4) calc(var(--arc-start) + 8deg),
+    transparent calc(var(--arc-start) + 20deg),
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--orbit-highlight-stroke) - 0.5px),
+    #000 calc(100% - var(--orbit-highlight-stroke)),
+    #000 100%
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--orbit-highlight-stroke) - 0.5px),
+    #000 calc(100% - var(--orbit-highlight-stroke)),
+    #000 100%
+  );
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.32));
+  opacity: 0.95;
+}
+
+.emblem__orbit::after {
+  inset: 0;
+  box-shadow:
+    0 0 18px rgba(212, 175, 55, 0.08),
+    inset 0 0 14px rgba(212, 175, 55, 0.05);
+  opacity: 0.8;
+}
+
+/*
+  6 orbit rings:
+    1 — tiny inner decorative        diameter = ref × 0.28
+    2 — Gel + Cream ring             diameter = ref × 0.60  (radius pf = 0.30)
+    3 — mid decorative spacer        diameter = ref × 0.82
+    4 — Oil + Shampoo ring           diameter = ref × 1.04  (radius pf = 0.52)
+    5 — outer decorative spacer      diameter = ref × 1.18
+    6 — Soap ring (NEW outermost)    diameter = ref × 1.32  (radius pf = 0.66)
+*/
+.emblem__orbit--1 {
+  --or: calc(var(--ref) * 0.28);
+  --arc-start: 46deg;
+  width: var(--or);
+  height: var(--or);
+  border-color: rgba(212, 175, 55, 0.14);
+  animation: rotateSlow 120s linear infinite;
+}
+.emblem__orbit--2 {
+  --or: calc(var(--ref) * 0.6);
+  --arc-start: 304deg;
+  width: var(--or);
+  height: var(--or);
+  border-color: rgba(212, 175, 55, 0.22);
+  animation: rotateSlow 80s linear infinite reverse;
+}
+.emblem__orbit--3 {
+  --or: calc(var(--ref) * 0.82);
+  --arc-start: 20deg;
+  width: var(--or);
+  height: var(--or);
+  border-style: dashed;
+  border-color: rgba(212, 175, 55, 0.1);
+  animation: rotateSlow 65s linear infinite;
+}
+.emblem__orbit--4 {
+  --or: calc(var(--ref) * 1.04);
+  --arc-start: 86deg;
+  width: var(--or);
+  height: var(--or);
+  border-color: rgba(212, 175, 55, 0.2);
+  animation: rotateSlow 55s linear infinite reverse;
+}
+.emblem__orbit--5 {
+  --or: calc(var(--ref) * 1.18);
+  --arc-start: 176deg;
+  width: var(--or);
+  height: var(--or);
+  border-style: dashed;
+  border-color: rgba(212, 175, 55, 0.08);
+  animation: rotateSlow 45s linear infinite;
+}
+.emblem__orbit--6 {
+  --or: calc(var(--ref) * 1.32);
+  --arc-start: 322deg;
+  width: var(--or);
+  height: var(--or);
+  border-color: rgba(212, 175, 55, 0.25);
+  animation: rotateSlow 38s linear infinite reverse;
 }
 
 @keyframes rotateSlow {
@@ -147,426 +420,425 @@
   }
 }
 
-.emblem__core {
+/* --- Planet base ------------------------------------------------ */
+/*
+  Screenshot analysis: dark circle with gold border + gold icon on dark bg
+  NOT a gold-filled circle — the bg is deep dark, icon is gold-colored
+*/
+.emblem__planet {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 138px;
-  height: 138px;
+
+  width: var(--planet);
+  height: var(--planet);
+  margin-top: calc(var(--planet) / -2);
+  margin-left: calc(var(--planet) / -2);
+  --planet-scale: 1;
+
   border-radius: 50%;
-  background: radial-gradient(circle, #1a3d2b 0%, #0a1f0f 100%);
-  border: 2px solid #b8860b;
-  box-shadow: 0 0 48px rgba(212, 175, 55, 0.18);
+  background: radial-gradient(circle at 40% 35%, #1c2820 0%, #0d1510 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.65);
+  box-shadow:
+    0 3px 16px rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(212, 175, 55, 0.08),
+    0 0 14px rgba(212, 175, 55, 0.2),
+    inset 0 1px 0 rgba(212, 175, 55, 0.12);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 2px;
+  text-decoration: none;
+  z-index: 5;
+  cursor: pointer;
+  will-change: transform;
 
-  i {
-    font-size: 2rem;
-    color: #d4af37;
+  transition:
+    --planet-scale 0.26s ease,
+    border-color 0.26s,
+    box-shadow 0.26s;
+
+  img.planet-icon {
+    /* height:auto avoids collapse when parent height is a CSS custom property */
+    width: 62%;
+    height: auto;
+    display: block;
+    filter: brightness(1.4) drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
+    transition:
+      transform 0.25s,
+      filter 0.25s;
+    flex-shrink: 0;
   }
 
   span {
-    font-family: var(--font-brand);
-    font-size: 0.95rem;
-    color: #f0e8d0;
-    letter-spacing: 0.14em;
-  }
-}
-
-.emblem__leaf {
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(26, 61, 43, 0.92);
-  border: 1px solid rgba(212, 175, 55, 0.38);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  i {
-    font-size: 1.15rem;
-    color: #a8c9a8;
-  }
-
-  &--1 {
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  &--2 {
-    bottom: 36px;
-    right: 12px;
-  }
-
-  &--3 {
-    bottom: 36px;
-    left: 12px;
-  }
-}
-
-/* â”€â”€ Benefits Strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.benefits-strip {
-  background: #0e0c07;
-  padding: 56px 24px;
-  border-top: 1px solid rgba(184, 134, 11, 0.18);
-  border-bottom: 1px solid rgba(184, 134, 11, 0.18);
-}
-
-.benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-}
-
-.benefit-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-
-  h4 {
-    font-family: var(--font-brand);
-    font-size: 0.95rem;
-    color: #f0e8d0;
-    letter-spacing: 0.05em;
-  }
-
-  p {
-    font-size: 0.82rem;
-    color: rgba(184, 173, 138, 0.7);
-    line-height: 1.6;
-  }
-}
-
-.benefit-icon {
-  font-size: 1.8rem;
-  color: #b8860b;
-}
-
-/* â”€â”€ Sections â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.section {
-  padding: 64px 0;
-}
-
-.section--parchment {
-  background: #fdf8ee;
-}
-
-.section-title {
-  font-family: var(--font-brand);
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2c1a0e;
-  margin-bottom: 6px;
-  letter-spacing: 0.03em;
-}
-
-.section-subtitle {
-  font-size: 0.95rem;
-  color: #b3a369;
-  margin-bottom: 36px;
-}
-
-.section-cta {
-  text-align: center;
-  margin-top: 40px;
-}
-
-/* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 30px;
-  border-radius: 4px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: all 0.22s;
-  border: 2px solid transparent;
-  letter-spacing: 0.04em;
-
-  &--primary {
-    background: #b8860b;
-    color: #0e0c07;
-    border-color: #b8860b;
-
-    &:hover {
-      background: #d4af37;
-      border-color: #d4af37;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(184, 134, 11, 0.35);
-      color: #0e0c07;
-    }
-  }
-
-  &--outline {
-    background: transparent;
-    border-color: #b8860b;
-    color: #b8860b;
-
-    &:hover {
-      background: #b8860b;
-      color: #0e0c07;
-      transform: translateY(-2px);
-    }
-  }
-}
-
-/* â”€â”€ Categories â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
-}
-
-.cat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 24px 12px;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #e5d9b6;
-  box-shadow: 0 2px 8px rgba(44, 26, 14, 0.06);
-  text-decoration: none;
-  color: #2c1a0e;
-  transition: all 0.2s;
-  font-weight: 700;
-
-  &:hover {
-    transform: translateY(-4px);
-    border-color: #b8860b;
-    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.15);
-  }
-}
-
-.cat-icon {
-  font-size: 1.6rem;
-  color: #b8860b;
-}
-
-.cat-name {
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
-}
-
-/* â”€â”€ Product Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.product-card {
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #e5d9b6;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(44, 26, 14, 0.07);
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.25s;
-  position: relative;
-
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 30px rgba(44, 26, 14, 0.14);
-    border-color: #b8860b;
-  }
-}
-
-.product-card--oos {
-  .product-card__img-wrap img,
-  .product-card__img {
-    filter: grayscale(70%);
-    opacity: 0.65;
-  }
-
-  .product-card__body {
-    opacity: 0.6;
-  }
-
-  &::after {
-    content: "Out of Stock";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(44, 26, 14, 0.72);
-    color: #f0e8d0;
-    font-size: 0.73rem;
+    font-size: clamp(8px, calc(var(--planet) * 0.165), 11px);
     font-weight: 700;
-    text-align: center;
-    padding: 6px 0;
-    letter-spacing: 0.08em;
+    color: rgba(212, 175, 55, 0.75);
+    letter-spacing: 0.04em;
     text-transform: uppercase;
+    line-height: 1;
+    max-width: 94%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    --planet-scale: 1.18;
+    border-color: #d4af37;
+    box-shadow:
+      0 4px 22px rgba(0, 0, 0, 0.65),
+      0 0 0 3px rgba(212, 175, 55, 0.2),
+      0 0 28px rgba(212, 175, 55, 0.35),
+      inset 0 1px 0 rgba(212, 175, 55, 0.2);
+
+    img.planet-icon {
+      transform: scale(1.1);
+      filter: brightness(1.7) drop-shadow(0 0 8px rgba(212, 175, 55, 0.65));
+    }
+    span {
+      color: rgba(230, 199, 106, 0.9);
+    }
   }
 }
 
-.product-card__img-wrap {
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: #f5f0e8;
+/*
+  Per-planet orbit transforms.
+  Each uses its own @property angle + cos()/sin() for smooth revolution.
+  --planet-scale is shared (registered @property) and updated on hover.
+
+  Gel  + Cream  → same ring (pf 0.30), 180° apart → always opposite  ✓
+  Oil  + Shampoo→ same ring (pf 0.52), 180° apart → always opposite  ✓
+  Soap           → outermost ring (pf 0.66), alone  ✓
+*/
+
+/* planet-1 = Soap — outermost ring, enlarged for clean icon display */
+.emblem__planet--1 {
+  --planet: clamp(52px, calc(var(--ref) * 0.155), 72px);
+  animation: orbit-p1 90s linear infinite;
+  transform: translate(
+      calc(cos(var(--p1-angle)) * var(--ref) * 0.66),
+      calc(sin(var(--p1-angle)) * var(--ref) * 0.66)
+    )
+    scale(var(--planet-scale));
+  &:hover {
+    transform: translate(
+        calc(cos(var(--p1-angle)) * var(--ref) * 0.66),
+        calc(sin(var(--p1-angle)) * var(--ref) * 0.66)
+      )
+      scale(1.18);
+  }
 }
 
-.product-card__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s;
+/* planet-2 = Gel — inner ring (orbit-2), 50 s / rev */
+.emblem__planet--2 {
+  --planet: clamp(42px, calc(var(--ref) * 0.138), 66px);
+  animation: orbit-p2 50s linear infinite;
+  transform: translate(
+      calc(cos(var(--p2-angle)) * var(--ref) * 0.3),
+      calc(sin(var(--p2-angle)) * var(--ref) * 0.3)
+    )
+    scale(var(--planet-scale));
+  &:hover {
+    transform: translate(
+        calc(cos(var(--p2-angle)) * var(--ref) * 0.3),
+        calc(sin(var(--p2-angle)) * var(--ref) * 0.3)
+      )
+      scale(1.18);
+  }
 }
 
-.product-card:hover .product-card__img {
-  transform: scale(1.05);
+/* planet-3 = Cream — inner ring */
+.emblem__planet--3 {
+  --planet: clamp(46px, calc(var(--ref) * 0.14), 64px);
+  animation: orbit-p3 50s linear infinite;
+  transform: translate(
+      calc(cos(var(--p3-angle)) * var(--ref) * 0.3),
+      calc(sin(var(--p3-angle)) * var(--ref) * 0.3)
+    )
+    scale(var(--planet-scale));
+
+  img.planet-icon {
+    width: 48%;
+  }
+
+  &:hover {
+    transform: translate(
+        calc(cos(var(--p3-angle)) * var(--ref) * 0.3),
+        calc(sin(var(--p3-angle)) * var(--ref) * 0.3)
+      )
+      scale(1.18);
+  }
 }
 
-.product-card__body {
-  padding: 14px 16px 18px;
+/* planet-4 = Shampoo — middle ring */
+.emblem__planet--4 {
+  --planet: clamp(62px, calc(var(--ref) * 0.185), 84px);
+  animation: orbit-p4 70s linear infinite;
+  transform: translate(
+      calc(cos(var(--p4-angle)) * var(--ref) * 0.52),
+      calc(sin(var(--p4-angle)) * var(--ref) * 0.52)
+    )
+    scale(var(--planet-scale));
+
+  img.planet-icon {
+    width: 46%;
+  }
+
+  /* Shampoo label override: tighter spacing so 7 chars fit on one line */
+  span {
+    font-size: clamp(7px, calc(var(--planet) * 0.115), 10px);
+    letter-spacing: 0.02em;
+  }
+
+  &:hover {
+    transform: translate(
+        calc(cos(var(--p4-angle)) * var(--ref) * 0.52),
+        calc(sin(var(--p4-angle)) * var(--ref) * 0.52)
+      )
+      scale(1.18);
+  }
 }
 
-.product-card__name {
-  font-weight: 700;
-  font-size: 0.93rem;
-  margin-bottom: 8px;
-  line-height: 1.3;
-  color: #2c1a0e;
+/* planet-5 = Oil — middle ring (orbit-4), same speed as Shampoo, starts 180° off */
+.emblem__planet--5 {
+  --planet: clamp(42px, calc(var(--ref) * 0.138), 66px);
+  animation: orbit-p5 70s linear infinite;
+  transform: translate(
+      calc(cos(var(--p5-angle)) * var(--ref) * 0.52),
+      calc(sin(var(--p5-angle)) * var(--ref) * 0.52)
+    )
+    scale(var(--planet-scale));
+  &:hover {
+    transform: translate(
+        calc(cos(var(--p5-angle)) * var(--ref) * 0.52),
+        calc(sin(var(--p5-angle)) * var(--ref) * 0.52)
+      )
+      scale(1.18);
+  }
 }
 
-.product-card__price {
+/* -- Planet Revolution (CSS @property + trigonometry) ----------- */
+/*
+  Each planet's orbital position is driven by an animated <angle>
+  custom property interpolated every frame via @property.
+  cos() / sin() are applied in transform to move the planet along
+  its circular orbit — like planets revolving around the sun.
+
+  Layout:
+    planet-1 = Soap   → orbit-6 (outermost), pf=0.66, start 315°
+    planet-2 = Gel    → orbit-2 (inner),      pf=0.30, start  30°
+    planet-3 = Cream  → orbit-2 (inner),      pf=0.30, start 210° (opposite Gel)
+    planet-4 = Shampoo→ orbit-4 (middle),     pf=0.52, start 270°
+    planet-5 = Oil    → orbit-4 (middle),     pf=0.52, start  90° (opposite Shampoo)
+
+  Gel/Cream on same ring, always 180° apart  ✓
+  Oil/Shampoo on same ring, always 180° apart ✓
+  Soap on its own outer ring                  ✓
+*/
+
+@property --p1-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 315deg;
+}
+@property --p2-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 30deg;
+}
+@property --p3-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 210deg;
+}
+@property --p4-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 270deg;
+}
+@property --p5-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 90deg;
+}
+
+/* Registered so it can be transitioned on hover */
+@property --planet-scale {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+/* Each keyframe increments its angle by 360° from the initial-value */
+@keyframes orbit-p1 {
+  to {
+    --p1-angle: 675deg;
+  }
+} /* 315 + 360 */
+@keyframes orbit-p2 {
+  to {
+    --p2-angle: 390deg;
+  }
+} /*  30 + 360 */
+@keyframes orbit-p3 {
+  to {
+    --p3-angle: 570deg;
+  }
+} /* 210 + 360 */
+@keyframes orbit-p4 {
+  to {
+    --p4-angle: 630deg;
+  }
+} /* 270 + 360 */
+@keyframes orbit-p5 {
+  to {
+    --p5-angle: 450deg;
+  }
+} /*  90 + 360 */
+
+/* -- Sanskrit / Devanagari tagline ------------------------------ */
+.hero__tagline {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  align-self: end;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
+  width: 100%;
+  max-width: min(100%, 90vw);
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  &-devanagari {
+    font-family:
+      "Noto Serif Devanagari", "Mangal", "Sanskrit Text", "Arial Unicode MS",
+      serif;
+    font-size: clamp(0.9rem, 2.4vw, 1.4rem);
+    white-space: normal;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    font-weight: 600;
+    color: var(--gold-secondary);
+    letter-spacing: 0.04em;
+    line-height: 1.35;
+    margin: 0;
+    text-shadow:
+      0 0 18px rgba(212, 175, 55, 0.4),
+      0 1px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  &-english {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(0.6rem, 1.3vw, 0.8rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
 }
 
-.price-main {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: #b8860b;
-}
-
-.price-orig {
-  font-size: 0.8rem;
-  color: #bbb;
-  text-decoration: line-through;
-}
-
-/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* -- Responsive -------------------------------------------------- */
 @media (max-width: 1024px) {
-  .categories-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .hero {
+    --hero-block-padding: clamp(12px, 1.8svh, 20px);
+    --hero-tagline-height: clamp(40px, 6svh, 62px);
   }
 
-  .products-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+  .hero__emblem {
+    --ref: clamp(156px, calc(var(--emblem-boundary) * 0.64), 320px);
   }
 }
 
 @media (max-width: 768px) {
   .hero {
-    flex-direction: column;
-    min-height: auto;
-    padding: 56px 24px;
-    gap: 32px;
-    text-align: center;
+    --hero-block-padding: clamp(10px, 1.6svh, 18px);
+    --hero-gap: clamp(12px, 1.8svh, 20px);
+    --hero-button-height: 54px;
+    --hero-tagline-height: clamp(36px, 5.5svh, 56px);
   }
 
-  .hero__content {
-    padding: 0;
-    max-width: 100%;
+  .hero__tagline {
+    &-devanagari {
+      font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+    }
+    &-english {
+      font-size: clamp(0.58rem, 1.6vw, 0.72rem);
+    }
   }
 
-  .hero__title {
-    font-size: 2.6rem;
+  .hero__emblem {
+    --ref: clamp(152px, calc(var(--emblem-boundary) * 0.64), 278px);
+    --planet: clamp(30px, calc(var(--ref) * 0.112), 52px);
   }
 
-  .hero__desc {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero__actions {
-    justify-content: center;
-  }
-
-  .hero__pills {
-    justify-content: center;
-  }
-
-  .hero__visual {
-    display: none;
-  }
-
-  .categories-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .section {
-    padding: 40px 0;
+  .btn--primary {
+    padding: 12px 24px;
+    font-size: 0.82rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero {
-    padding: 40px 16px;
+    --hero-block-padding: 10px;
+    --hero-gap: 10px;
+    --hero-button-height: 48px;
+    --hero-tagline-height: clamp(32px, 5svh, 48px);
   }
 
-  .hero__title {
-    font-size: 2rem;
-  }
-
-  .hero__actions {
-    flex-direction: column;
-    align-items: center;
-
-    .btn {
-      width: 100%;
-      justify-content: center;
+  .hero__tagline {
+    gap: 3px;
+    &-devanagari {
+      font-size: clamp(0.85rem, 4.5vw, 1rem);
+    }
+    &-english {
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
     }
   }
 
-  .categories-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+  .hero__emblem {
+    --ref: clamp(146px, calc(var(--emblem-boundary) * 0.63), 228px);
+    --planet: clamp(28px, calc(var(--ref) * 0.11), 44px);
   }
 
-  .cat-card {
-    padding: 16px 8px;
+  .btn--primary {
+    padding: 11px 18px;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
   }
 
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  .emblem__core span {
+    letter-spacing: 0.08em;
   }
 
-  .benefits-grid {
-    grid-template-columns: 1fr;
+  .emblem__planet span {
+    font-size: clamp(6px, calc(var(--planet) * 0.16), 9px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emblem__orbit,
+  .emblem__planet--1,
+  .emblem__planet--2,
+  .emblem__planet--3,
+  .emblem__planet--4,
+  .emblem__planet--5 {
+    animation: none;
   }
 
-  .section-title {
-    font-size: 1.5rem;
+  .btn,
+  .emblem__core,
+  .emblem__planet {
+    transition: none;
   }
 }

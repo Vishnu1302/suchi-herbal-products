@@ -1,0 +1,116 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <!-- Box body: cylindrical left/right dark, bright centre -->
+    <linearGradient id="cr-body" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#5A2E00" stop-opacity="0.76"/>
+      <stop offset="18%"  stop-color="#C88214" stop-opacity="0.62"/>
+      <stop offset="50%"  stop-color="#F2CC48" stop-opacity="0.64"/>
+      <stop offset="82%"  stop-color="#C88214" stop-opacity="0.60"/>
+      <stop offset="100%" stop-color="#5A2E00" stop-opacity="0.76"/>
+    </linearGradient>
+    <!-- Lid front face — slightly brighter (top catches more light) -->
+    <linearGradient id="cr-lid-front" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#6A3800" stop-opacity="0.80"/>
+      <stop offset="22%"  stop-color="#D4A018" stop-opacity="0.70"/>
+      <stop offset="50%"  stop-color="#FFE468" stop-opacity="0.72"/>
+      <stop offset="78%"  stop-color="#D4A018" stop-opacity="0.68"/>
+      <stop offset="100%" stop-color="#6A3800" stop-opacity="0.80"/>
+    </linearGradient>
+    <!-- Right-side face (3-D depth strip) -->
+    <linearGradient id="cr-side" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#7A3E00" stop-opacity="0.68"/>
+      <stop offset="100%" stop-color="#3A1400" stop-opacity="0.78"/>
+    </linearGradient>
+    <!-- Top face (narrow perspective top) -->
+    <linearGradient id="cr-top" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#FFE880" stop-opacity="0.70"/>
+      <stop offset="100%" stop-color="#C07810" stop-opacity="0.60"/>
+    </linearGradient>
+    <!-- Internal glow through the amber -->
+    <radialGradient id="cr-glow" cx="40%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#FFE090" stop-opacity="0.44"/>
+      <stop offset="100%" stop-color="#8A4A00" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="cr-shadow" x="-10%" y="-6%" width="128%" height="122%">
+      <feDropShadow dx="3" dy="9" stdDeviation="9" flood-color="#3A1400" flood-opacity="0.42"/>
+    </filter>
+  </defs>
+
+  <!-- ═══ 3-D TIN BOX — slight right/top perspective ═══ -->
+
+  <!-- Right-side face (depth strip, parallelogram) -->
+  <path d="M158 62 L174 50 L174 162 L158 174 Z"
+        fill="url(#cr-side)" stroke="#C9A020" stroke-width="1.0" stroke-opacity="0.60"/>
+  <!-- Right-side sheen -->
+  <path d="M160 70 L172 60"
+        stroke="rgba(255,230,130,0.22)" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- ── MAIN FRONT FACE ── -->
+  <!-- Body (lower 60%) -->
+  <rect x="26" y="102" width="132" height="72" rx="5"
+        fill="url(#cr-body)" filter="url(#cr-shadow)"/>
+  <rect x="26" y="102" width="132" height="72" rx="5"
+        fill="url(#cr-glow)"/>
+  <rect x="26" y="102" width="132" height="72" rx="5"
+        fill="none" stroke="#C9A020" stroke-width="1.4" stroke-opacity="0.80"/>
+
+  <!-- Body left sheen -->
+  <path d="M30 110 L28 160 Q28 170 34 174"
+        stroke="rgba(255,240,150,0.26)" stroke-width="4"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- Body label area -->
+  <rect x="46" y="112" width="92" height="50" rx="8"
+        fill="rgba(212,175,55,0.09)" stroke="rgba(212,175,55,0.38)" stroke-width="0.9"/>
+  <!-- Leaf on body -->
+  <path d="M92 122 Q104 137 92 152 Q80 137 92 152"
+        fill="none"/>
+  <path d="M92 122 Q106 137 92 154 Q78 137 92 122 Z"
+        fill="rgba(212,175,55,0.22)" stroke="rgba(212,175,55,0.58)" stroke-width="0.9"/>
+  <line x1="92" y1="122" x2="92" y2="154"
+        stroke="rgba(212,175,55,0.46)" stroke-width="0.8"/>
+  <!-- Small "A" initial on label (brand mark) -->
+  <text x="116" y="150" font-family="Georgia,serif" font-size="22" font-weight="bold"
+        fill="rgba(212,175,55,0.38)" text-anchor="middle" dominant-baseline="middle"
+        letter-spacing="0">A</text>
+
+  <!-- Seam line between lid and body -->
+  <line x1="26" y1="102" x2="158" y2="102"
+        stroke="#C9A020" stroke-width="1.8" stroke-opacity="0.65"/>
+
+  <!-- ── LID FRONT FACE ── -->
+  <!-- Lid is slightly WIDER than body (the rim lip hangs over) -->
+  <rect x="22" y="58" width="140" height="46" rx="5"
+        fill="url(#cr-lid-front)"/>
+  <rect x="22" y="58" width="140" height="46" rx="5"
+        fill="url(#cr-glow)"/>
+  <rect x="22" y="58" width="140" height="46" rx="5"
+        fill="none" stroke="#C9A020" stroke-width="1.5" stroke-opacity="0.84"/>
+
+  <!-- Lid sheen arc (top-left light catch) -->
+  <ellipse cx="64" cy="66" rx="28" ry="7"
+           fill="rgba(255,253,218,0.36)" transform="rotate(-8 64 66)"/>
+  <!-- Lid inner bevel ring -->
+  <rect x="30" y="65" width="124" height="32" rx="4"
+        fill="none" stroke="rgba(212,175,55,0.38)" stroke-width="0.9"/>
+  <!-- Lid centre medallion -->
+  <circle cx="92" cy="81" r="12"
+          fill="rgba(212,175,55,0.14)" stroke="rgba(212,175,55,0.52)" stroke-width="1.0"/>
+  <!-- Leaf on lid medallion -->
+  <path d="M92 73 Q98 81 92 89 Q86 81 92 73 Z"
+        fill="rgba(212,175,55,0.30)" stroke="rgba(212,175,55,0.68)" stroke-width="0.8"/>
+  <line x1="92" y1="73" x2="92" y2="89"
+        stroke="rgba(212,175,55,0.55)" stroke-width="0.7"/>
+  <!-- "AUREA" text on lid -->
+  <text x="117" y="84" font-family="Georgia,serif" font-size="10" font-weight="bold"
+        fill="rgba(212,175,55,0.55)" text-anchor="middle" dominant-baseline="middle"
+        letter-spacing="1.5">AUREA</text>
+
+  <!-- ── TOP FACE (narrow perspective strip) ── -->
+  <path d="M22 58 L38 46 L178 46 L162 58 Z"
+        fill="url(#cr-top)" stroke="#C9A020" stroke-width="1.1" stroke-opacity="0.72"/>
+  <!-- Top face sheen -->
+  <path d="M26 56 L42 48 L120 48"
+        stroke="rgba(255,252,210,0.36)" stroke-width="1.5"
+        stroke-linecap="round" fill="none"/>
+</svg>

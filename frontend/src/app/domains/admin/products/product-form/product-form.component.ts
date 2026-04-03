@@ -79,6 +79,52 @@ function originalPriceValidator(
             ></textarea>
           </div>
 
+          <!-- Ingredients -->
+          <div class="form-group form-group--full">
+            <label class="form-label">Ingredients *</label>
+            <textarea
+              class="form-input form-textarea"
+              formControlName="ingredients"
+              rows="3"
+              placeholder="e.g. Ashwagandha root, Shilajit, Black pepper..."
+            ></textarea>
+            <span
+              class="form-error"
+              *ngIf="
+                form.get('ingredients')?.invalid &&
+                form.get('ingredients')?.touched
+              "
+              >Ingredients are required</span
+            >
+          </div>
+
+          <!-- Usage -->
+          <div class="form-group form-group--full">
+            <label class="form-label">Usage Instructions *</label>
+            <textarea
+              class="form-input form-textarea"
+              formControlName="usage"
+              rows="3"
+              placeholder="e.g. Take 1 capsule twice daily with warm milk..."
+            ></textarea>
+            <span
+              class="form-error"
+              *ngIf="form.get('usage')?.invalid && form.get('usage')?.touched"
+              >Usage instructions are required</span
+            >
+          </div>
+
+          <!-- Benefits -->
+          <div class="form-group form-group--full">
+            <label class="form-label">Benefits</label>
+            <textarea
+              class="form-input form-textarea"
+              formControlName="benefits"
+              rows="2"
+              placeholder="e.g. Boosts immunity, improves sleep..."
+            ></textarea>
+          </div>
+
           <!-- Price -->
           <div class="form-group">
             <label class="form-label">Price (&#8377;) *</label>
@@ -228,6 +274,9 @@ export class ProductFormComponent implements OnInit {
     {
       name: ["", Validators.required],
       description: ["", Validators.required],
+      ingredients: ["", Validators.required],
+      usage: ["", Validators.required],
+      benefits: [""],
       price: [0, [Validators.required, Validators.min(1)]],
       originalPrice: [null as number | null],
       category: ["", Validators.required],
@@ -247,6 +296,9 @@ export class ProductFormComponent implements OnInit {
           this.form.patchValue({
             name: p.name,
             description: p.description,
+            ingredients: p.ingredients ?? "",
+            usage: p.usage ?? "",
+            benefits: p.benefits ?? "",
             price: p.price,
             originalPrice: p.originalPrice ?? null,
             category: p.category,
@@ -309,6 +361,9 @@ export class ProductFormComponent implements OnInit {
       name: val.name!,
       slug: val.name!.toLowerCase().replaceAll(/\s+/g, "-"),
       description: val.description!,
+      ingredients: val.ingredients!,
+      usage: val.usage!,
+      benefits: val.benefits ?? "",
       price: val.price!,
       originalPrice: val.originalPrice ?? undefined,
       category: val.category!,
