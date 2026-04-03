@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import ProductModel from "../models/product.model";
@@ -41,7 +41,7 @@ function generateOrderNumber(): string {
 //   3. Save a pending Order document in MongoDB
 //   4. Return { orderId, razorpayOrderId, amount, keyId } to the frontend
 // ─────────────────────────────────────────────────────────────────────────────
-router.post("/create", async (req, res) => {
+router.post("/create", async (req: Request, res: Response) => {
   try {
     const { items, customer } = req.body as {
       items: {
@@ -180,7 +180,7 @@ router.post("/create", async (req, res) => {
 // GET /api/orders
 // Admin: list all orders, newest first
 // ─────────────────────────────────────────────────────────────────────────────
-router.get("/", async (_req, res) => {
+router.get("/", async (_req: Request, res: Response) => {
   try {
     const orders = await OrderModel.find().sort({ createdAt: -1 }).lean();
     return res.json(orders);
@@ -194,7 +194,7 @@ router.get("/", async (_req, res) => {
 // GET /api/orders/stats
 // Admin dashboard summary — MUST be defined before /:id to avoid match clash
 // ─────────────────────────────────────────────────────────────────────────────
-router.get("/stats", async (_req, res) => {
+router.get("/stats", async (_req: Request, res: Response) => {
   try {
     const [total, pending, processing, shipped, delivered, cancelled, revenue] =
       await Promise.all([
@@ -228,7 +228,7 @@ router.get("/stats", async (_req, res) => {
 // PATCH /api/orders/:id/status
 // Admin: update order fulfilment status
 // ─────────────────────────────────────────────────────────────────────────────
-router.patch("/:id/status", async (req, res) => {
+router.patch("/:id/status", async (req: Request, res: Response) => {
   try {
     const { status } = req.body as { status: string };
     const allowed = [
@@ -280,7 +280,7 @@ router.patch("/:id/status", async (req, res) => {
 //   - Frontend to check a pending order on page refresh / resume
 //   - order-success page to display order details
 // ─────────────────────────────────────────────────────────────────────────────
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req: Request, res: Response) => {
   try {
     const order = await OrderModel.findById(req.params.id).lean();
     if (!order) {
@@ -315,7 +315,7 @@ router.get("/:id", async (req, res) => {
 //
 // Idempotent — safe to call multiple times for the same orderId.
 // ─────────────────────────────────────────────────────────────────────────────
-router.post("/:id/verify-payment", async (req, res) => {
+router.post("/:id/verify-payment", async (req: Request, res: Response) => {
   try {
     const { razorpayPaymentId, razorpayOrderId, razorpaySignature } =
       req.body as {

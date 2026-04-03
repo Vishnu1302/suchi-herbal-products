@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import ProductModel from "../models/product.model";
 import InventoryModel from "../models/inventory.model";
 
@@ -14,9 +14,9 @@ const router = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 function mergeAvailability(
   product: Record<string, unknown>,
-  inventory: { stock: number } | null,
+  inventory: Record<string, unknown> | null,
 ) {
-  if (!inventory) return product;
+  if (!inventory || typeof inventory.stock !== "number") return product;
   return {
     ...product,
     stockCount: inventory.stock,
@@ -25,7 +25,7 @@ function mergeAvailability(
 }
 
 // GET /api/products - list all products
-router.get("/", async (_req, res) => {
+router.get("/", async (_req: Request, res: Response) => {
   try {
     const products = await ProductModel.find().sort({ createdAt: -1 }).lean();
 
@@ -53,7 +53,7 @@ router.get("/", async (_req, res) => {
 });
 
 // POST /api/products - create a new product
-router.post("/", async (req, res) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
     const body = req.body;
 
@@ -141,8 +141,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET /api/products/:id - get a single product by MongoDB _id
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req: Request, res: Response) => {
   try {
     const [product, inventory] = await Promise.all([
       ProductModel.findById(req.params.id).lean(),
@@ -163,8 +162,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// PUT /api/products/:id - update a product
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req: Request, res: Response) => {
   try {
     const updates = req.body;
     const product = await ProductModel.findByIdAndUpdate(
@@ -220,8 +218,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE /api/products/:id - delete a product
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req: Request, res: Response) => {
   try {
     const result = await ProductModel.findByIdAndDelete(req.params.id).lean();
     if (!result) {

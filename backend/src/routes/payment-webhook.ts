@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import crypto from "crypto";
 import OrderModel from "../models/order.model";
 import { commitInventory, releaseInventory } from "../utils/inventory.utils";
@@ -21,7 +21,7 @@ const router = Router();
 //   - order.paid        → fallback confirmation
 //   - payment.failed    → mark order failed
 // ─────────────────────────────────────────────────────────────────────────────
-router.post("/", async (req, res) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
     const signature = req.headers["x-razorpay-signature"] as string | undefined;
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;

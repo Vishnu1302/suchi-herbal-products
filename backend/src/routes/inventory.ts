@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import mongoose from "mongoose";
 import InventoryModel from "../models/inventory.model";
 import ProductModel from "../models/product.model";
@@ -6,7 +6,7 @@ import ProductModel from "../models/product.model";
 const router = Router();
 
 // GET /api/inventory - list all inventory items
-router.get("/", async (_req, res) => {
+router.get("/", async (_req: Request, res: Response) => {
   try {
     const items = await InventoryModel.find().lean();
     res.json(items);
@@ -17,7 +17,7 @@ router.get("/", async (_req, res) => {
 });
 
 // GET /api/inventory/:productId - inventory for a specific product
-router.get("/:productId", async (req, res) => {
+router.get("/:productId", async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     if (!mongoose.isValidObjectId(productId)) {
@@ -33,7 +33,7 @@ router.get("/:productId", async (req, res) => {
 });
 
 // POST /api/inventory/update-stock - update stock for a product and sync product
-router.post("/update-stock", async (req, res) => {
+router.post("/update-stock", async (req: Request, res: Response) => {
   try {
     const { productId, newStock } = req.body as {
       productId: string;
