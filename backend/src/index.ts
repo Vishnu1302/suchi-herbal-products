@@ -64,6 +64,7 @@ app.listen(PORT, () => {
 if (!MONGODB_URI) {
   console.error("WARNING: MONGODB_URI is not set — database calls will fail");
 } else {
+  mongoose.set("bufferTimeoutMS", 30000);
   mongoose
     .connect(MONGODB_URI)
     .then(() => console.log("Connected to MongoDB"))
