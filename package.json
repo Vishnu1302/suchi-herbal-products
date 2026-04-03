@@ -3,25 +3,12 @@
   "version": "1.0.0",
   "description": "Aurea — Premium Herbal Skincare Monorepo (FE + BE + Infrastructure)",
   "private": true,
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
   "scripts": {
     "start:fe": "cd frontend && ng serve",
     "start:be": "cd backend && npm run dev",
-    "start:all": "npm-run-all --parallel start:fe start:be",
     "build:fe": "cd frontend && ng build --configuration production",
     "build:be": "cd backend && npm run build",
-    "build:all": "npm run build:be && npm run build:fe",
-    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
-    "lint:fe": "cd frontend && ng lint",
-    "lint:be": "cd backend && npm run lint",
-    "test:fe": "cd frontend && ng test --watch=false --browsers=ChromeHeadless",
-    "test:be": "cd backend && npm test"
-  },
-  "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "install:all": "cd frontend && npm install && cd ../backend && npm install"
   },
   "engines": {
     "node": ">=18.0.0",

@@ -1,5 +1,5 @@
-import express from "express";
-import cors from "cors";
+import express, { type Request, type Response } from "express";
+import cors, { type CorsOptions } from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import productsRouter from "./routes/products";
@@ -17,22 +17,25 @@ const MONGODB_URI = process.env.MONGODB_URI || "";
 const allowedOrigins = new Set(
   (process.env.CLIENT_URL || "http://localhost:4200")
     .split(",")
-    .map((s) => s.trim()),
+    .map((s: string) => s.trim()),
 );
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow server-to-server calls (no origin) and whitelisted origins
-      if (!origin || allowedOrigins.has(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origin ${origin} not allowed`));
-      }
-    },
-    credentials: true,
-  }),
-);
+const corsOptions: CorsOptions = {
+  origin: (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void,
+  ) => {
+    // Allow server-to-server calls (no origin) and whitelisted origins
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // ⚠️  WEBHOOK MUST BE REGISTERED WITH RAW BODY PARSER BEFORE express.json()
 // Razorpay signature verification requires the exact raw bytes of the request body.
@@ -43,7 +46,7 @@ app.use("/api/payments/webhook", paymentWebhookRouter);
 // Global JSON parser for all other routes
 app.use(express.json());
 
-app.get("/health", (_req, res) => {
+app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok" });
 });
 

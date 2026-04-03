@@ -14,9 +14,9 @@ const router = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 function mergeAvailability(
   product: Record<string, unknown>,
-  inventory: Record<string, unknown> | null,
+  inventory: { stock: number } | null,
 ) {
-  if (!inventory || typeof inventory.stock !== "number") return product;
+  if (!inventory) return product;
   return {
     ...product,
     stockCount: inventory.stock,

@@ -1,5 +1,6 @@
 import { Router, type Request, type Response } from "express";
-import multer from "multer";
+import multer, { type FileFilterCallback } from "multer";
+import type { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import cloudinary from "../config/cloudinary";
 
 const router = Router();
@@ -8,7 +9,11 @@ const router = Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
-  fileFilter: (_req, file, cb) => {
+  fileFilter: (
+    _req: Request,
+    file: Express.Multer.File,
+    cb: FileFilterCallback,
+  ) => {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
     } else {
@@ -31,7 +36,10 @@ router.post(
       new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           { folder: "suchi-kids-products", resource_type: "image" },
-          (error, result) => {
+          (
+            error: UploadApiErrorResponse | undefined,
+            result: UploadApiResponse | undefined,
+          ) => {
             if (error || !result) {
               reject(error ?? new Error("Cloudinary upload failed"));
             } else {
