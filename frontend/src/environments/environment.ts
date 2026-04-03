@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:4000/api",
+  apiUrl: "https://suchi-herbal-products.onrender.com/api",
   useMockData: false,
   appName: "Aurea",
 

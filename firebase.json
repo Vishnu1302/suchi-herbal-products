@@ -1,0 +1,13 @@
+{
+  "hosting": {
+    "site": "aurea-c47f9",
+    "public": "frontend/dist/suchi-kids-fashion/browser",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
