@@ -1,8 +1,19 @@
 {
   "hosting": {
-    "site": "aurea-c47f9",
+    "site": "aurea-beautify",
     "public": "frontend/dist/suchi-kids-fashion/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cross-Origin-Opener-Policy",
+            "value": "same-origin-allow-popups"
+          }
+        ]
+      }
+    ],
     "rewrites": [
       {
         "source": "**",

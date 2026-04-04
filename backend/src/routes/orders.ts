@@ -9,6 +9,7 @@ import {
   releaseInventory,
   restockInventory,
 } from "../utils/inventory.utils";
+import { sendOrderConfirmationEmail } from "../utils/email.utils";
 
 const router = Router();
 
@@ -366,6 +367,28 @@ router.post("/:id/verify-payment", async (req: Request, res: Response) => {
 
     // ── Commit inventory: permanently deduct stock, clear reservation ─────────
     await commitInventory(order.items);
+
+    // ── Send order confirmation email (non-fatal) ─────────────────────────────
+    sendOrderConfirmationEmail({
+      to: order.customerEmail,
+      customerName: order.customerName,
+      orderNumber: order.orderNumber,
+      items: order.items.map((i) => ({
+        productName: i.productName,
+        quantity: i.quantity,
+        unitPrice: i.unitPrice,
+        totalPrice: i.totalPrice,
+      })),
+      total: order.total,
+      shippingAddress: {
+        line1: order.shippingAddress.line1,
+        city: order.shippingAddress.city,
+        state: order.shippingAddress.state,
+        pinCode: order.shippingAddress.pinCode,
+      },
+    }).catch((err: unknown) =>
+      console.error("Failed to send confirmation email:", err),
+    );
 
     console.log(`✅ Order ${order.orderNumber} PAID — verified via frontend`);
     return res.json({ success: true, orderId: String(order._id) });
