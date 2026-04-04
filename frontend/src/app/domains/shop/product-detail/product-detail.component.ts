@@ -10,6 +10,7 @@ import {
 import { AdminProductService } from "../../admin/products/products.service";
 import { CartService } from "../cart/cart.service";
 import { Product } from "../../../core/models/product.model";
+import { CloudinaryUrlPipe } from "../../../shared/pipes/cloudinary-url.pipe";
 
 // Duration (ms) the "Added to cart" toast stays visible
 const TOAST_DURATION = 2500;
@@ -17,7 +18,7 @@ const TOAST_DURATION = 2500;
 @Component({
   selector: "app-product-detail",
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, CloudinaryUrlPipe],
   styleUrl: "./product-detail.component.scss",
   templateUrl: "./product-detail.component.html",
 })

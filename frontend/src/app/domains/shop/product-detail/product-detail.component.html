@@ -7,7 +7,11 @@
   <div class="detail__layout">
     <!-- Image Gallery -->
     <div class="detail__gallery">
-      <img [src]="selectedImage()" [alt]="p.name" class="detail__main-img" />
+      <img
+        [src]="selectedImage() | cloudinaryUrl: 600"
+        [alt]="p.name"
+        class="detail__main-img"
+      />
       <div class="detail__thumbs">
         <button
           *ngFor="let img of p.images"
@@ -17,7 +21,7 @@
           (click)="selectedImage.set(img)"
           [attr.aria-label]="'Show image ' + p.name"
         >
-          <img [src]="img" [alt]="p.name" />
+          <img [src]="img | cloudinaryUrl: 100" [alt]="p.name" loading="lazy" />
         </button>
       </div>
     </div>

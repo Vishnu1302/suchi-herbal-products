@@ -3,12 +3,13 @@ import { CommonModule } from "@angular/common";
 import { RouterLink, ActivatedRoute } from "@angular/router";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { map } from "rxjs";
+import { map, shareReplay } from "rxjs";
 import { AdminProductService } from "../../admin/products/products.service";
 import { CartService } from "../cart/cart.service";
 import { Product } from "../../../core/models/product.model";
 import { CATEGORIES } from "../../../core/models/category.model";
 import { CatalogFilterPopupComponent } from "../../../shared/catalog-filter-popup/catalog-filter-popup.component";
+import { CloudinaryUrlPipe } from "../../../shared/pipes/cloudinary-url.pipe";
 
 @Component({
   selector: "app-product-catalog",
@@ -18,6 +19,7 @@ import { CatalogFilterPopupComponent } from "../../../shared/catalog-filter-popu
     RouterLink,
     ReactiveFormsModule,
     CatalogFilterPopupComponent,
+    CloudinaryUrlPipe,
   ],
   styleUrl: "./product-catalog.component.scss",
   templateUrl: "./product-catalog.component.html",
@@ -46,14 +48,16 @@ export class ProductCatalogComponent implements OnInit {
     }
   }
 
-  private readonly allProducts = toSignal(this.productsSvc.getAll(), {
+  // Single shared observable — prevents two HTTP calls for products
+  private readonly products$ = this.productsSvc.getAll().pipe(shareReplay(1));
+
+  private readonly allProducts = toSignal(this.products$, {
     initialValue: [] as Product[],
   });
 
-  readonly isLoading = toSignal(
-    this.productsSvc.getAll().pipe(map(() => false)),
-    { initialValue: true },
-  );
+  readonly isLoading = toSignal(this.products$.pipe(map(() => false)), {
+    initialValue: true,
+  });
 
   private readonly filterValues = toSignal(this.filterForm.valueChanges, {
     initialValue: this.filterForm.value,

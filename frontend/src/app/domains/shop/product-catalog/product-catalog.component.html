@@ -75,10 +75,19 @@
         <div
           class="product-card card"
           [class.product-card--oos]="!p.inStock || p.stockCount === 0"
-          *ngFor="let p of filteredProducts"
+          *ngFor="let p of filteredProducts; let i = index"
         >
           <a [routerLink]="['/products', p.id]" class="product-card__img-wrap">
-            <img [src]="p.images[0]" [alt]="p.name" />
+            <!-- First 4 images: eager + high priority (above fold / LCP candidates) -->
+            <!-- Rest: lazy loaded -->
+            <img
+              [src]="p.images[0] | cloudinaryUrl: 300"
+              [alt]="p.name"
+              [attr.loading]="i < 4 ? null : 'lazy'"
+              [attr.fetchpriority]="i === 0 ? 'high' : null"
+              width="300"
+              height="300"
+            />
           </a>
           <div class="product-card__body">
             <h4>
