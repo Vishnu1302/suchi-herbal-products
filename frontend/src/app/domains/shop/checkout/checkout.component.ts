@@ -48,6 +48,7 @@ interface PendingOrder {
   currency: string;
   orderNumber: string;
   keyId: string;
+  savedAt: number; // unix ms — used for 10-min expiry
 }
 
 const PENDING_KEY = "suchi_pending_order";
@@ -96,9 +97,19 @@ export class CheckoutComponent implements OnInit {
     return this.form.controls;
   }
 
+  /**
+   * True when the only valid action is resuming a pending payment —
+   * cart is empty so there is nothing to fill in / summarise.
+   * The template hides the delivery form + summary in this mode.
+   */
+  get resumeOnly(): boolean {
+    return this.state() === "resumable" && this.cartSvc.cartCount() === 0;
+  }
+
   //  Lifecycle
   ngOnInit() {
-    // Redirect to shop if cart is empty and no pending order to resume
+    // cartGuard already blocks access when cart is empty without a pending order.
+    // This is a belt-and-suspenders check for direct navigation edge cases.
     const raw = localStorage.getItem(PENDING_KEY);
     if (this.cartSvc.cartCount() === 0 && !raw) {
       this.router.navigate(["/products"]);
@@ -235,6 +246,7 @@ export class CheckoutComponent implements OnInit {
       currency: orderData.currency,
       orderNumber: orderData.orderNumber,
       keyId: orderData.keyId,
+      savedAt: Date.now(),
     };
     localStorage.setItem(PENDING_KEY, JSON.stringify(pending));
     this.pendingOrder.set(pending);
@@ -260,6 +272,10 @@ export class CheckoutComponent implements OnInit {
     this.pendingOrder.set(null);
     this.state.set("idle");
     this.errorMessage.set("");
+    // If cart is empty after discarding pending order, there is nothing here
+    if (this.cartSvc.cartCount() === 0) {
+      this.router.navigate(["/"]);
+    }
   }
 
   //

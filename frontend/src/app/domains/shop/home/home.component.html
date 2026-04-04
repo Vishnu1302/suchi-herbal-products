@@ -1,3 +1,31 @@
+<!-- Pending payment resume banner -->
+<div class="resume-banner" *ngIf="pendingOrderNumber()">
+  <div class="resume-banner__body">
+    <span class="resume-banner__icon">⚠️</span>
+    <div>
+      <strong>You have an incomplete payment</strong>
+      <p>
+        Order <strong>#{{ pendingOrderNumber() }}</strong> is awaiting payment.
+        This expires soon.
+      </p>
+    </div>
+  </div>
+  <div class="resume-banner__actions">
+    <button
+      class="resume-banner__btn resume-banner__btn--primary"
+      (click)="resumePayment()"
+    >
+      Resume Payment
+    </button>
+    <button
+      class="resume-banner__btn resume-banner__btn--ghost"
+      (click)="dismissPending()"
+    >
+      Dismiss
+    </button>
+  </div>
+</div>
+
 <!-- Hero — full viewport, emblem only -->
 <section class="hero">
   <!-- Sanskrit / Devanagari tagline — sits below navbar, above emblem -->

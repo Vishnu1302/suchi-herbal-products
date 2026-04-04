@@ -1,11 +1,52 @@
-import { Component } from "@angular/core";
-import { RouterLink } from "@angular/router";
+import { Component, OnInit, inject, signal } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Router, RouterLink } from "@angular/router";
+
+const PENDING_KEY = "suchi_pending_order";
+const PENDING_EXPIRY_MS = 10 * 60 * 1000; // 10 minutes
 
 @Component({
   selector: "app-home",
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   styleUrl: "./home.component.scss",
   templateUrl: "./home.component.html",
 })
-export class HomeComponent {}
+export class HomeComponent implements OnInit {
+  private readonly router = inject(Router);
+
+  pendingOrderNumber = signal<string | null>(null);
+
+  ngOnInit() {
+    this.checkPending();
+  }
+
+  private checkPending() {
+    try {
+      const raw = localStorage.getItem(PENDING_KEY);
+      if (!raw) return;
+      const pending = JSON.parse(raw) as {
+        orderNumber?: string;
+        savedAt?: number;
+      };
+      const savedAt = pending.savedAt ?? 0;
+      if (Date.now() - savedAt < PENDING_EXPIRY_MS) {
+        this.pendingOrderNumber.set(pending.orderNumber ?? "");
+      } else {
+        // Expired — clean up silently
+        localStorage.removeItem(PENDING_KEY);
+      }
+    } catch {
+      localStorage.removeItem(PENDING_KEY);
+    }
+  }
+
+  resumePayment() {
+    this.router.navigate(["/checkout"]);
+  }
+
+  dismissPending() {
+    localStorage.removeItem(PENDING_KEY);
+    this.pendingOrderNumber.set(null);
+  }
+}

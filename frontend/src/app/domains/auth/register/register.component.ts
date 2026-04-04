@@ -95,4 +95,11 @@ export class RegisterComponent {
       this.loading.set(false);
     }
   }
+
+  tryAgain() {
+    this.emailSent.set(false);
+    this.sentEmail.set("");
+    this.error.set("");
+    this.form.reset();
+  }
 }

@@ -8,6 +8,12 @@
         We sent a verification link to <strong>{{ sentEmail() }}</strong
         >. Please verify your email before shopping.
       </p>
+      <p
+        class="auth-subtitle"
+        style="font-size: 0.82rem; color: #9e9470; margin-top: 6px"
+      >
+        ⚠️ Don't see it? Check your <strong>spam / junk</strong> folder.
+      </p>
       <button
         class="btn-primary"
         style="margin-top: 16px; width: 100%"
@@ -15,6 +21,19 @@
         [disabled]="loading()"
       >
         {{ loading() ? "Sending..." : "🔄 Resend verification email" }}
+      </button>
+      <button
+        class="btn-primary"
+        style="
+          margin-top: 10px;
+          width: 100%;
+          background: transparent;
+          border: 1px solid rgba(212, 175, 55, 0.3);
+          color: var(--color-text-muted);
+        "
+        (click)="tryAgain()"
+      >
+        ← Try a different email
       </button>
       <p class="auth-error" *ngIf="error()">{{ error() }}</p>
       <p class="auth-footer" style="margin-top: 12px">
