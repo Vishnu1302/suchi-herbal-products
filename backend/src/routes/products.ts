@@ -5,6 +5,19 @@ import { requireAdmin } from "../middleware/adminAuth";
 
 const router = Router();
 
+// ─── Simple in-process cache for GET /api/products ──────────────────────────
+// Products change only via admin actions (POST/PUT/DELETE).
+// Cache the enriched list for up to 60 s so catalog page loads are instant
+// for regular shoppers. Any write route calls invalidateCache() immediately.
+let cachedProducts: unknown[] | null = null;
+let cacheTime = 0;
+const CACHE_TTL_MS = 60_000; // 60 seconds
+
+function invalidateCache() {
+  cachedProducts = null;
+  cacheTime = 0;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper: merge live inventory availability into a product plain object.
 //
@@ -27,14 +40,16 @@ function mergeAvailability(
 
 // GET /api/products - list all products
 router.get("/", async (_req: Request, res: Response) => {
-  try {
-    const products = await ProductModel.find().sort({ createdAt: -1 }).lean();
+  if (cachedProducts && Date.now() - cacheTime < CACHE_TTL_MS) {
+    return res.json(cachedProducts);
+  }
 
-    // Fetch all inventory docs in one query and build a lookup map
-    const productIds = products.map((p) => p._id);
-    const inventories = await InventoryModel.find({
-      productId: { $in: productIds },
-    }).lean();
+  try {
+    const [products, inventories] = await Promise.all([
+      ProductModel.find().sort({ createdAt: -1 }).lean(),
+      InventoryModel.find().lean(),
+    ]);
+
     const invMap = new Map(
       inventories.map((inv) => [String(inv.productId), inv]),
     );
@@ -45,6 +60,9 @@ router.get("/", async (_req: Request, res: Response) => {
         invMap.get(String(p._id)) ?? null,
       ),
     );
+
+    cachedProducts = enriched;
+    cacheTime = Date.now();
 
     res.json(enriched);
   } catch (err) {
@@ -131,6 +149,7 @@ router.post("/", requireAdmin, async (req: Request, res: Response) => {
       lastUpdated: new Date(),
     });
 
+    invalidateCache();
     res.status(201).json(product);
   } catch (err: unknown) {
     console.error("Error creating product", err);
@@ -207,6 +226,7 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
     const inventory = await InventoryModel.findOne({
       productId: req.params.id,
     }).lean();
+    invalidateCache();
     res.json(
       mergeAvailability(
         product as unknown as Record<string, unknown>,
@@ -228,6 +248,7 @@ router.delete("/:id", requireAdmin, async (req: Request, res: Response) => {
 
     // Also delete related inventory entry
     await InventoryModel.deleteOne({ productId: req.params.id });
+    invalidateCache();
     res.status(204).send();
   } catch (err) {
     console.error("Error deleting product", err);

@@ -90,7 +90,7 @@ Payment flow:
 - **Root Directory:** `backend`
 - **Build Command:** `npm install && npm run build`
 - **Start Command:** `npm start`
-- **Plan:** Free (spins down after 15 min inactivity — first request after sleep takes ~30s)
+- **Plan:** Free (kept alive 24/7 via UptimeRobot pings — see Uptime Monitoring section)
 
 Required Render environment variables:
 
@@ -261,3 +261,21 @@ curl -X POST https://suchi-herbal-products.onrender.com/api/uploads/image
 | POST /api/inventory/update-stock | `401` ✅      |
 | PATCH /api/orders/:id/status     | `401` ✅      |
 | POST /api/uploads/image          | `401` ✅      |
+
+---
+
+## Uptime Monitoring
+
+The backend is monitored via **UptimeRobot** (free tier) to prevent Render free tier spin-down.
+
+| What               | Detail                                              |
+| ------------------ | --------------------------------------------------- |
+| Monitor type       | HTTP(s)                                             |
+| Ping URL           | `https://suchi-herbal-products.onrender.com/health` |
+| Interval           | Every 5 minutes                                     |
+| Public status page | https://stats.uptimerobot.com/3SvYTyzeZI            |
+
+**Why `/health` only?** All routes (products, orders, inventory) run in the same Node.js process.
+One ping keeps the whole server alive — no need to monitor individual API routes.
+
+**Render free tier hours:** 750 hours/month limit. 24 × 31 = 744 hours of always-on = safely within limit.
