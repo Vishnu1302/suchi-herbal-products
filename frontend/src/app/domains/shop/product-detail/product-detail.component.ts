@@ -97,33 +97,4 @@ export class ProductDetailComponent implements OnInit {
     this.toast.set("✅ Added to cart!");
     setTimeout(() => this.toast.set(""), TOAST_DURATION);
   }
-
-  buyNow(product: Product): void {
-    if (!product.inStock || product.stockCount === 0) return;
-    this.form.markAllAsTouched();
-    if (this.form.invalid) return;
-    const qty = this.form.controls["qty"].value as number;
-    if (qty > this.remainingStock) {
-      const plural = this.remainingStock === 1 ? "" : "s";
-      const msg =
-        this.remainingStock <= 0
-          ? `You already have all available units in your cart.`
-          : `Only ${this.remainingStock} more unit${plural} can be added.`;
-      this.sizeError.set(msg);
-      return;
-    }
-    this.sizeError.set("");
-    // Navigate to checkout WITHOUT touching the cart.
-    // Pass the item as router state so checkout treats it as a single-item order.
-    this.router.navigate(["/checkout"], {
-      state: {
-        buyNowItem: {
-          product,
-          quantity: qty,
-          selectedSize: "",
-          selectedColor: "",
-        },
-      },
-    });
-  }
 }

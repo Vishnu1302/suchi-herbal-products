@@ -1,7 +1,6 @@
 ﻿import { Component, inject, OnInit, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router, RouterLink } from "@angular/router";
-import { Product } from "../../../core/models/product.model";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -54,13 +53,6 @@ interface PendingOrder {
 
 const PENDING_KEY = "aurea_pending_order";
 
-export interface BuyNowItem {
-  product: Product;
-  quantity: number;
-  selectedSize: string;
-  selectedColor: string;
-}
-
 @Component({
   selector: "app-checkout",
   standalone: true,
@@ -82,28 +74,6 @@ export class CheckoutComponent implements OnInit {
   errorMessage = signal("");
   pendingOrder = signal<PendingOrder | null>(null);
   stockWarnings = signal<string[]>([]);
-
-  // Buy Now: single-item checkout that bypasses the cart
-  buyNowItem = signal<BuyNowItem | null>(null);
-
-  /** Items used for display and order payload — either buyNow override or full cart */
-  get checkoutItems() {
-    const bni = this.buyNowItem();
-    if (bni) return [bni];
-    return this.cartSvc.cartItems().map((i) => ({
-      product: i.product,
-      quantity: i.quantity,
-      selectedSize: i.selectedSize,
-      selectedColor: i.selectedColor,
-    }));
-  }
-
-  get checkoutTotal(): number {
-    return this.checkoutItems.reduce(
-      (sum, i) => sum + i.product.price * i.quantity,
-      0,
-    );
-  }
 
   //  Delivery form
   form = this.fb.group({
@@ -138,19 +108,10 @@ export class CheckoutComponent implements OnInit {
 
   //  Lifecycle
   ngOnInit() {
-    // Pick up Buy Now item passed via router state
-    const nav = this.router.getCurrentNavigation();
-    const buyNowItem = nav?.extras?.state?.["buyNowItem"] as
-      | BuyNowItem
-      | undefined;
-    if (buyNowItem) {
-      this.buyNowItem.set(buyNowItem);
-    }
-
     // cartGuard already blocks access when cart is empty without a pending order.
     // This is a belt-and-suspenders check for direct navigation edge cases.
     const raw = localStorage.getItem(PENDING_KEY);
-    if (!buyNowItem && this.cartSvc.cartCount() === 0 && !raw) {
+    if (this.cartSvc.cartCount() === 0 && !raw) {
       this.router.navigate(["/products"]);
       return;
     }
@@ -249,7 +210,7 @@ export class CheckoutComponent implements OnInit {
     const user = this.authSvc.currentUser();
 
     const payload = {
-      items: this.checkoutItems.map((i) => ({
+      items: this.cartSvc.cartItems().map((i) => ({
         productId: i.product.id,
         quantity: i.quantity,
         selectedSize: i.selectedSize,
@@ -376,8 +337,7 @@ export class CheckoutComponent implements OnInit {
 
       if (result.success) {
         localStorage.removeItem(PENDING_KEY);
-        // Only clear the cart for normal checkout; Buy Now never added to cart
-        if (!this.buyNowItem()) this.cartSvc.clearCart();
+        this.cartSvc.clearCart();
         this.router.navigate(["/order-success", order.orderId]);
       } else {
         this.errorMessage.set(
