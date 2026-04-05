@@ -100,15 +100,19 @@
   >
     <span
       >🌿 Hey! Quick favour — verify your email so we know you're human (and not
-      a very tech-savvy houseplant). You can still sign in and shop freely in
-      the meantime!</span
+      a very tech-savvy houseplant). Can't find it? Check your spam folder. You
+      can still shop freely in the meantime!</span
     >
     <button
       class="verify-banner__resend"
       (click)="resendVerification()"
       [disabled]="resendSent"
     >
-      {{ resendSent ? "✅ Email sent!" : "Resend verification email" }}
+      {{
+        resendSent
+          ? "✅ Sent! Check your inbox (and spam)"
+          : "Resend verification email"
+      }}
     </button>
   </div>
 

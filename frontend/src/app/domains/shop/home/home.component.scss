@@ -526,15 +526,14 @@
     border-color 0.26s,
     box-shadow 0.26s;
 
-  img.planet-icon {
-    /* height:auto avoids collapse when parent height is a CSS custom property */
-    width: 62%;
-    height: auto;
-    display: block;
-    filter: brightness(1.4) drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
+  i.planet-icon {
+    font-size: clamp(14px, calc(var(--planet) * 0.38), 26px);
+    color: var(--gold-primary);
+    filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
     transition:
       transform 0.25s,
-      filter 0.25s;
+      filter 0.25s,
+      color 0.25s;
     flex-shrink: 0;
   }
 
@@ -560,9 +559,10 @@
       0 0 28px rgba(212, 175, 55, 0.35),
       inset 0 1px 0 rgba(212, 175, 55, 0.2);
 
-    img.planet-icon {
+    i.planet-icon {
       transform: scale(1.1);
-      filter: brightness(1.7) drop-shadow(0 0 8px rgba(212, 175, 55, 0.65));
+      color: var(--gold-secondary);
+      filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.65));
     }
     span {
       color: rgba(230, 199, 106, 0.9);
@@ -626,10 +626,6 @@
     )
     scale(var(--planet-scale));
 
-  img.planet-icon {
-    width: 48%;
-  }
-
   &:hover {
     transform: translate(
         calc(cos(var(--p3-angle)) * var(--ref) * 0.3),
@@ -648,10 +644,6 @@
       calc(sin(var(--p4-angle)) * var(--ref) * 0.52)
     )
     scale(var(--planet-scale));
-
-  img.planet-icon {
-    width: 46%;
-  }
 
   /* Shampoo label override: tighter spacing so 7 chars fit on one line */
   span {
