@@ -113,7 +113,17 @@ export class ProductDetailComponent implements OnInit {
       return;
     }
     this.sizeError.set("");
-    this.cartSvc.addToCart(product, "", "", qty);
-    this.router.navigate(["/checkout"]);
+    // Navigate to checkout WITHOUT touching the cart.
+    // Pass the item as router state so checkout treats it as a single-item order.
+    this.router.navigate(["/checkout"], {
+      state: {
+        buyNowItem: {
+          product,
+          quantity: qty,
+          selectedSize: "",
+          selectedColor: "",
+        },
+      },
+    });
   }
 }

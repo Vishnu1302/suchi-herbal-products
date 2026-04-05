@@ -102,6 +102,7 @@
 
   min-height: calc(100vh - var(--shell-nav-height, 70px));
   min-height: calc(100svh - var(--shell-nav-height, 70px));
+  /* On desktop lock to viewport height for the cinematic full-screen look */
   height: calc(100vh - var(--shell-nav-height, 70px));
   height: calc(100svh - var(--shell-nav-height, 70px));
 
@@ -270,6 +271,7 @@
 .hero__emblem {
   position: relative;
   z-index: 2;
+  margin-top: -5vh;
   overflow: hidden;
   --emblem-boundary: min(
     calc(100vw - (var(--hero-inline-padding) * 2) - 2px),
@@ -826,6 +828,9 @@
     --hero-gap: clamp(12px, 1.8svh, 20px);
     --hero-button-height: 54px;
     --hero-tagline-height: clamp(36px, 5.5svh, 56px);
+    /* On mobile let height be auto so content never overflows off-screen */
+    height: auto;
+    padding-bottom: clamp(24px, 4svh, 40px);
   }
 
   .hero__tagline {
@@ -850,10 +855,11 @@
 
 @media (max-width: 480px) {
   .hero {
-    --hero-block-padding: 10px;
-    --hero-gap: 10px;
+    --hero-block-padding: 8px;
+    --hero-gap: 8px;
     --hero-button-height: 48px;
     --hero-tagline-height: clamp(32px, 5svh, 48px);
+    padding-bottom: 20px;
   }
 
   .hero__tagline {
