@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import mongoose from "mongoose";
 import InventoryModel from "../models/inventory.model";
 import ProductModel from "../models/product.model";
+import { requireAdmin } from "../middleware/adminAuth";
 
 const router = Router();
 
@@ -32,61 +33,67 @@ router.get("/:productId", async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/inventory/update-stock - update stock for a product and sync product
-router.post("/update-stock", async (req: Request, res: Response) => {
-  try {
-    const { productId, newStock } = req.body as {
-      productId: string;
-      newStock: number;
-      reason?: string;
-    };
+// POST /api/inventory/update-stock - update stock for a product and sync product (admin only)
+router.post(
+  "/update-stock",
+  requireAdmin,
+  async (req: Request, res: Response) => {
+    try {
+      const { productId, newStock } = req.body as {
+        productId: string;
+        newStock: number;
+        reason?: string;
+      };
 
-    if (!productId || typeof productId !== "string") {
-      return res.status(400).json({ message: 'Field "productId" is required' });
+      if (!productId || typeof productId !== "string") {
+        return res
+          .status(400)
+          .json({ message: 'Field "productId" is required' });
+      }
+
+      if (
+        typeof newStock !== "number" ||
+        Number.isNaN(newStock) ||
+        newStock < 0
+      ) {
+        return res
+          .status(400)
+          .json({ message: '"newStock" must be a non-negative number' });
+      }
+
+      if (!mongoose.isValidObjectId(productId)) {
+        return res.status(400).json({ message: "Invalid productId" });
+      }
+
+      const item = await InventoryModel.findOne({ productId });
+      if (!item) {
+        return res.status(404).json({ message: "Inventory not found" });
+      }
+
+      item.stock = newStock;
+      item.available = Math.max(0, newStock - item.reserved);
+      item.status =
+        newStock === 0
+          ? "out-of-stock"
+          : newStock <= item.lowStockThreshold
+            ? "low-stock"
+            : "in-stock";
+      item.lastUpdated = new Date();
+
+      await item.save();
+
+      // Keep product.stockCount and inStock in sync
+      await ProductModel.findByIdAndUpdate(productId, {
+        stockCount: newStock,
+        inStock: newStock > 0,
+      });
+
+      res.json(item.toObject());
+    } catch (err) {
+      console.error("Error updating stock", err);
+      res.status(500).json({ message: "Failed to update stock" });
     }
-
-    if (
-      typeof newStock !== "number" ||
-      Number.isNaN(newStock) ||
-      newStock < 0
-    ) {
-      return res
-        .status(400)
-        .json({ message: '"newStock" must be a non-negative number' });
-    }
-
-    if (!mongoose.isValidObjectId(productId)) {
-      return res.status(400).json({ message: "Invalid productId" });
-    }
-
-    const item = await InventoryModel.findOne({ productId });
-    if (!item) {
-      return res.status(404).json({ message: "Inventory not found" });
-    }
-
-    item.stock = newStock;
-    item.available = Math.max(0, newStock - item.reserved);
-    item.status =
-      newStock === 0
-        ? "out-of-stock"
-        : newStock <= item.lowStockThreshold
-          ? "low-stock"
-          : "in-stock";
-    item.lastUpdated = new Date();
-
-    await item.save();
-
-    // Keep product.stockCount and inStock in sync
-    await ProductModel.findByIdAndUpdate(productId, {
-      stockCount: newStock,
-      inStock: newStock > 0,
-    });
-
-    res.json(item.toObject());
-  } catch (err) {
-    console.error("Error updating stock", err);
-    res.status(500).json({ message: "Failed to update stock" });
-  }
-});
+  },
+);
 
 export default router;

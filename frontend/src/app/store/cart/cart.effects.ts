@@ -11,7 +11,7 @@ import { CartActions } from "./cart.actions";
 import { selectCartItems } from "./cart.selectors";
 import { CartItem } from "./cart.types";
 
-const STORAGE_KEY = "suchi_cart";
+const STORAGE_KEY = "aurea_cart";
 
 @Injectable()
 export class CartEffects {

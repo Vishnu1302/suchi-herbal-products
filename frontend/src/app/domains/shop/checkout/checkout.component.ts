@@ -51,7 +51,7 @@ interface PendingOrder {
   savedAt: number; // unix ms — used for 10-min expiry
 }
 
-const PENDING_KEY = "suchi_pending_order";
+const PENDING_KEY = "aurea_pending_order";
 
 @Component({
   selector: "app-checkout",

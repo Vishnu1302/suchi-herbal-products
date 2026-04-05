@@ -3,6 +3,7 @@ import crypto from "crypto";
 import Razorpay from "razorpay";
 import ProductModel from "../models/product.model";
 import OrderModel, { type OrderStatus } from "../models/order.model";
+import { requireAdmin } from "../middleware/adminAuth";
 import {
   reserveInventory,
   commitInventory,
@@ -98,7 +99,11 @@ router.post("/create", async (req: Request, res: Response) => {
       }
       // Note: out-of-stock products are intentionally allowed (pre-order behaviour).
       // The frontend performs a live stock check (LTT) before checkout and warns the user.
-      if (!Number.isInteger(item.quantity) || item.quantity < 1) {
+      if (
+        !Number.isInteger(item.quantity) ||
+        item.quantity < 1 ||
+        item.quantity > 100
+      ) {
         return res
           .status(400)
           .json({ message: `Invalid quantity for "${product.name}"` });
@@ -168,12 +173,10 @@ router.post("/create", async (req: Request, res: Response) => {
       keyId: process.env.RAZORPAY_KEY_ID!,
     });
   } catch (err) {
-    const message =
-      err instanceof Error
-        ? err.message
-        : "Failed to create order. Please try again.";
-    console.error("Error creating order:", message);
-    return res.status(500).json({ message });
+    console.error("Error creating order:", err);
+    return res
+      .status(500)
+      .json({ message: "Failed to create order. Please try again." });
   }
 });
 
@@ -181,7 +184,7 @@ router.post("/create", async (req: Request, res: Response) => {
 // GET /api/orders
 // Admin: list all orders, newest first
 // ─────────────────────────────────────────────────────────────────────────────
-router.get("/", async (_req: Request, res: Response) => {
+router.get("/", requireAdmin, async (_req: Request, res: Response) => {
   try {
     const orders = await OrderModel.find().sort({ createdAt: -1 }).lean();
     return res.json(orders);
@@ -195,7 +198,7 @@ router.get("/", async (_req: Request, res: Response) => {
 // GET /api/orders/stats
 // Admin dashboard summary — MUST be defined before /:id to avoid match clash
 // ─────────────────────────────────────────────────────────────────────────────
-router.get("/stats", async (_req: Request, res: Response) => {
+router.get("/stats", requireAdmin, async (_req: Request, res: Response) => {
   try {
     const [total, pending, processing, shipped, delivered, cancelled, revenue] =
       await Promise.all([
@@ -229,49 +232,53 @@ router.get("/stats", async (_req: Request, res: Response) => {
 // PATCH /api/orders/:id/status
 // Admin: update order fulfilment status
 // ─────────────────────────────────────────────────────────────────────────────
-router.patch("/:id/status", async (req: Request, res: Response) => {
-  try {
-    const { status } = req.body as { status: string };
-    const allowed = [
-      "pending",
-      "confirmed",
-      "processing",
-      "shipped",
-      "delivered",
-      "cancelled",
-    ];
-    if (!allowed.includes(status)) {
-      return res.status(400).json({ message: `Invalid status: ${status}` });
-    }
-
-    // Fetch first so we can read the previous status for inventory decisions
-    const order = await OrderModel.findById(req.params.id);
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
-
-    const prevStatus = order.status;
-    order.status = status as OrderStatus;
-    await order.save();
-
-    // ── Inventory adjustment on cancellation ──────────────────────────────────
-    if (status === "cancelled" && prevStatus !== "cancelled") {
-      if (order.paymentStatus === "pending") {
-        // Payment never received — release the reservation so stock is available again
-        await releaseInventory(order.items);
-      } else if (order.paymentStatus === "paid") {
-        // Payment was made and stock was already committed at payment time.
-        // Restore stock + available (reserved was already cleared at commit).
-        await restockInventory(order.items);
+router.patch(
+  "/:id/status",
+  requireAdmin,
+  async (req: Request, res: Response) => {
+    try {
+      const { status } = req.body as { status: string };
+      const allowed = [
+        "pending",
+        "confirmed",
+        "processing",
+        "shipped",
+        "delivered",
+        "cancelled",
+      ];
+      if (!allowed.includes(status)) {
+        return res.status(400).json({ message: `Invalid status: ${status}` });
       }
-    }
 
-    return res.json(order.toObject());
-  } catch (err) {
-    console.error("Error updating order status:", err);
-    return res.status(500).json({ message: "Failed to update status" });
-  }
-});
+      // Fetch first so we can read the previous status for inventory decisions
+      const order = await OrderModel.findById(req.params.id);
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+
+      const prevStatus = order.status;
+      order.status = status as OrderStatus;
+      await order.save();
+
+      // ── Inventory adjustment on cancellation ──────────────────────────────────
+      if (status === "cancelled" && prevStatus !== "cancelled") {
+        if (order.paymentStatus === "pending") {
+          // Payment never received — release the reservation so stock is available again
+          await releaseInventory(order.items);
+        } else if (order.paymentStatus === "paid") {
+          // Payment was made and stock was already committed at payment time.
+          // Restore stock + available (reserved was already cleared at commit).
+          await restockInventory(order.items);
+        }
+      }
+
+      return res.json(order.toObject());
+    } catch (err) {
+      console.error("Error updating order status:", err);
+      return res.status(500).json({ message: "Failed to update status" });
+    }
+  },
+);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GET /api/orders/:id

@@ -2,6 +2,8 @@ import express, { type Request, type Response } from "express";
 import cors, { type CorsOptions } from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import productsRouter from "./routes/products";
 import inventoryRouter from "./routes/inventory";
 import uploadsRouter from "./routes/uploads";
@@ -36,6 +38,29 @@ const corsOptions: CorsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// Security headers
+app.use(helmet());
+
+// Rate limiting — 100 requests per minute per IP on all API routes
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many requests, please try again later." },
+});
+app.use("/api/", apiLimiter);
+
+// Tighter limit on order creation — 10 orders per minute per IP (prevents spam orders)
+const orderLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many order requests, please slow down." },
+});
+app.use("/api/orders/create", orderLimiter);
 
 // ⚠️  WEBHOOK MUST BE REGISTERED WITH RAW BODY PARSER BEFORE express.json()
 // Razorpay signature verification requires the exact raw bytes of the request body.

@@ -4,7 +4,6 @@ import { toObservable } from "@angular/core/rxjs-interop";
 import { firstValueFrom } from "rxjs";
 import { filter } from "rxjs/operators";
 import { AuthService } from "../services/auth.service";
-import { environment } from "../../../environments/environment";
 
 export const adminGuard: CanActivateFn = async (_route, _state) => {
   const router = inject(Router);
@@ -19,17 +18,25 @@ export const adminGuard: CanActivateFn = async (_route, _state) => {
 
   const user = auth.currentUser();
   if (!user) {
-    // Not logged in at all → go to login
     router.navigate(["/auth/login"]);
     return false;
   }
 
-  const email = user.email ?? "";
-  if (environment.adminEmails.includes(email)) {
-    return true;
+  // Ask the backend to verify the token and confirm admin status.
+  // The backend checks the email against ADMIN_EMAILS env var — not the frontend bundle.
+  const idToken = await user.getIdToken();
+  const apiUrl = (await import("../../../environments/environment")).environment
+    .apiUrl;
+
+  try {
+    const res = await fetch(`${apiUrl}/orders/stats`, {
+      headers: { Authorization: `Bearer ${idToken}` },
+    });
+    if (res.ok) return true;
+  } catch {
+    // network error — deny access
   }
 
-  // Logged in but not an admin → redirect home
   router.navigate(["/"]);
   return false;
 };

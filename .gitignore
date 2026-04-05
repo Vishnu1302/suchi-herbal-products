@@ -21,6 +21,11 @@ backend/build/
 .env.*
 !.env.example
 
+# ─── Firebase service account (NEVER commit — contains private key) ──────────
+*serviceAccount*.json
+*service-account*.json
+serviceAccountKey.json
+
 # ─── OS / Editor ─────────────────────────────────────
 .DS_Store
 Thumbs.db

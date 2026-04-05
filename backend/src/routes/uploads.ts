@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import multer, { type FileFilterCallback } from "multer";
 import type { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import cloudinary from "../config/cloudinary";
+import { requireAdmin } from "../middleware/adminAuth";
 
 const router = Router();
 
@@ -22,9 +23,10 @@ const upload = multer({
   },
 });
 
-// POST /api/uploads/image
+// POST /api/uploads/image (admin only)
 router.post(
   "/image",
+  requireAdmin,
   upload.single("image"),
   (req: Request & { file?: Express.Multer.File }, res: Response) => {
     if (!req.file) {

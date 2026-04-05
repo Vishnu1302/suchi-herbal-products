@@ -13,19 +13,19 @@ export class CookieConsentComponent implements OnInit {
   visible = signal(false);
 
   ngOnInit() {
-    if (!localStorage.getItem("suchi_cookie_consent")) {
+    if (!localStorage.getItem("aurea_cookie_consent")) {
       // Slight delay so the page loads before the banner appears
       setTimeout(() => this.visible.set(true), 900);
     }
   }
 
   accept() {
-    localStorage.setItem("suchi_cookie_consent", "accepted");
+    localStorage.setItem("aurea_cookie_consent", "accepted");
     this.visible.set(false);
   }
 
   decline() {
-    localStorage.setItem("suchi_cookie_consent", "essential_only");
+    localStorage.setItem("aurea_cookie_consent", "essential_only");
     this.visible.set(false);
   }
 }

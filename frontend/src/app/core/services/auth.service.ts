@@ -1,6 +1,5 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
-import { environment } from "../../../environments/environment";
 import {
   Auth,
   GoogleAuthProvider,
@@ -14,6 +13,10 @@ import {
   type User,
 } from "firebase/auth";
 import { FirebaseAuthToken } from "./firebase.service";
+
+// Admin emails kept only for navbar UI hint — actual enforcement is on the backend.
+// These are not secret; the backend is the real authority.
+const ADMIN_EMAILS = ["vishnudeekshit@gmail.com", "shankarsuchitra@gmail.com"];
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
@@ -36,7 +39,7 @@ export class AuthService {
 
   get isAdmin() {
     const email = this.currentUser()?.email;
-    return !!email && environment.adminEmails.includes(email);
+    return !!email && ADMIN_EMAILS.includes(email);
   }
 
   get userEmail() {

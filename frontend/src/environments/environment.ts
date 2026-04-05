@@ -27,7 +27,4 @@ export const environment = {
     appId: "1:476876809170:web:2c960a678db882c3f09e0b",
     measurementId: "G-Y8SR6XKMLG",
   },
-
-  // Emails that are allowed to access /admin
-  adminEmails: ["vishnudeekshit@gmail.com", "shankarsuchitra@gmail.com"],
 };

@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import ProductModel from "../models/product.model";
 import InventoryModel from "../models/inventory.model";
+import { requireAdmin } from "../middleware/adminAuth";
 
 const router = Router();
 
@@ -52,8 +53,8 @@ router.get("/", async (_req: Request, res: Response) => {
   }
 });
 
-// POST /api/products - create a new product
-router.post("/", async (req: Request, res: Response) => {
+// POST /api/products - create a new product (admin only)
+router.post("/", requireAdmin, async (req: Request, res: Response) => {
   try {
     const body = req.body;
 
@@ -162,7 +163,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
   try {
     const updates = req.body;
     const product = await ProductModel.findByIdAndUpdate(
@@ -218,7 +219,7 @@ router.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", requireAdmin, async (req: Request, res: Response) => {
   try {
     const result = await ProductModel.findByIdAndDelete(req.params.id).lean();
     if (!result) {

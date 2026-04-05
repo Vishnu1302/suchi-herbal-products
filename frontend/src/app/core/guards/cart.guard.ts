@@ -1,8 +1,8 @@
 import { inject } from "@angular/core";
 import { Router, CanActivateFn } from "@angular/router";
 
-const CART_KEY = "suchi_cart";
-const PENDING_KEY = "suchi_pending_order";
+const CART_KEY = "aurea_cart";
+const PENDING_KEY = "aurea_pending_order";
 const PENDING_EXPIRY_MS = 10 * 60 * 1000; // 10 minutes
 
 /**

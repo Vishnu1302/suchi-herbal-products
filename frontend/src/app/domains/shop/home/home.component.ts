@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router, RouterLink } from "@angular/router";
 
-const PENDING_KEY = "suchi_pending_order";
+const PENDING_KEY = "aurea_pending_order";
 const PENDING_EXPIRY_MS = 10 * 60 * 1000; // 10 minutes
 
 @Component({

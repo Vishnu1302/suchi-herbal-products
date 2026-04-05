@@ -98,7 +98,11 @@
     class="verify-banner"
     *ngIf="authSvc.isLoggedIn && !authSvc.isEmailVerified"
   >
-    <span>📧 Please verify your email address to place orders.</span>
+    <span
+      >🌿 Hey! Quick favour — verify your email so we know you're human (and not
+      a very tech-savvy houseplant). You can still sign in and shop freely in
+      the meantime!</span
+    >
     <button
       class="verify-banner__resend"
       (click)="resendVerification()"

@@ -1,5 +1,4 @@
 import { Routes } from "@angular/router";
-import { authGuard } from "../../core/guards/auth.guard";
 import { cartGuard } from "../../core/guards/cart.guard";
 
 export const SHOP_ROUTES: Routes = [
@@ -40,7 +39,7 @@ export const SHOP_ROUTES: Routes = [
       },
       {
         path: "checkout",
-        canActivate: [authGuard, cartGuard],
+        canActivate: [cartGuard],
         loadComponent: () =>
           import("./checkout/checkout.component").then(
             (m) => m.CheckoutComponent,
@@ -49,7 +48,6 @@ export const SHOP_ROUTES: Routes = [
       },
       {
         path: "order-success/:orderId",
-        canActivate: [authGuard],
         loadComponent: () =>
           import("./order-success/order-success.component").then(
             (m) => m.OrderSuccessComponent,

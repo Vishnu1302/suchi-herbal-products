@@ -51,6 +51,12 @@
   width: 100%;
   padding: 48px 40px;
   text-align: center;
+  color: var(--color-text);
+
+  h1 {
+    color: var(--gold-primary);
+    margin-bottom: 12px;
+  }
 }
 
 .success__icon {
