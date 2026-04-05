@@ -9,11 +9,11 @@
 .page-title {
   font-size: 1.8rem;
   font-weight: 800;
-  color: #f0edd8;
+  color: var(--color-text);
 }
 
 .page-subtitle {
-  color: #9e9470;
+  color: var(--color-text-muted);
   margin-top: 4px;
 }
 
@@ -26,12 +26,12 @@
 }
 
 .summary-card {
-  background: #0f1710;
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  border-top: 2px solid #b8860b;
+  box-shadow: var(--shadow-md);
+  border-top: 2px solid var(--gold-dark);
 }
 
 .summary-card__title {
@@ -68,16 +68,16 @@
     background: var(--color-accent);
   }
   &--yellow {
-    background: var(--color-secondary);
+    background: var(--gold-dark);
   }
   &--blue {
-    background: var(--color-sky);
+    background: #4d9de0;
   }
   &--purple {
     background: var(--color-primary-alt);
   }
   &--red {
-    background: #ef4444;
+    background: var(--color-danger);
   }
 }
 
@@ -97,11 +97,11 @@
 
 /* Quick actions */
 .quick-actions {
-  background: #0f1710;
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-md);
   border-top: 2px solid rgba(212, 175, 55, 0.4);
 }
 
@@ -116,21 +116,28 @@
   flex-wrap: wrap;
 }
 
+/* Quick action buttons — ghost style with gold primary hover */
 .qa-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: rgba(212, 175, 55, 0.1);
-  color: #d4af37;
-  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--gold-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s;
 
   &:hover {
-    background: linear-gradient(to right, #b8860b, #d4af37);
-    color: #1a1000;
+    background: linear-gradient(
+      to right,
+      var(--gold-dark),
+      var(--gold-primary)
+    );
+    color: var(--gold-btn-text);
+    border-color: transparent;
   }
 }
 

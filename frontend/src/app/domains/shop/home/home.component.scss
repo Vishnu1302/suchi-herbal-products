@@ -769,6 +769,9 @@
   gap: 5px;
   width: 100%;
   max-width: min(100%, 90vw);
+  /* Reserve the tagline's expected height before the Devanagari font loads.
+     Prevents a layout shift when the font swaps in with different metrics. */
+  min-height: var(--hero-tagline-height);
   box-sizing: border-box;
   overflow-wrap: break-word;
   word-break: break-word;

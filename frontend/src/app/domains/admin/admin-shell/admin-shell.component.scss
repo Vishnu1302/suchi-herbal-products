@@ -1,14 +1,14 @@
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: #0a0f0d;
+  background: var(--bg-main);
 }
 
 /* ── Sidebar ── */
 .sidebar {
   width: 240px;
-  background: #0d1510;
-  color: #fff;
+  background: var(--bg-surface);
+  color: var(--color-text);
   display: flex;
   flex-direction: column;
   transition: width 0.25s ease;
@@ -28,7 +28,7 @@
   align-items: center;
   gap: 12px;
   padding: 20px 16px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  border-bottom: 1px solid var(--color-border);
   font-weight: 800;
   font-size: 1.1rem;
   white-space: nowrap;
@@ -37,7 +37,7 @@
 
 .brand-icon {
   font-size: 1.1rem;
-  color: #d4af37;
+  color: var(--gold-primary);
   flex-shrink: 0;
 }
 
@@ -57,8 +57,8 @@
   align-items: center;
   gap: 12px;
   padding: 12px;
-  border-radius: 10px;
-  color: rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
@@ -67,13 +67,17 @@
   overflow: hidden;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background: rgba(212, 175, 55, 0.08);
+    color: var(--color-text);
   }
 
   &--active {
-    background: linear-gradient(to right, #b8860b, #d4af37);
-    color: #fff;
+    background: linear-gradient(
+      to right,
+      var(--gold-dark),
+      var(--gold-primary)
+    );
+    color: var(--gold-btn-text);
     box-shadow: 0 4px 14px rgba(184, 134, 11, 0.35);
   }
 }
@@ -115,9 +119,9 @@
   justify-content: space-between;
   padding: 0 24px;
   height: 64px;
-  background: #0d1510;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
   flex-shrink: 0;
 }
 
@@ -134,9 +138,9 @@
 
 .admin-badge {
   background: rgba(212, 175, 55, 0.12);
-  color: #d4af37;
+  color: var(--gold-primary);
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.85rem;
   font-weight: 700;
 }

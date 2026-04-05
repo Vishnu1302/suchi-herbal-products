@@ -1,7 +1,10 @@
+// dotenv MUST be loaded before any other import that reads process.env
+import dotenv from "dotenv";
+dotenv.config();
+
 import express, { type Request, type Response } from "express";
 import cors, { type CorsOptions } from "cors";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import productsRouter from "./routes/products";
@@ -9,8 +12,6 @@ import inventoryRouter from "./routes/inventory";
 import uploadsRouter from "./routes/uploads";
 import ordersRouter from "./routes/orders";
 import paymentWebhookRouter from "./routes/payment-webhook";
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;

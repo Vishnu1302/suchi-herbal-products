@@ -70,65 +70,14 @@ h1 {
 }
 
 /* ─── Controls: qty + subtotal ──────────────────────────────────────────── */
+/* .qty-controls / .qty-btn / .qty-value are defined globally in styles.scss. */
+/* Cart uses the default 34px size — no overrides needed here. */
 .cart-item__controls {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-}
-
-.qty-controls {
-  display: inline-flex;
-  align-items: center;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-  background: var(--bg-elevated);
-}
-
-.qty-btn {
-  width: 34px;
-  height: 34px;
-  background: transparent;
-  border: none;
-  color: var(--gold-secondary);
-  font-size: 1.2rem;
-  font-weight: 300;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background 0.15s,
-    color 0.15s;
-  flex-shrink: 0;
-  line-height: 1;
-
-  &:hover:not(:disabled) {
-    background: rgba(212, 175, 55, 0.12);
-    color: var(--gold-primary);
-  }
-
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-}
-
-.qty-value {
-  min-width: 30px;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--color-text);
-  border-left: 1px solid var(--color-border);
-  border-right: 1px solid var(--color-border);
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
 }
 
 .cart-item__subtotal {
@@ -155,6 +104,7 @@ h1 {
   font-size: 0.78rem;
   font-weight: 600;
   color: rgba(239, 68, 68, 0.75);
+  // = var(--color-danger) at reduced opacity
   cursor: pointer;
   text-align: left;
   letter-spacing: 0.2px;

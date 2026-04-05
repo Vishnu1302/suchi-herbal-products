@@ -24,7 +24,7 @@
         emails are shy.
       </p>
       <button
-        class="btn-primary"
+        class="btn btn--primary auth-submit"
         style="margin-top: 16px; width: 100%"
         (click)="resend()"
         [disabled]="loading()"
@@ -40,7 +40,7 @@
     <!-- Registration form -->
     <ng-container *ngIf="!emailSent()">
       <div class="auth-logo">🌿</div>
-      <h1 class="auth-title">Create account</h1>
+      <h1 class="auth-title">Create Account</h1>
       <p class="auth-subtitle">Join Aurea</p>
 
       <!-- Google Sign-up -->
@@ -117,7 +117,7 @@
         <p class="auth-error" *ngIf="error()">{{ error() }}</p>
 
         <button
-          class="btn-primary"
+          class="btn btn--primary auth-submit"
           type="submit"
           [disabled]="form.invalid || loading()"
         >

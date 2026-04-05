@@ -425,7 +425,7 @@
   &.open {
     max-height: 300px;
     position: fixed;
-    top: 60px;
+    top: var(--shell-nav-height);
     left: 0;
     right: 0;
     z-index: 99;

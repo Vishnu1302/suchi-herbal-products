@@ -189,21 +189,102 @@
   text-decoration: line-through;
 }
 
-.btn--sm {
-  padding: 8px 16px;
-  font-size: 0.84rem;
-  width: 100%;
-  justify-content: center;
+/* Disabled (out-of-stock) button state — handled globally in styles.scss */
+
+/* ─── Uber-Eats-style cart action overlay ───────────────────────────────── */
+.card-cart {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
+
+  &--oos {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 }
 
-/* Disabled (out of stock) button override */
-.btn.btn--primary:disabled {
-  background: rgba(212, 175, 55, 0.08);
-  color: var(--color-text-muted);
-  border: 1.5px solid rgba(212, 175, 55, 0.2);
-  cursor: not-allowed;
-  box-shadow: none;
-  opacity: 1;
+/* + pill — item not yet in cart */
+.card-add-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  color: var(--gold-btn-text, #0a0f0d);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.15s,
+    background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--gold-secondary);
+    transform: scale(1.12);
+  }
+
+  &:disabled {
+    background: var(--bg-elevated);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  &__oos {
+    font-size: 0.85rem;
+  }
+}
+
+/* − qty + stepper — item is in cart */
+.card-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-main);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+
+  &__btn {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    color: var(--gold-primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+
+    &:hover:not(:disabled) {
+      background: rgba(212, 175, 55, 0.15);
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  &__qty {
+    min-width: 20px;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--color-text);
+    padding: 0 2px;
+  }
 }
 
 /* ─── Skeleton loading ──────────────────────────────────────────────────── */
@@ -361,7 +442,7 @@
   padding: 0 10px;
   border: 1.5px solid var(--color-border);
   border-radius: 8px;
-  background: #fdf8ff;
+  background: var(--bg-elevated);
   font-size: 0.8rem;
   font-weight: 500;
   font-family: inherit;
@@ -374,17 +455,17 @@
 
   &:hover:not(:disabled) {
     border-color: var(--color-primary);
-    background: #f5e9ff;
+    background: rgba(212, 175, 55, 0.08);
   }
 
   /* Currently selected */
   &--active {
     border-color: var(--color-primary);
     background: var(--color-primary);
-    color: #fff;
+    color: var(--gold-btn-text);
 
     .size-pill__badge {
-      background: #fff;
+      background: var(--gold-btn-text);
       color: var(--color-primary);
     }
   }
@@ -393,7 +474,7 @@
   &--incart:not(.size-pill--active) {
     border-color: var(--color-accent);
     color: var(--color-accent);
-    background: #f0fdf4;
+    background: var(--color-success-bg);
   }
 
   /* Sold-out */

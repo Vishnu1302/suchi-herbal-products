@@ -47,10 +47,21 @@ function getAdminApp() {
   return admin.app();
 }
 
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "")
-  .split(",")
-  .map((e) => e.trim())
-  .filter(Boolean);
+// Read lazily at runtime (not at import time) so dotenv has already populated
+// process.env by the time the first request comes in.
+function getAdminEmails(): string[] {
+  const list = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  if (list.length === 0) {
+    console.warn(
+      "[adminAuth] WARNING: ADMIN_EMAILS env var is empty or not set. " +
+        "All admin routes will return 403. Add it to your .env file.",
+    );
+  }
+  return list;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // requireAdmin middleware
@@ -77,7 +88,11 @@ export async function requireAdmin(
     const decoded = await admin.auth(app).verifyIdToken(token);
     const email = decoded.email ?? "";
 
-    if (!ADMIN_EMAILS.includes(email)) {
+    if (!getAdminEmails().includes(email.toLowerCase())) {
+      console.warn(
+        `[adminAuth] 403 — email "${email}" not in ADMIN_EMAILS list:`,
+        getAdminEmails(),
+      );
       return res.status(403).json({ message: "Forbidden: not an admin" });
     }
 

@@ -35,7 +35,7 @@
 
 .chip--green {
   background: rgba(107, 174, 117, 0.15);
-  color: #6bae75;
+  color: var(--color-accent);
 }
 .chip--yellow {
   background: rgba(245, 158, 11, 0.15);
@@ -43,7 +43,7 @@
 }
 .chip--red {
   background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  color: var(--color-danger);
 }
 
 // ─── Card grid ──────────────────────────────────────────────────────────────
@@ -106,7 +106,7 @@
 
 .dot--in-stock {
   background: rgba(107, 174, 117, 0.18);
-  color: #6bae75;
+  color: var(--color-accent);
 }
 .dot--low-stock {
   background: rgba(245, 158, 11, 0.15);
@@ -114,7 +114,7 @@
 }
 .dot--out-of-stock {
   background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  color: var(--color-danger);
 }
 
 // ─── Stock badge (large number on the right) ────────────────────────────────
@@ -241,7 +241,7 @@
     var(--gold-primary) 50%,
     var(--gold-dark) 100%
   );
-  color: #1a1000;
+  color: var(--gold-btn-text);
   border: none;
   border-radius: var(--radius-md);
   font-weight: 700;
@@ -262,7 +262,7 @@
 // ─── Inline success message ──────────────────────────────────────────────────
 .success-msg {
   font-size: 0.85rem;
-  color: #6bae75;
+  color: var(--color-accent);
   text-align: center;
   margin: 0;
 }

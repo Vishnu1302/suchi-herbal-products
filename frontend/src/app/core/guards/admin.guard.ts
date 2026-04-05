@@ -22,21 +22,14 @@ export const adminGuard: CanActivateFn = async (_route, _state) => {
     return false;
   }
 
-  // Ask the backend to verify the token and confirm admin status.
-  // The backend checks the email against ADMIN_EMAILS env var — not the frontend bundle.
-  const idToken = await user.getIdToken();
-  const apiUrl = (await import("../../../environments/environment")).environment
-    .apiUrl;
-
-  try {
-    const res = await fetch(`${apiUrl}/orders/stats`, {
-      headers: { Authorization: `Bearer ${idToken}` },
-    });
-    if (res.ok) return true;
-  } catch {
-    // network error — deny access
+  // Use the frontend ADMIN_EMAILS list for navigation gating.
+  // Real per-endpoint enforcement happens on the backend via Bearer token.
+  // We avoid a live backend fetch here so a sleeping Render instance doesn't
+  // block navigation.
+  if (!auth.isAdmin) {
+    router.navigate(["/"]);
+    return false;
   }
 
-  router.navigate(["/"]);
-  return false;
+  return true;
 };

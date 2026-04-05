@@ -134,4 +134,13 @@ export class ProductCatalogComponent implements OnInit {
     this.toastError.set(null);
     setTimeout(() => this.toastMessage.set(null), 2500);
   }
+
+  removeOne(product: Product): void {
+    const qty = this.getCartQty(product.id);
+    if (qty <= 1) {
+      this.cartSvc.removeFromCart(product.id, "", "");
+    } else {
+      this.cartSvc.updateQuantity(product.id, "", "", qty - 1);
+    }
+  }
 }

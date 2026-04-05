@@ -10,18 +10,40 @@
       content="Aurea — Premium herbal beauty &amp; skincare. The Glow Within."
     />
     <link rel="icon" type="image/jpeg" href="assets/icon-logo.jpg" />
-    <!-- Google Fonts — single request, non-blocking -->
+    <!-- Hero background — preload so the browser fetches it immediately,
+         before Angular boots and before component CSS is parsed. -->
+    <link
+      rel="preload"
+      as="image"
+      href="assets/MandalaArt.webp"
+      fetchpriority="high"
+    />
+    <!-- Google Fonts — Cormorant + Lato: swap (body/brand text) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Noto+Serif+Devanagari:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media = 'all'"
     />
     <noscript>
       <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Noto+Serif+Devanagari:wght@400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <!-- Noto Serif Devanagari: optional — uses fallback on first load rather
+         than swapping after paint, eliminating the CLS layout shift. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@600&display=optional"
+      rel="stylesheet"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@600&display=optional"
         rel="stylesheet"
       />
     </noscript>

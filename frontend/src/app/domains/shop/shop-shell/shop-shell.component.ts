@@ -20,6 +20,17 @@ export class ShopShellComponent {
 
   resendSent = false;
 
+  constructor() {
+    // Close mobile nav when the user scrolls (prevents visual disconnect on iOS)
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (this.menuOpen) this.menuOpen = false;
+      },
+      { passive: true },
+    );
+  }
+
   async resendVerification() {
     await this.authSvc.resendVerificationEmail();
     this.resendSent = true;

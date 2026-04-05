@@ -19,18 +19,14 @@
 .spinner {
   width: 44px;
   height: 44px;
-  border: 4px solid #ede9fe;
-  border-top-color: var(--color-primary);
+  border: 4px solid rgba(212, 175, 55, 0.15);
+  border-top-color: var(--gold-primary);
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
   margin: 0 auto;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* @keyframes spin is defined globally in styles.scss */
 
 /* ── Error ─────────────────────────────────────────────────────────────────── */
 .success__error {
@@ -72,8 +68,8 @@
 
 /* ── Order meta table ───────────────────────────────────────────────────────── */
 .success__meta {
-  background: #182018;
-  border-radius: 14px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
   padding: 16px 20px;
   margin-bottom: 28px;
   text-align: left;
@@ -92,7 +88,7 @@
   }
 
   span {
-    color: #888;
+    color: var(--color-text-muted);
   }
   strong {
     color: var(--color-text);
@@ -101,7 +97,7 @@
 }
 
 .paid-badge {
-  color: #16a34a !important;
+  color: var(--color-accent) !important;
   font-weight: 700;
 }
 
@@ -146,7 +142,7 @@
     }
     .meta {
       font-size: 0.78rem;
-      color: #888;
+      color: var(--color-text-muted);
       margin-top: 2px;
     }
   }
@@ -171,7 +167,7 @@
 
 .success__notice {
   font-size: 0.82rem;
-  color: #888;
+  color: var(--color-text-muted);
   line-height: 1.5;
 
   strong {

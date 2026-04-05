@@ -248,6 +248,12 @@ $bp-xl: 1280px;
 
   --transition: all 0.25s ease;
   --container-width: 1280px;
+
+  /* ── Semantic utility colours (reduce hardcoded hex across components) ── */
+  --gold-btn-text: #1a1000; /* dark text on gold buttons */
+  --color-danger: #ef4444; /* error / destructive red */
+  --color-success-bg: rgba(107, 174, 117, 0.12);
+  --color-success-border: rgba(107, 174, 117, 0.4);
 }
 
 /* Reset & Base */
@@ -476,6 +482,101 @@ button {
   }
 }
 
+/* ───────────────────────────────────────────────
+   Shared UI components
+   Used by multiple features — define once here
+─────────────────────────────────────────────── */
+
+/* Quantity controls (cart + product-detail) */
+.qty-controls {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  color: var(--gold-secondary);
+  font-size: 1.2rem;
+  font-weight: 300;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+  font-family: inherit;
+
+  &:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--gold-primary);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.qty-value {
+  min-width: 30px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* Gold loading spinner */
+.spinner-gold {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(212, 175, 55, 0.15);
+  border-top-color: var(--gold-primary);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin: 0 auto;
+}
+
+/* Success / add-to-cart inline toast */
+.toast-success {
+  background: var(--color-success-bg);
+  border: 1.5px solid var(--color-success-border);
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Disabled primary button — muted-gold state (overrides default opacity fade) */
+.btn.btn--primary:disabled {
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--color-text-muted);
+  border: 1.5px solid rgba(212, 175, 55, 0.2);
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 1;
+  pointer-events: auto; /* keep pointer-events on so cursor: not-allowed shows */
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -495,6 +596,23 @@ button {
   }
   50% {
     transform: translateY(-8px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
