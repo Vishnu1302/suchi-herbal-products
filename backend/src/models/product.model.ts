@@ -1,6 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { CATEGORY_SLUGS, ProductCategory } from "../config/categories";
 
-export type ProductCategory = "oil" | "shampoo" | "cream" | "gel" | "soap";
+// Re-exported so existing imports of ProductCategory from this file still work.
+export type { ProductCategory } from "../config/categories";
 
 export interface ProductDocument extends Document {
   name: string;
@@ -33,7 +35,7 @@ const ProductSchema = new Schema<ProductDocument>(
     category: {
       type: String,
       required: true,
-      enum: ["oil", "shampoo", "cream", "gel", "soap"],
+      enum: CATEGORY_SLUGS,
     },
     inStock: { type: Boolean, default: true },
     stockCount: { type: Number, default: 0, min: 0 },

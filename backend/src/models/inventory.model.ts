@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { ProductCategory } from "./product.model";
+import { CATEGORY_SLUGS } from "../config/categories";
 
 export type StockStatus = "in-stock" | "low-stock" | "out-of-stock";
 
@@ -31,7 +32,7 @@ const InventorySchema = new Schema<InventoryDocument>(
     category: {
       type: String,
       required: true,
-      enum: ["oil", "shampoo", "cream", "gel", "soap"],
+      enum: CATEGORY_SLUGS,
     },
     stock: { type: Number, required: true, default: 0, min: 0 },
     reserved: { type: Number, required: true, default: 0, min: 0 },

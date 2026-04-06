@@ -1,3 +1,8 @@
+// ProductCategory is owned by category.model.ts — imported here for use in
+// this file and re-exported for backward compatibility with existing imports.
+import type { ProductCategory } from "./category.model";
+export type { ProductCategory } from "./category.model";
+
 export interface Product {
   id: string;
   name: string;
@@ -13,8 +18,6 @@ export interface Product {
   inStock: boolean;
   stockCount: number;
 }
-
-export type ProductCategory = "oil" | "shampoo" | "cream" | "gel" | "soap";
 
 export interface ProductFilter {
   category?: ProductCategory | "";

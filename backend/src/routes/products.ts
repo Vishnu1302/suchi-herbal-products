@@ -3,6 +3,7 @@ import ProductModel from "../models/product.model";
 import InventoryModel from "../models/inventory.model";
 import { requireAdmin } from "../middleware/adminAuth";
 import { deriveStockStatus } from "../utils/inventory.utils";
+import { CATEGORY_SLUGS } from "../config/categories";
 
 const router = Router();
 
@@ -108,7 +109,7 @@ router.post("/", requireAdmin, async (req: Request, res: Response) => {
         .json({ message: 'Field "price" must be a non-negative number' });
     }
 
-    const allowedCategories = ["oil", "shampoo", "cream", "gel", "soap"];
+    const allowedCategories: readonly string[] = CATEGORY_SLUGS;
     if (!allowedCategories.includes(body.category)) {
       return res.status(400).json({ message: "Invalid category" });
     }

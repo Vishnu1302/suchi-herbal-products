@@ -47,8 +47,15 @@
       <span>Aurea</span>
     </a>
 
-    <!-- Orbit 1 — Soap (innermost) -->
+    <!-- Orbit rings (visual only — planet positions are set via CSS) -->
     <div class="emblem__orbit emblem__orbit--1"></div>
+    <div class="emblem__orbit emblem__orbit--2"></div>
+    <div class="emblem__orbit emblem__orbit--3"></div>
+    <div class="emblem__orbit emblem__orbit--4"></div>
+    <div class="emblem__orbit emblem__orbit--5"></div>
+    <div class="emblem__orbit emblem__orbit--6"></div>
+
+    <!-- Planet 1 — Soap (outermost ring, pf 0.66, start 315°) -->
     <a
       [routerLink]="['/products']"
       [queryParams]="{ category: 'soap' }"
@@ -59,20 +66,18 @@
       <span>Soap</span>
     </a>
 
-    <!-- Orbit 2 — Gel -->
-    <div class="emblem__orbit emblem__orbit--2"></div>
+    <!-- Planet 2 — Serum (inner ring, pf 0.30, start 30°) -->
     <a
       [routerLink]="['/products']"
-      [queryParams]="{ category: 'gel' }"
+      [queryParams]="{ category: 'serum' }"
       class="emblem__planet emblem__planet--2"
-      aria-label="Browse Gels"
+      aria-label="Browse Serums"
     >
-      <i class="fa-solid fa-flask planet-icon" aria-hidden="true"></i>
-      <span>Gel</span>
+      <i class="fa-solid fa-vial planet-icon" aria-hidden="true"></i>
+      <span>Serum</span>
     </a>
 
-    <!-- Orbit 3 — Cream -->
-    <div class="emblem__orbit emblem__orbit--3"></div>
+    <!-- Planet 3 — Cream (inner ring, pf 0.30, start 210° — opposite Serum) -->
     <a
       [routerLink]="['/products']"
       [queryParams]="{ category: 'cream' }"
@@ -83,8 +88,7 @@
       <span>Cream</span>
     </a>
 
-    <!-- Orbit 4 — Shampoo -->
-    <div class="emblem__orbit emblem__orbit--4"></div>
+    <!-- Planet 4 — Shampoo (middle ring, pf 0.52, start 270°) -->
     <a
       [routerLink]="['/products']"
       [queryParams]="{ category: 'shampoo' }"
@@ -95,11 +99,7 @@
       <span>Shampoo</span>
     </a>
 
-    <!-- Orbit 5 — decorative spacer ring -->
-    <div class="emblem__orbit emblem__orbit--5"></div>
-
-    <!-- Orbit 6 — Soap (outermost, NEW) -->
-    <div class="emblem__orbit emblem__orbit--6"></div>
+    <!-- Planet 5 — Oil (middle ring, pf 0.52, start 90° — opposite Shampoo) -->
     <a
       [routerLink]="['/products']"
       [queryParams]="{ category: 'oil' }"
@@ -109,6 +109,8 @@
       <i class="fa-solid fa-droplet planet-icon" aria-hidden="true"></i>
       <span>Oil</span>
     </a>
+
+    <!-- Planet 6 removed — Serum now occupies Planet 2 on the inner ring -->
   </div>
 
   <!-- Single CTA below emblem -->

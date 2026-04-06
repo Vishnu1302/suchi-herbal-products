@@ -69,10 +69,10 @@ export const MOCK_INVENTORY: InventoryItem[] = [
   },
   {
     productId: "prod-007",
-    productName: "Aloe Neem Face Gel",
-    sku: "VED-GEL-007",
+    productName: "Kumkumadi Glow Serum",
+    sku: "VED-SRM-007",
     image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=150",
-    category: "gel",
+    category: "serum",
     stock: 150,
     lowStockThreshold: 25,
     status: "in-stock",
