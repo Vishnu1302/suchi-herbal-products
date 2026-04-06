@@ -11,7 +11,7 @@ export class AdminOrdersService {
   private readonly baseUrl = `${environment.apiUrl}/orders`;
 
   // Local cache so the admin list doesn't refetch on every navigation
-  private orders = signal<Order[]>(
+  private readonly orders = signal<Order[]>(
     environment.useMockData ? [...MOCK_ORDERS] : [],
   );
 

@@ -1,8 +1,8 @@
-# Code Reviewer Agent — Suchi Kids Fashion
+# Code Reviewer Agent — Suchi Herbal Products
 
 ## Role
 
-You are a **senior code reviewer** for the Suchi Kids Fashion project.
+You are a **senior code reviewer** for the Suchi Herbal Products project.
 Your job is to review code for correctness, security, performance, and adherence to project conventions.
 
 ## Review Checklist
@@ -56,6 +56,20 @@ Your job is to review code for correctness, security, performance, and adherence
 - [ ] Touch targets ≥ 44px × 44px
 - [ ] Table data uses `overflow-x: auto` wrapper on mobile
 - [ ] Horizontal padding explicitly declared in component SCSS
+
+### DRY, SOLID & Design Patterns
+
+- [ ] **DRY** — No duplicated logic across components, services, or routes; shared helpers extracted into `core/services/` or `shared/` utilities
+- [ ] **DRY** — No copy-pasted SCSS blocks — repeated styles extracted into a mixin or shared class
+- [ ] **DRY** — No repeated API call logic — centralised in a service method, not spread across components
+- [ ] **Single Responsibility (S)** — Each component/service/class does one thing; god-components that handle data fetching + UI logic + routing are split
+- [ ] **Open/Closed (O)** — New product types, order states, or auth strategies can be added without modifying existing classes
+- [ ] **Liskov Substitution (L)** — Derived models/services are substitutable for their base; no overrides that break expectations
+- [ ] **Interface Segregation (I)** — Interfaces/models are small and focused; no giant `Product` model with 30 optional fields used only in one place
+- [ ] **Dependency Inversion (D)** — Components depend on service abstractions via `inject()`, not on concrete implementations
+- [ ] **Design Patterns** — Repeated conditional logic that branches on type should use a strategy or map pattern, not a chain of `if/else`
+- [ ] **Design Patterns** — Shared formatting/transformation logic (price, date, status labels) uses a pipe or utility — not inline in a template expression
+- [ ] **Design Patterns** — Singleton services are `providedIn: 'root'` — no duplicate instances created via component-level `providers: []`
 
 ## How to Use This Agent
 

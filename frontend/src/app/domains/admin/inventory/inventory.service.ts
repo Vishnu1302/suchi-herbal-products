@@ -11,7 +11,7 @@ import { environment } from "../../../../environments/environment";
 @Injectable({ providedIn: "root" })
 export class AdminInventoryService {
   private http = inject(HttpClient);
-  private inventory = signal<InventoryItem[]>(
+  private readonly inventory = signal<InventoryItem[]>(
     environment.useMockData ? [...MOCK_INVENTORY] : [],
   );
   private readonly baseUrl = `${environment.apiUrl}/inventory`;

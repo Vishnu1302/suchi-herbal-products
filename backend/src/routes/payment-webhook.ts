@@ -96,11 +96,14 @@ router.post("/", async (req: Request, res: Response) => {
     // Alternative event; handles cases where payment was captured without explicit capture call
     if (event.event === "order.paid") {
       const rzpOrderId = event.payload.order?.entity?.id;
+      const paymentId = event.payload.payment?.entity?.id;
       if (rzpOrderId) {
         const order = await OrderModel.findOne({ razorpayOrderId: rzpOrderId });
         if (order && order.paymentStatus !== "paid") {
           order.paymentStatus = "paid";
           order.status = "confirmed";
+          // Store payment ID for reconciliation (same as payment.captured path)
+          if (paymentId) order.razorpayPaymentId = paymentId;
           await order.save();
           // ── Commit inventory (same as payment.captured path) ────────────
           await commitInventory(order.items);

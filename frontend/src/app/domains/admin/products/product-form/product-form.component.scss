@@ -51,7 +51,7 @@
     box-shadow 0.2s;
   &:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.15);
   }
 }
 
@@ -76,7 +76,7 @@
   cursor: pointer;
   transition: background 0.2s;
   &:hover {
-    background: rgba(212, 175, 55, 0.12);
+    background: rgba(var(--gold-rgb), 0.12);
   }
 }
 .image-preview {

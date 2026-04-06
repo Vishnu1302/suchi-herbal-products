@@ -97,6 +97,7 @@ export class OrderListComponent implements OnInit {
   orders: Order[] = [];
   filteredOrders: Order[] = [];
   activeTab = "all";
+  tabCounts: Map<string, number> = new Map();
 
   tabs = [
     { label: "All", value: "all" },
@@ -134,12 +135,20 @@ export class OrderListComponent implements OnInit {
       this.activeTab === "all"
         ? this.orders
         : this.orders.filter((o: Order) => o.status === this.activeTab);
+
+    // Recompute counts once per filter call, not once per tab badge
+    this.tabCounts = new Map(
+      this.tabs.map((t) => [
+        t.value,
+        t.value === "all"
+          ? this.orders.length
+          : this.orders.filter((o: Order) => o.status === t.value).length,
+      ]),
+    );
   }
 
-  getCount(tab: string) {
-    return tab === "all"
-      ? this.orders.length
-      : this.orders.filter((o: Order) => o.status === tab).length;
+  getCount(tab: string): number {
+    return this.tabCounts.get(tab) ?? 0;
   }
 
   updateStatus(id: string, status: OrderStatus) {

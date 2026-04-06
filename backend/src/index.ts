@@ -53,10 +53,12 @@ const apiLimiter = rateLimit({
 });
 app.use("/api/", apiLimiter);
 
-// Tighter limit on order creation — 10 orders per minute per IP (prevents spam orders)
+// Tighter limit on order creation — 3 orders per minute per IP.
+// Real users place 1-2 orders per session; this still allows a brief retry
+// but cuts the inventory-locking blast radius by 70 % vs the old limit of 10.
 const orderLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 3,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: "Too many order requests, please slow down." },

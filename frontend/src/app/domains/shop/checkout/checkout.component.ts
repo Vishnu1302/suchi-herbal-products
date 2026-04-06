@@ -141,6 +141,15 @@ export class CheckoutComponent implements OnInit {
     if (!raw) return;
     try {
       const pending: PendingOrder = JSON.parse(raw);
+
+      // Razorpay orders expire after 15 minutes — discard stale entries
+      // so the user isn't offered a resume for a payment that can no longer complete.
+      const FIFTEEN_MIN = 15 * 60 * 1000;
+      if (Date.now() - pending.savedAt > FIFTEEN_MIN) {
+        localStorage.removeItem(PENDING_KEY);
+        return;
+      }
+
       const uid = this.authSvc.currentUser()?.uid;
       const order = await firstValueFrom(
         this.paymentSvc.getOrder(pending.orderId, uid),

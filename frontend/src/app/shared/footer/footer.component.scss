@@ -1,9 +1,9 @@
 .footer {
-  background: var(--footer-bg, #050807);
-  color: #8a8060;
+  background: var(--footer-bg);
+  color: var(--color-text-muted);
   padding: 48px 0 24px;
   margin-top: 60px;
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  border-top: 1px solid rgba(var(--gold-rgb), 0.2);
 }
 
 .footer__inner {
@@ -25,11 +25,16 @@
 
   .footer__brand-icon {
     font-size: 2rem;
-    color: var(--gold-primary, #d4af37);
+    color: var(--gold-primary);
   }
 
   strong {
-    background: linear-gradient(to right, #b8860b, #d4af37, #e6c76a);
+    background: linear-gradient(
+      to right,
+      var(--gold-dark),
+      var(--gold-primary),
+      var(--gold-secondary)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -41,7 +46,7 @@
   p {
     font-size: 0.82rem;
     margin-top: 4px;
-    color: #5a5438;
+    color: var(--color-text-muted);
     max-width: 260px;
     line-height: 1.6;
   }
@@ -54,14 +59,14 @@
   align-items: center;
 
   a {
-    color: #7a7258;
+    color: var(--color-text-muted);
     text-decoration: none;
     font-size: 0.88rem;
     letter-spacing: 0.03em;
     transition: color 0.2s;
 
     &:hover {
-      color: var(--gold-primary, #d4af37);
+      color: var(--gold-primary);
     }
   }
 }
@@ -75,27 +80,27 @@
   gap: 8px;
 
   i {
-    color: var(--gold-primary, #d4af37);
+    color: var(--gold-primary);
   }
 
   a {
-    color: #7a7258;
+    color: var(--color-text-muted);
     text-decoration: none;
     transition: color 0.2s;
 
     &:hover {
-      color: var(--gold-primary, #d4af37);
+      color: var(--gold-primary);
     }
   }
 }
 
 .footer__copy {
   font-size: 0.78rem;
-  color: #3e3a28;
+  color: var(--color-text-muted);
   text-align: center;
   grid-column: 1 / -1;
   padding-top: 20px;
-  border-top: 1px solid rgba(212, 175, 55, 0.12);
+  border-top: 1px solid rgba(var(--gold-rgb), 0.12);
   margin-top: 8px;
   letter-spacing: 0.04em;
 }

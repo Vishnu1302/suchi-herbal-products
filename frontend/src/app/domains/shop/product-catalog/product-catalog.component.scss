@@ -26,7 +26,7 @@
   align-items: center;
   gap: 6px;
   padding: 5px 10px 5px 12px;
-  background: rgba(212, 175, 55, 0.12);
+  background: rgba(var(--gold-rgb), 0.12);
   border: 1px solid var(--gold-primary);
   border-radius: var(--radius-full);
   color: var(--gold-secondary);
@@ -53,7 +53,7 @@
     line-height: 1;
 
     &:hover {
-      background: rgba(212, 175, 55, 0.2);
+      background: rgba(var(--gold-rgb), 0.2);
       color: var(--color-text);
     }
   }
@@ -88,11 +88,11 @@
     box-shadow 0.2s;
 
   &::placeholder {
-    color: rgba(212, 175, 55, 0.35);
+    color: rgba(var(--gold-rgb), 0.35);
   }
 
   &:hover {
-    border-color: rgba(212, 175, 55, 0.5);
+    border-color: rgba(var(--gold-rgb), 0.5);
   }
 
   &:focus {
@@ -142,6 +142,24 @@
   }
 }
 
+/* Out-of-stock overlay label on the image */
+.oos-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 7px 0;
+  background: rgba(var(--bg-main-rgb), 0.82);
+  color: var(--color-danger);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+}
+
 .badge {
   position: absolute;
   top: 12px;
@@ -152,7 +170,9 @@
   padding: 14px 16px 16px;
 
   h4 {
-    margin: 0 0 8px;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
 
     a {
       font-size: 0.95rem;
@@ -170,11 +190,26 @@
   }
 }
 
+.product-card__title-row {
+  margin-bottom: 6px;
+
+  h4 {
+    margin: 0;
+  }
+}
+
+.product-card__price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .product-card__price {
   display: flex;
   gap: 8px;
   align-items: baseline;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .price {
@@ -191,12 +226,9 @@
 
 /* Disabled (out-of-stock) button state — handled globally in styles.scss */
 
-/* ─── Uber-Eats-style cart action overlay ───────────────────────────────── */
+/* ─── Cart action in title row ──────────────────────────────────────────── */
 .card-cart {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  z-index: 3;
+  flex-shrink: 0;
 
   &--oos {
     opacity: 0.6;
@@ -206,32 +238,37 @@
 
 /* + pill — item not yet in cart */
 .card-add-btn {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--gold-primary);
-  color: var(--gold-btn-text, #0a0f0d);
-  border: none;
+  background: linear-gradient(135deg, var(--gold-secondary), var(--gold-dark));
+  color: var(--gold-btn-text);
+  border: 1.5px solid var(--gold-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 0 14px var(--gold-glow),
+    0 2px 8px rgba(0, 0, 0, 0.5);
   transition:
     transform 0.15s,
-    background 0.15s;
+    box-shadow 0.15s;
 
   &:hover:not(:disabled) {
-    background: var(--gold-secondary);
-    transform: scale(1.12);
+    transform: scale(1.15);
+    box-shadow:
+      0 0 24px var(--gold-glow),
+      0 4px 14px rgba(0, 0, 0, 0.5);
   }
 
   &:disabled {
     background: var(--bg-elevated);
     color: var(--color-text-muted);
+    border-color: transparent;
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
@@ -268,7 +305,7 @@
     transition: background 0.15s;
 
     &:hover:not(:disabled) {
-      background: rgba(212, 175, 55, 0.15);
+      background: rgba(var(--gold-rgb), 0.15);
     }
 
     &:disabled {
@@ -301,7 +338,7 @@
   background: linear-gradient(
     90deg,
     var(--bg-elevated) 25%,
-    rgba(212, 175, 55, 0.06) 50%,
+    rgba(var(--gold-rgb), 0.06) 50%,
     var(--bg-elevated) 75%
   );
   background-size: 800px 100%;
@@ -430,7 +467,7 @@
   gap: 6px;
 
   &--error .size-pill:not(.size-pill--soldout) {
-    border-color: #ef4444;
+    border-color: var(--color-danger);
   }
 }
 
@@ -455,7 +492,7 @@
 
   &:hover:not(:disabled) {
     border-color: var(--color-primary);
-    background: rgba(212, 175, 55, 0.08);
+    background: rgba(var(--gold-rgb), 0.08);
   }
 
   /* Currently selected */
@@ -505,7 +542,7 @@
 }
 
 .size-error {
-  color: #ef4444;
+  color: var(--color-danger);
   font-size: 0.75rem;
   margin-top: 4px;
 }
@@ -520,7 +557,7 @@
   }
 
   .hint--maxed {
-    color: #ef4444;
+    color: var(--color-danger);
     font-weight: 500;
   }
 }

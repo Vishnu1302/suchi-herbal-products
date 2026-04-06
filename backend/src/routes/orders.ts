@@ -66,6 +66,14 @@ router.post("/create", async (req: Request, res: Response) => {
     if (!items?.length) {
       return res.status(400).json({ message: "Cart is empty" });
     }
+    // Cap the number of distinct line items to limit the inventory-locking
+    // blast radius from unauthenticated abuse of this public endpoint.
+    const MAX_LINE_ITEMS = 20;
+    if (items.length > MAX_LINE_ITEMS) {
+      return res.status(400).json({
+        message: `Order cannot contain more than ${MAX_LINE_ITEMS} distinct items`,
+      });
+    }
     if (
       !customer?.name ||
       !customer?.email ||
@@ -97,8 +105,7 @@ router.post("/create", async (req: Request, res: Response) => {
           .status(400)
           .json({ message: `Product ${item.productId} not found` });
       }
-      // Note: out-of-stock products are intentionally allowed (pre-order behaviour).
-      // The frontend performs a live stock check (LTT) before checkout and warns the user.
+      // Out-of-stock products are blocked at the reservation step below.
       if (
         !Number.isInteger(item.quantity) ||
         item.quantity < 1 ||
@@ -126,6 +133,18 @@ router.post("/create", async (req: Request, res: Response) => {
     const tax = 0;
     const total = subtotal + shippingCost + tax;
     const amountPaise = Math.round(total * 100); // Razorpay expects paise
+
+    // ── Availability pre-check — reject before touching Razorpay or MongoDB ────
+    const failedIds = await reserveInventory(orderItems);
+    if (failedIds.length > 0) {
+      const failedNames = orderItems
+        .filter((i) => failedIds.includes(i.productId))
+        .map((i) => i.productName)
+        .join(", ");
+      return res
+        .status(409)
+        .json({ message: `Insufficient stock for: ${failedNames}` });
+    }
 
     // ── Create Razorpay order ────────────────────────────────────────────────
     const razorpay = getRazorpay();
@@ -161,8 +180,7 @@ router.post("/create", async (req: Request, res: Response) => {
       razorpayOrderId: rzpOrder.id,
     });
 
-    // ── Reserve inventory for each item ──────────────────────────────────────
-    await reserveInventory(orderItems);
+    // ── Inventory already reserved above ─────────────────────────────────
 
     return res.status(201).json({
       orderId: String(order._id),
@@ -295,12 +313,24 @@ router.get("/:id", async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    // ── Ownership guard ──────────────────────────────────────────────────────
-    // If the caller sends their Firebase UID, verify it against the stored
-    // customerId on the order.  Admin requests don't send this header, so they
-    // are unaffected.  This prevents Order-ID-swap attacks via DevTools.
     const callerUid = req.headers["x-customer-uid"] as string | undefined;
-    if (callerUid && order.customerId && order.customerId !== callerUid) {
+    const hasAuthToken =
+      req.headers.authorization?.startsWith("Bearer ") ?? false;
+    const isGuestOrder = !order.customerId || order.customerId === "guest";
+
+    // ── PII protection ───────────────────────────────────────────────────────
+    // For user-owned (non-guest) orders, require proof of identity:
+    //   - x-customer-uid  → sent by shop pages (order-success, checkout resume)
+    //   - Authorization: Bearer  → sent by admin panel via auth interceptor
+    // This blocks anonymous scraping of order details (name, email, address).
+    if (!isGuestOrder && !callerUid && !hasAuthToken) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    // ── Ownership guard ──────────────────────────────────────────────────────
+    // When a customer UID is provided, it MUST match the order's customerId.
+    // Admin requests use Bearer token (no x-customer-uid) so this is skipped.
+    if (callerUid && !isGuestOrder && order.customerId !== callerUid) {
       return res.status(403).json({ message: "Access denied" });
     }
 
@@ -356,6 +386,15 @@ router.post("/:id/verify-payment", async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
+    // ── Cross-check: body razorpayOrderId must match what is stored on the order ─
+    // Prevents a replayed signature from a different payment being applied here.
+    if (order.razorpayOrderId !== razorpayOrderId) {
+      console.warn(`⚠️  razorpayOrderId mismatch for order ${req.params.id}`);
+      return res
+        .status(400)
+        .json({ message: "Payment does not match this order" });
+    }
+
     // ── Idempotency — webhook may already have marked as paid ────────────────
     if (order.paymentStatus === "paid") {
       return res.json({
@@ -404,5 +443,57 @@ router.post("/:id/verify-payment", async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to verify payment" });
   }
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /api/orders/cleanup-stale
+//
+// Releases inventory reservations for orders that are still "pending" after
+// STALE_AFTER_MS (20 min). Razorpay orders expire at 15 min so any order
+// still pending at 20 min was never paid and never will be.
+//
+// Protects against the inventory-locking attack vector on the open
+// /api/orders/create endpoint.
+//
+// Can be called:
+//   - Manually by an admin via the admin panel
+//   - By a scheduled cron/cloud-scheduler hitting this endpoint with an admin token
+// ─────────────────────────────────────────────────────────────────────────────
+router.post(
+  "/cleanup-stale",
+  requireAdmin,
+  async (_req: Request, res: Response) => {
+    const STALE_AFTER_MS = 20 * 60 * 1000; // 20 minutes
+    const cutoff = new Date(Date.now() - STALE_AFTER_MS);
+
+    try {
+      const staleOrders = await OrderModel.find({
+        paymentStatus: "pending",
+        createdAt: { $lt: cutoff },
+      });
+
+      if (staleOrders.length === 0) {
+        return res.json({ released: 0, message: "No stale orders found" });
+      }
+
+      // Release inventory reservations in parallel, then mark as failed
+      await Promise.all(staleOrders.map((o) => releaseInventory(o.items)));
+      await OrderModel.updateMany(
+        { _id: { $in: staleOrders.map((o) => o._id) } },
+        { $set: { paymentStatus: "failed", status: "cancelled" } },
+      );
+
+      console.log(
+        `🧹 Cleanup: released reservations for ${staleOrders.length} stale orders`,
+      );
+      return res.json({
+        released: staleOrders.length,
+        orderNumbers: staleOrders.map((o) => o.orderNumber),
+      });
+    } catch (err) {
+      console.error("Error cleaning up stale orders:", err);
+      return res.status(500).json({ message: "Cleanup failed" });
+    }
+  },
+);
 
 export default router;

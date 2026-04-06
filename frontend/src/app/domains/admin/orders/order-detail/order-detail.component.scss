@@ -19,14 +19,14 @@
 .btn-ghost {
   padding: 10px 18px;
   color: var(--gold-primary);
-  background: rgba(212, 175, 55, 0.08);
+  background: rgba(var(--gold-rgb), 0.08);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   font-weight: 700;
   text-decoration: none;
 
   &:hover {
-    background: rgba(212, 175, 55, 0.18);
+    background: rgba(var(--gold-rgb), 0.18);
     border-color: var(--gold-primary);
   }
 }
@@ -62,7 +62,7 @@
   align-items: center;
   gap: 14px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  border-bottom: 1px solid rgba(var(--gold-rgb), 0.1);
 
   &:last-of-type {
     border: none;
@@ -111,8 +111,8 @@
 .total-row--grand {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #d4af37;
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--gold-primary);
+  border-top: 1px solid rgba(var(--gold-rgb), 0.2);
   margin-top: 8px;
   padding-top: 10px;
 }
@@ -122,12 +122,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+  border-bottom: 1px solid rgba(var(--gold-rgb), 0.08);
   font-size: 0.9rem;
 }
 
 .status-label {
-  color: #888;
+  color: var(--color-text-muted);
 }
 
 /* Status badges — dark theme variants (match order-list) */
@@ -136,28 +136,28 @@
   border-radius: var(--radius-full);
   font-size: 0.78rem;
   font-weight: 700;
-  background: rgba(212, 175, 55, 0.08);
+  background: rgba(var(--gold-rgb), 0.08);
   color: var(--color-text-muted);
 }
 
 .status--delivered {
-  background: rgba(107, 174, 117, 0.15);
+  background: rgba(var(--accent-rgb), 0.15);
   color: var(--color-accent);
 }
 .status--shipped {
   background: rgba(77, 157, 224, 0.15);
-  color: #4d9de0;
+  color: var(--color-info);
 }
 .status--processing {
-  background: rgba(212, 175, 55, 0.12);
+  background: rgba(var(--gold-rgb), 0.12);
   color: var(--gold-secondary);
 }
 .status--pending {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: rgba(var(--warning-rgb, 245, 158, 11), 0.15);
+  color: var(--color-warning);
 }
 .status--cancelled {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(var(--danger-rgb), 0.15);
   color: var(--color-danger);
 }
 

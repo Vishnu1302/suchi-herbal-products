@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import ProductModel from "../models/product.model";
 import InventoryModel from "../models/inventory.model";
 import { requireAdmin } from "../middleware/adminAuth";
+import { deriveStockStatus } from "../utils/inventory.utils";
 
 const router = Router();
 
@@ -130,10 +131,7 @@ router.post("/", requireAdmin, async (req: Request, res: Response) => {
     // Create initial inventory entry
     const baseSku = `VED-${product.category.toUpperCase()}-${product._id.toString().slice(-6).toUpperCase()}`;
     const stock: number = body.stockCount ?? 0;
-    let stockStatus: "in-stock" | "low-stock" | "out-of-stock";
-    if (stock === 0) stockStatus = "out-of-stock";
-    else if (stock <= 10) stockStatus = "low-stock";
-    else stockStatus = "in-stock";
+    const stockStatus = deriveStockStatus(stock, 10);
 
     await InventoryModel.create({
       productId: product._id,
@@ -188,7 +186,7 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
     const product = await ProductModel.findByIdAndUpdate(
       req.params.id,
       updates,
-      { new: true },
+      { new: true, runValidators: true },
     ).lean();
 
     if (!product) {
@@ -203,11 +201,10 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
         productId: req.params.id,
       }).lean();
       if (inv) {
-        let newStatus: "in-stock" | "low-stock" | "out-of-stock";
-        if (updates.stockCount === 0) newStatus = "out-of-stock";
-        else if (updates.stockCount <= inv.lowStockThreshold)
-          newStatus = "low-stock";
-        else newStatus = "in-stock";
+        const newStatus = deriveStockStatus(
+          updates.stockCount,
+          inv.lowStockThreshold,
+        );
 
         await InventoryModel.updateOne(
           { productId: req.params.id },

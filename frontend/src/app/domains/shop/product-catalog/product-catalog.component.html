@@ -88,67 +88,73 @@
               width="300"
               height="300"
             />
-
-            <!-- Cart action: + pill or − qty + stepper (inside img-wrap so it positions correctly) -->
-            <div
-              class="card-cart"
-              [class.card-cart--oos]="
-                !p.inStock ||
-                (getRemainingStock(p) <= 0 && getCartQty(p.id) === 0)
-              "
-              (click)="$event.preventDefault(); $event.stopPropagation()"
-              (keydown.enter)="
-                $event.preventDefault(); $event.stopPropagation()
-              "
+            <span
+              class="oos-overlay"
+              *ngIf="!p.inStock || p.stockCount === 0"
+              aria-label="Out of stock"
+              >Out of Stock</span
             >
-              <!-- Qty stepper (shown when item is in cart) -->
-              <div class="card-stepper" *ngIf="getCartQty(p.id) > 0">
-                <button
-                  class="card-stepper__btn"
-                  (click)="removeOne(p)"
-                  aria-label="Remove one"
-                >
-                  −
-                </button>
-                <span class="card-stepper__qty">{{ getCartQty(p.id) }}</span>
-                <button
-                  class="card-stepper__btn"
-                  (click)="addToCart(p)"
-                  [disabled]="getRemainingStock(p) <= 0"
-                  aria-label="Add one more"
-                >
-                  +
-                </button>
-              </div>
-
-              <!-- Add button (shown when item not in cart) -->
-              <button
-                class="card-add-btn"
-                *ngIf="getCartQty(p.id) === 0"
-                (click)="addToCart(p)"
-                [disabled]="!p.inStock || p.stockCount === 0"
-                [attr.aria-label]="
-                  !p.inStock || p.stockCount === 0
-                    ? 'Out of stock'
-                    : 'Add ' + p.name + ' to cart'
-                "
-              >
-                <span
-                  *ngIf="!p.inStock || p.stockCount === 0"
-                  class="card-add-btn__oos"
-                  >✕</span
-                >
-                <span *ngIf="p.inStock && p.stockCount > 0">+</span>
-              </button>
-            </div>
           </a>
 
           <div class="product-card__body">
-            <h4>
-              <a [routerLink]="['/products', p.id]">{{ p.name }}</a>
-            </h4>
-            <div class="product-card__price">
-              <span class="price">₹{{ p.price }}</span>
+            <div class="product-card__title-row">
+              <h4>
+                <a [routerLink]="['/products', p.id]">{{ p.name }}</a>
+              </h4>
+            </div>
+            <div class="product-card__price-row">
+              <div class="product-card__price">
+                <span class="price">₹{{ p.price }}</span>
+              </div>
+              <div
+                class="card-cart"
+                [class.card-cart--oos]="
+                  !p.inStock ||
+                  (getRemainingStock(p) <= 0 && getCartQty(p.id) === 0)
+                "
+                (click)="$event.stopPropagation()"
+                (keydown.enter)="$event.stopPropagation()"
+              >
+                <!-- Qty stepper (shown when item is in cart) -->
+                <div class="card-stepper" *ngIf="getCartQty(p.id) > 0">
+                  <button
+                    class="card-stepper__btn"
+                    (click)="removeOne(p)"
+                    aria-label="Remove one"
+                  >
+                    −
+                  </button>
+                  <span class="card-stepper__qty">{{ getCartQty(p.id) }}</span>
+                  <button
+                    class="card-stepper__btn"
+                    (click)="addToCart(p)"
+                    [disabled]="getRemainingStock(p) <= 0"
+                    aria-label="Add one more"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <!-- Add button (shown when item not in cart) -->
+                <button
+                  class="card-add-btn"
+                  *ngIf="getCartQty(p.id) === 0"
+                  (click)="addToCart(p)"
+                  [disabled]="!p.inStock || p.stockCount === 0"
+                  [attr.aria-label]="
+                    !p.inStock || p.stockCount === 0
+                      ? 'Out of stock'
+                      : 'Add ' + p.name + ' to cart'
+                  "
+                >
+                  <span
+                    *ngIf="!p.inStock || p.stockCount === 0"
+                    class="card-add-btn__oos"
+                    >✕</span
+                  >
+                  <span *ngIf="p.inStock && p.stockCount > 0">+</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

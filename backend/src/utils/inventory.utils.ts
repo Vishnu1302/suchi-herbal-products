@@ -22,25 +22,46 @@ export interface InventoryLineItem {
   quantity: number;
 }
 
+/**
+ * Derive the stock status string from a stock count and low-stock threshold.
+ * Single source of truth — used by product creation, inventory update, and
+ * the products PUT route so the logic is never duplicated.
+ */
+export function deriveStockStatus(
+  stock: number,
+  lowStockThreshold: number,
+): "in-stock" | "low-stock" | "out-of-stock" {
+  if (stock === 0) return "out-of-stock";
+  if (stock <= lowStockThreshold) return "low-stock";
+  return "in-stock";
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // RESERVE  — called when a new order is created (payment pending)
 //
 // Atomically moves qty from available → reserved.
 // Condition `available >= qty` prevents overselling under concurrent load.
 // ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Returns the productIds that could NOT be reserved (insufficient available stock).
+ * An empty array means all items were reserved successfully.
+ */
 export async function reserveInventory(
   items: InventoryLineItem[],
-): Promise<void> {
-  const ops = items.map((item) =>
-    InventoryModel.updateOne(
-      { productId: item.productId, available: { $gte: item.quantity } },
-      {
-        $inc: { reserved: item.quantity, available: -item.quantity },
-        $set: { lastUpdated: new Date() },
-      },
-    ),
+): Promise<string[]> {
+  const results = await Promise.all(
+    items.map(async (item) => {
+      const result = await InventoryModel.updateOne(
+        { productId: item.productId, available: { $gte: item.quantity } },
+        {
+          $inc: { reserved: item.quantity, available: -item.quantity },
+          $set: { lastUpdated: new Date() },
+        },
+      );
+      return result.modifiedCount === 0 ? item.productId : null;
+    }),
   );
-  await Promise.all(ops);
+  return results.filter((id): id is string => id !== null);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
