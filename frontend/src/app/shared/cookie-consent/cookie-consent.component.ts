@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnInit, signal, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
+import { AuthService } from "../../core/services/auth.service";
 
 @Component({
   selector: "app-cookie-consent",
@@ -11,10 +12,11 @@ import { RouterLink } from "@angular/router";
 })
 export class CookieConsentComponent implements OnInit {
   visible = signal(false);
+  auth = inject(AuthService);
 
   ngOnInit() {
-    if (!localStorage.getItem("aurea_cookie_consent")) {
-      // Slight delay so the page loads before the banner appears
+    // Show consent only if user is logged in and hasn't already accepted/declined
+    if (this.auth.isLoggedIn && !localStorage.getItem("aurea_cookie_consent")) {
       setTimeout(() => this.visible.set(true), 900);
     }
   }

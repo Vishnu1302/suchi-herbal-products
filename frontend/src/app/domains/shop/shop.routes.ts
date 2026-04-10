@@ -70,6 +70,14 @@ export const SHOP_ROUTES: Routes = [
           ),
         title: "Privacy Policy | Aurea",
       },
+      {
+        path: "cookie-policy",
+        loadComponent: () =>
+          import("../../shared/legal/cookie-policy.component").then(
+            (m) => m.CookiePolicyComponent,
+          ),
+        title: "Cookie Policy | Aurea",
+      },
     ],
   },
 ];
