@@ -8,16 +8,26 @@
    Use $vars in mixins/functions; use var(--) in
    component SCSS so values are runtime-overridable.
 ───────────────────────────────────────────────*/
-$gold-primary: #d4af37;
-$gold-secondary: #e6c76a;
-$gold-soft: #f5e6a8;
-$gold-dark: #b8860b;
-$gold-glow: rgba(212, 175, 55, 0.35);
+// $gold-primary: #d4af37;
+// $gold-secondary: #e6c76a;
+// $gold-soft: #f5e6a8;
+// $gold-dark: #b8860b;
+// $gold-glow: rgba(212, 175, 55, 0.35);
 
-$bg-main: #0a0f0d;
-$bg-surface: #0f1710;
-$bg-elevated: #182018;
-$bg-input: #111810;
+$gold-primary: #d4951a;
+$gold-secondary: #fec62a;
+$gold-soft: #ffe38a;
+$gold-dark: #9a6500;
+$gold-glow: rgba(212, 149, 26, 0.35);
+
+// $bg-main: #0a0f0d; // original — darker charcoal
+$bg-main: #1c2820; // swapped — forest-dark green
+// $bg-surface: #0f1710; // original
+$bg-surface: #232f25; // swapped
+// $bg-elevated: #182018; // original
+$bg-elevated: #2a3a2d; // swapped
+// $bg-input: #111810; // original
+$bg-input: #1e2c21; // swapped
 
 $color-text: #f0edd8;
 $color-text-muted: #9e9470;
@@ -31,7 +41,8 @@ $radius-full: 9999px;
 $shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
 $shadow-md: 0 4px 24px rgba(0, 0, 0, 0.6);
 $shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.7);
-$shadow-gold: 0 4px 20px rgba(184, 134, 11, 0.4);
+$shadow-gold: 0 4px 20px rgba(var(--gold-dark-rgb), 0.4);
+// $shadow-gold: 0 4px 20px rgba(184, 134, 11, 0.4);
 
 /* ─────────────────────────────────────────────
    Breakpoints (mobile-first)
@@ -223,16 +234,18 @@ $bp-xl: 1280px;
   --color-border: #{$color-border};
 
   /* ── Header ── */
-  --header-bg: #0b0f0d;
+  // --header-bg: #0b0f0d; // original
+  --header-bg: #1a2620; // swapped
   --header-text: #{$color-text};
-  --header-border: rgba(212, 175, 55, 0.12);
-
+  --header-border: rgba(var(--gold-rgb), 0.12);
   /* ── Footer ── */
-  --footer-bg: #050807;
+  // --footer-bg: #050807; // original
+  --footer-bg: #141e17; // swapped
 
   /* ── Typography ── */
   --font-main: "Lato", sans-serif;
   --font-brand: "Cormorant Garamond", serif;
+  --font-display: "Cinzel", serif;
 
   /* ── Radii ── */
   --radius-sm: #{$radius-sm};
@@ -265,10 +278,11 @@ $bp-xl: 1280px;
   --color-danger-border: rgba(239, 68, 68, 0.3);
 
   /* ── Secondary text shades ── */
-  --color-text-secondary: #c9b47a; /* warm muted captions / nav links */
+  --color-text-secondary: #c49a45; /* warm muted captions / nav links */
 
   /* ── Deep backgrounds ── */
-  --bg-deep: #050807; /* deeper than --footer-bg — cookie bar etc. */
+  // --bg-deep: #050807; // original
+  --bg-deep: #141e17; // swapped — deeper than new --footer-bg
 
   /*
    * ── RGB channels ─────────────────────────────────────────────────────────
@@ -277,11 +291,16 @@ $bp-xl: 1280px;
    * To switch the whole site to a different palette, change the values below.
    * ─────────────────────────────────────────────────────────────────────────
    */
-  --gold-rgb: 212, 175, 55; /* matches --gold-primary  */
-  --gold-dark-rgb: 184, 134, 11; /* matches --gold-dark     */
-  --gold-soft-rgb: 245, 230, 168; /* matches --gold-soft     */
-  --bg-main-rgb: 10, 15, 13; /* matches --bg-main       */
-  --bg-surface-rgb: 15, 23, 16; /* matches --bg-surface    */
+  // --gold-rgb: 212, 175, 55; /* matches --gold-primary  */
+  // --gold-dark-rgb: 184, 134, 11; /* matches --gold-dark     */
+  // --gold-soft-rgb: 245, 230, 168; /* matches --gold-soft     */
+  --gold-rgb: 212, 149, 26; /* matches --gold-primary  */
+  --gold-dark-rgb: 154, 101, 0; /* matches --gold-dark     */
+  --gold-soft-rgb: 255, 227, 138; /* matches --gold-soft     */
+  // --bg-main-rgb: 10, 15, 13; // original
+  --bg-main-rgb: 28, 40, 32;    /* matches --bg-main #1c2820    */
+  // --bg-surface-rgb: 15, 23, 16; // original
+  --bg-surface-rgb: 35, 47, 37; /* matches --bg-surface #232f25 */
   --accent-rgb: 107, 174, 117; /* matches --color-accent  */
   --danger-rgb: 239, 68, 68; /* matches --color-danger  */
   --color-text-rgb: 240, 237, 216; /* matches --color-text    */

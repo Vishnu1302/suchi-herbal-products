@@ -511,7 +511,8 @@
   border-radius: 50%;
   background: radial-gradient(
     circle at 40% 35%,
-    #1c2820 0%,
+    // #1c2820 0%,  // original — was same as old bg-main swap value
+    #0a0f0d 0%,
     var(--bg-surface) 100%
   );
   border: 1.5px solid rgba(var(--gold-rgb), 0.65);
