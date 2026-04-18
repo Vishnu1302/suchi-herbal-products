@@ -21,12 +21,15 @@
 }
 .navbar__inner {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 var(--page-inline-padding);
+  margin: 0;
+  padding-left: 0;
+  padding-right: var(--page-inline-padding);
   height: var(--shell-nav-height);
+  min-height: var(--shell-nav-height);
   display: flex;
   align-items: center;
   gap: 32px;
+  justify-content: flex-start;
 }
 .navbar__brand {
   text-decoration: none;
@@ -39,6 +42,7 @@
   align-items: center;
   gap: 0;
   flex-shrink: 0;
+  margin-left: 0;
 }
 
 /* JPG icon — mix-blend-mode:screen drops the dark bg, only gold shows */
@@ -55,30 +59,9 @@
   margin-right: -10px;
 }
 
-/* Aurea text wordmark */
-.navbar__wordmark {
-  font-family: "Playfair Display", serif;
-  font-size: 2.2rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-
-  background: linear-gradient(
-    135deg,
-    #f7e7b6 0%,
-    #e6c97a 30%,
-    #d4af37 60%,
-    #b8962e 100%
-  );
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
-}
-
 /* Aurea transparent SVG logo — gold gradient text, no background */
 .aurea-logo {
-  height: 52px;
+  height: 60px;
   width: auto;
   display: block;
   transition: opacity 0.2s;
@@ -532,66 +515,65 @@
 
 /* ── Responsive ── */
 
+@media (max-width: 1024px) {
+  .navbar__inner {
+    padding-left: 0;
+    padding-right: var(--page-inline-padding);
+    gap: 16px;
+    height: var(--shell-nav-height);
+    min-height: var(--shell-nav-height);
+  }
+}
+
 @media (max-width: 768px) {
   :host {
     --shell-nav-height: 60px;
   }
-
   .navbar__inner {
-    padding: 0 var(--page-inline-padding);
-    height: var(--shell-nav-height);
+    padding-left: 0;
+    padding-right: var(--page-inline-padding);
     gap: 8px;
+    height: var(--shell-nav-height);
+    min-height: var(--shell-nav-height);
   }
-
   // .aurea-logo { height: 34px; max-width: 140px; } // original SVG size
-  .navbar__wordmark {
-    font-size: 1.55rem;
-  }
-
   .brand-mark {
     height: 34px;
     width: 34px;
   }
-
   /* Hide desktop nav links — replaced by hamburger drawer */
   .navbar__links {
     display: none;
   }
-
   .hamburger {
     display: block;
   }
-
   .mobile-nav {
     display: flex;
   }
-
   .user-name {
     display: none;
   }
-
   .logout-btn {
     padding: 4px 10px;
     font-size: 0.72rem;
   }
-
   .navbar__brand {
     font-size: 1.15rem;
   }
 }
 
 @media (max-width: 400px) {
-  // .aurea-logo { height: 28px; max-width: 110px; } // original SVG size
-  .navbar__wordmark {
-    font-size: 1.3rem;
-    letter-spacing: 0.15em;
+  .navbar__inner {
+    padding-left: 0px;
+    padding-right: 8px;
+    gap: 4px;
   }
-
+  // .aurea-logo { height: 28px; max-width: 110px; } // original SVG size
   .brand-mark {
     height: 28px;
     width: 28px;
   }
-
   .login-btn {
     padding: 6px 12px;
     font-size: 0.78rem;
