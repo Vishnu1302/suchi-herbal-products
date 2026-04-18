@@ -8,26 +8,28 @@
    Use $vars in mixins/functions; use var(--) in
    component SCSS so values are runtime-overridable.
 ───────────────────────────────────────────────*/
-// $gold-primary: #d4af37;
-// $gold-secondary: #e6c76a;
-// $gold-soft: #f5e6a8;
-// $gold-dark: #b8860b;
-// $gold-glow: rgba(212, 175, 55, 0.35);
 
-$gold-primary: #d4951a;
-$gold-secondary: #fec62a;
-$gold-soft: #ffe38a;
-$gold-dark: #9a6500;
-$gold-glow: rgba(212, 149, 26, 0.35);
+// OLD COLORS (commented out)
+// $gold-primary: #d4951a;
+// $gold-secondary: #fec62a;
+// $gold-soft: #ffe38a;
+// $gold-dark: #9a6500;
+// $gold-glow: rgba(212, 149, 26, 0.35);
+// $bg-main: #1c2820;
+// $bg-surface: #232f25;
+// $bg-elevated: #2a3a2d;
+// $bg-input: #1e2c21;
 
-// $bg-main: #0a0f0d; // original — darker charcoal
-$bg-main: #1c2820; // swapped — forest-dark green
-// $bg-surface: #0f1710; // original
-$bg-surface: #232f25; // swapped
-// $bg-elevated: #182018; // original
-$bg-elevated: #2a3a2d; // swapped
-// $bg-input: #111810; // original
-$bg-input: #1e2c21; // swapped
+// NEW COLORS (from screenshot)
+$bg-main: #012a1d; // primary green from image
+$bg-surface: #093c2a;
+$bg-elevated: #124d37;
+$bg-input: #185c41;
+$gold-primary: #f3a538; // yellow stripe (gold)
+$gold-secondary: #ffe38a;
+$gold-soft: #fff3c2;
+$gold-dark: #b87c13;
+$gold-glow: rgba(243, 165, 56, 0.35);
 
 $color-text: #f0edd8;
 $color-text-muted: #9e9470;
@@ -88,16 +90,9 @@ $bp-xl: 1280px;
   align-items: center;
   gap: 8px;
   padding: $padding;
-  background: linear-gradient(
-    to right,
-    var(--gold-dark) 0%,
-    var(--gold-primary) 30%,
-    var(--gold-secondary) 50%,
-    var(--gold-primary) 70%,
-    var(--gold-dark) 100%
-  );
+  background: $gold-primary;
   color: var(--gold-btn-text);
-  border: 1px solid var(--gold-dark);
+  border: 1px solid $gold-dark;
   border-radius: var(--radius-sm);
   font-size: $font-size;
   font-weight: 700;
@@ -114,6 +109,8 @@ $bp-xl: 1280px;
     0 4px 18px rgba(var(--gold-dark-rgb), 0.4);
 
   &:hover {
+    background: $gold-dark;
+    color: var(--gold-btn-text);
     transform: translateY(-2px);
     box-shadow:
       0 2px 0 rgba(var(--gold-soft-rgb), 0.15) inset,
@@ -121,6 +118,7 @@ $bp-xl: 1280px;
       0 8px 28px rgba(var(--gold-dark-rgb), 0.6);
   }
   &:active {
+    background: $gold-primary;
     transform: translateY(0);
   }
 }
@@ -130,8 +128,8 @@ $bp-xl: 1280px;
   display: inline-flex;
   align-items: center;
   padding: $padding;
-  background: linear-gradient(135deg, var(--gold-dark), var(--gold-secondary));
-  color: var(--bg-main);
+  background: $gold-primary;
+  color: $bg-main;
   border: none;
   border-radius: var(--radius-full);
   font-size: 0.88rem;
@@ -144,11 +142,8 @@ $bp-xl: 1280px;
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 
   &:hover {
-    background: linear-gradient(
-      135deg,
-      var(--gold-secondary),
-      var(--gold-soft)
-    );
+    background: $gold-dark;
+    color: var(--gold-btn-text);
   }
 }
 
@@ -235,7 +230,7 @@ $bp-xl: 1280px;
 
   /* ── Header ── */
   // --header-bg: #0b0f0d; // original
-  --header-bg: #1a2620; // swapped
+  --header-bg: var(--bg-main); // now matches main background
   --header-text: #{$color-text};
   --header-border: rgba(var(--gold-rgb), 0.12);
   /* ── Footer ── */
@@ -298,7 +293,7 @@ $bp-xl: 1280px;
   --gold-dark-rgb: 154, 101, 0; /* matches --gold-dark     */
   --gold-soft-rgb: 255, 227, 138; /* matches --gold-soft     */
   // --bg-main-rgb: 10, 15, 13; // original
-  --bg-main-rgb: 28, 40, 32;    /* matches --bg-main #1c2820    */
+  --bg-main-rgb: 28, 40, 32; /* matches --bg-main #1c2820    */
   // --bg-surface-rgb: 15, 23, 16; // original
   --bg-surface-rgb: 35, 47, 37; /* matches --bg-surface #232f25 */
   --accent-rgb: 107, 174, 117; /* matches --color-accent  */
@@ -390,42 +385,18 @@ button {
     @include btn-gold;
   }
 
-  &--secondary {
-    background: var(--bg-elevated);
-    color: var(--gold-primary);
-    border-color: var(--color-border);
-
-    &:hover {
-      border-color: var(--gold-primary);
-      background: rgba(var(--gold-rgb), 0.1);
-      transform: translateY(-2px);
-    }
-  }
-
-  &--outline {
-    background: transparent;
-    border-color: rgba(var(--gold-rgb), 0.5);
-    color: var(--gold-primary);
-
-    &:hover {
-      background: rgba(var(--gold-rgb), 0.1);
-      border-color: var(--gold-primary);
-    }
-  }
-
-  &--ghost {
-    background: rgba(var(--gold-rgb), 0.08);
-    color: var(--gold-primary);
-    border-color: transparent;
-
-    &:hover {
-      background: rgba(var(--gold-rgb), 0.18);
-    }
-  }
-
+  &--secondary,
+  &--outline,
+  &--ghost,
   &--sm {
-    padding: 7px 16px;
-    font-size: 0.82rem;
+    background: $gold-primary;
+    color: var(--gold-btn-text);
+    border: 1px solid $gold-dark;
+    box-shadow: 0 2px 10px rgba(var(--gold-dark-rgb), 0.18);
+    &:hover {
+      background: $gold-dark;
+      color: var(--gold-btn-text);
+    }
   }
 
   &--disabled,
@@ -550,11 +521,11 @@ button {
 .qty-btn {
   width: 34px;
   height: 34px;
-  background: transparent;
-  border: none;
-  color: var(--gold-secondary);
+  background: $gold-primary;
+  border: 1.5px solid $gold-dark;
+  color: var(--gold-btn-text);
   font-size: 1.2rem;
-  font-weight: 300;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -567,8 +538,9 @@ button {
   font-family: inherit;
 
   &:hover:not(:disabled) {
-    background: rgba(var(--gold-rgb), 0.12);
-    color: var(--gold-primary);
+    background: $gold-dark;
+    color: var(--gold-btn-text);
+    box-shadow: 0 2px 8px rgba(var(--gold-dark-rgb), 0.18);
   }
 
   &:disabled {

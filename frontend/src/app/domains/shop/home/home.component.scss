@@ -1,3 +1,138 @@
+// --- THEME COLORS (Green/Gold from image) ---
+// $bg-main: #0a0f0d; // old
+// $bg-surface: #0f1710; // old
+// $bg-elevated: #182018; // old
+// $gold-primary: #d4af37; // old
+// $gold-secondary: #e6c76a; // old
+// $gold-soft: #f5e6a8; // old
+// $gold-dark: #b8860b; // old
+// $gold-glow: rgba(212, 175, 55, 0.35); // old
+
+$bg-main: #012a1d; // primary green from image
+$bg-surface: #093c2a;
+$bg-elevated: #124d37;
+$bg-input: #185c41;
+
+// THEME: Green/Gold from image
+$gold-primary: #f3a538; // yellow stripe (gold)
+$gold-secondary: #ffe38a;
+$gold-soft: #fff3c2;
+$gold-dark: #b87c13;
+$gold-glow: rgba(243, 165, 56, 0.35);
+/* Responsive Carousel Styles for Home Page */
+
+.carousel-section {
+  width: 100vw;
+  min-height: 220px;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.carousel-wrapper {
+  position: relative;
+  width: 100vw;
+  min-width: 100vw;
+  max-width: 100vw;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  background: var(--bg-surface);
+}
+
+.carousel-slide {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: opacity 0.5s;
+  opacity: 0;
+}
+.carousel-slide.active {
+  display: block;
+  position: relative;
+  opacity: 1;
+  z-index: 2;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: #222;
+}
+
+.carousel-caption {
+  background: rgba(10, 15, 13, 0.7);
+  color: var(--color-text);
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-elevated);
+  color: var(--gold-primary);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 3;
+  opacity: 0.92;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.carousel-nav.prev {
+  left: 16px;
+}
+.carousel-nav.next {
+  right: 16px;
+}
+.carousel-nav:hover {
+  background: var(--gold-primary);
+  color: var(--bg-main);
+}
+
+.carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  z-index: 4;
+}
+.carousel-dots span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--color-border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.carousel-dots span.active {
+  background: var(--gold-primary);
+}
+
 :host {
   display: block;
   overflow-x: hidden;

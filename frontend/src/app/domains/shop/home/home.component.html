@@ -26,97 +26,50 @@
   </div>
 </div>
 
-<!-- Hero — full viewport, emblem only -->
-<section class="hero">
-  <!-- Sanskrit / Devanagari tagline — sits below navbar, above emblem -->
-  <div class="hero__tagline" aria-label="Herbal Based Skin and Hair Care">
-    <p class="hero__tagline-devanagari">
-      Herbal Based &middot; Skin &amp; Hair Care
-    </p>
-  </div>
-
-  <!-- Solar-system emblem: 5 orbital rings, one category planet each -->
-  <div class="hero__emblem">
-    <!-- Sun / core -->
-    <a
-      routerLink="/products"
-      class="emblem__core"
-      aria-label="View all products"
+<!-- Responsive Carousel for Home Page -->
+<section class="carousel-section">
+  <div class="carousel-wrapper">
+    <div
+      class="carousel-slide"
+      *ngFor="let slide of carouselSlides; let i = index"
+      [class.active]="i === currentSlide"
+      (click)="onCarouselClick(slide.file)"
+      style="cursor: pointer"
     >
-      <i class="fa-solid fa-mortar-pestle"></i>
-      <span>Aurea</span>
-    </a>
-
-    <!-- Orbit rings (visual only — planet positions are set via CSS) -->
-    <div class="emblem__orbit emblem__orbit--1"></div>
-    <div class="emblem__orbit emblem__orbit--2"></div>
-    <div class="emblem__orbit emblem__orbit--3"></div>
-    <div class="emblem__orbit emblem__orbit--4"></div>
-    <div class="emblem__orbit emblem__orbit--5"></div>
-    <div class="emblem__orbit emblem__orbit--6"></div>
-
-    <!-- Planet 1 — Soap (outermost ring, pf 0.66, start 315°) -->
-    <a
-      [routerLink]="['/products']"
-      [queryParams]="{ category: 'soap' }"
-      class="emblem__planet emblem__planet--1"
-      aria-label="Browse Soaps"
+      <ng-container *ngIf="slide.file.endsWith('.mp4'); else imageTpl">
+        <video
+          class="carousel-img"
+          [src]="slide.file"
+          autoplay
+          muted
+          loop
+          playsinline
+        ></video>
+      </ng-container>
+      <ng-template #imageTpl>
+        <img [src]="slide.file" class="carousel-img" />
+      </ng-template>
+    </div>
+    <button
+      class="carousel-nav prev"
+      (click)="prevSlide()"
+      aria-label="Previous slide"
     >
-      <i class="fa-solid fa-soap planet-icon" aria-hidden="true"></i>
-      <span>Soap</span>
-    </a>
-
-    <!-- Planet 2 — Serum (inner ring, pf 0.30, start 30°) -->
-    <a
-      [routerLink]="['/products']"
-      [queryParams]="{ category: 'serum' }"
-      class="emblem__planet emblem__planet--2"
-      aria-label="Browse Serums"
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button
+      class="carousel-nav next"
+      (click)="nextSlide()"
+      aria-label="Next slide"
     >
-      <i class="fa-solid fa-vial planet-icon" aria-hidden="true"></i>
-      <span>Serum</span>
-    </a>
-
-    <!-- Planet 3 — Cream (inner ring, pf 0.30, start 210° — opposite Serum) -->
-    <a
-      [routerLink]="['/products']"
-      [queryParams]="{ category: 'cream' }"
-      class="emblem__planet emblem__planet--3"
-      aria-label="Browse Creams"
-    >
-      <i class="fa-solid fa-jar planet-icon" aria-hidden="true"></i>
-      <span>Cream</span>
-    </a>
-
-    <!-- Planet 4 — Shampoo (middle ring, pf 0.52, start 270°) -->
-    <a
-      [routerLink]="['/products']"
-      [queryParams]="{ category: 'shampoo' }"
-      class="emblem__planet emblem__planet--4"
-      aria-label="Browse Shampoos"
-    >
-      <i class="fa-solid fa-bottle-water planet-icon" aria-hidden="true"></i>
-      <span>Shampoo</span>
-    </a>
-
-    <!-- Planet 5 — Oil (middle ring, pf 0.52, start 90° — opposite Shampoo) -->
-    <a
-      [routerLink]="['/products']"
-      [queryParams]="{ category: 'oil' }"
-      class="emblem__planet emblem__planet--5"
-      aria-label="Browse Oils"
-    >
-      <i class="fa-solid fa-droplet planet-icon" aria-hidden="true"></i>
-      <span>Oil</span>
-    </a>
-
-    <!-- Planet 6 removed — Serum now occupies Planet 2 on the inner ring -->
-  </div>
-
-  <!-- Single CTA below emblem -->
-  <div class="hero__cta">
-    <a routerLink="/products" class="btn btn--primary">
-      View All Products &rarr;
-    </a>
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <div class="carousel-dots">
+      <span
+        *ngFor="let slide of carouselSlides; let i = index"
+        [class.active]="i === currentSlide"
+        (click)="goToSlide(i)"
+      ></span>
+    </div>
   </div>
 </section>

@@ -17,6 +17,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "oil",
     inStock: true,
     stockCount: 85,
+    originalPrice: 299,
   },
   {
     id: "prod-002",
@@ -84,6 +85,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "cream",
     inStock: true,
     stockCount: 60,
+    originalPrice: 999,
   },
   {
     id: "prod-006",
@@ -101,6 +103,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "cream",
     inStock: false,
     stockCount: 0,
+    originalPrice: 549,
   },
   {
     id: "prod-007",
@@ -135,5 +138,6 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "soap",
     inStock: true,
     stockCount: 200,
+    originalPrice: 199,
   },
 ];

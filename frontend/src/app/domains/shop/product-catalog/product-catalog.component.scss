@@ -237,13 +237,14 @@
 }
 
 /* + pill — item not yet in cart */
+
 .card-add-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold-secondary), var(--gold-dark));
+  background: var(--gold-primary);
   color: var(--gold-btn-text);
-  border: 1.5px solid var(--gold-secondary);
+  border: 1.5px solid var(--gold-primary);
   display: flex;
   align-items: center;
   justify-content: center;

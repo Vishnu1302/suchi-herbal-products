@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   apiUrl: "http://localhost:4000/api",
-  useMockData: false,
+  useMockData: true,
   appName: "Aurea",
 
   // ── Razorpay ──────────────────────────────────────────────────────────────
